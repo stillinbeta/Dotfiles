@@ -236,7 +236,6 @@ for s = 1, screen.count() do
     spacer:set_markup("                ")
     local left_layout = wibox.layout.fixed.horizontal()
     left_layout:add(mytaglist[s])
-    left_layout:add(mypromptbox[s])
     left_layout:add(spacer)
 
 
@@ -255,6 +254,8 @@ for s = 1, screen.count() do
     middle_layout:add(cpu0graph)
     middle_layout:add(spacer2)
     middle_layout:add(batgraph)
+    -- Don't move everything over when typing
+    middle_layout:add(mypromptbox[s])
 
     -- Now bring it all together (with the tasklist in the middle)
     local layout = wibox.layout.align.horizontal()
