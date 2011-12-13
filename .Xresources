@@ -1,0 +1,30 @@
+vt.geometry: 400x30 
+URxvt.buffered: true
+URxvt.background: black
+URxvt.foreground: white 
+URxvt.cursorColor: white
+URxvt.underlineColor: white
+URxvt.font:xft:deja vu sans mono:pixelsize=13:antialias=true
+URxvt*termName: rxvt-unicode
+
+
+URxvt.scrollBar:false
+!------------
+!True Transparency
+!------------
+!set to 32-bit for real transparency (compositing required (see xcompmgr)
+!urxvt*depth:             32
+!transparent=0000 opaque=ffff
+!urxvt*background: rgba:1111/1111/1111/dddd
+!urxvt*background: rgba:1111/1111/1111/0000
+
+
+!------------------
+!False tranparency
+!------------------
+URxvt.transparent: true
+URxvt.shading: 25 
+
+URxvt.secondaryScroll:  true    # Enable Shift-PageUp/Down in screen
+URxvt*urgentOnBell: true
+URxvt*visualBell: true

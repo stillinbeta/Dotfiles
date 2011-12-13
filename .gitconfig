@@ -1,0 +1,5 @@
+[user]
+	name = stillinbeta
+	email = web@stillinbeta.com
+[core]
+	excludesfile = /home/sib/.gitignore_global

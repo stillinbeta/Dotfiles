@@ -1,0 +1,9 @@
+#Object files
+*.o
+
+#Vim swop
+.*.sw*
+
+#LaTeX things
+*.aux
+*.log

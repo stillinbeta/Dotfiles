@@ -1,0 +1,15 @@
+.ackrc              - Setup ack for some filetype
+.gitconfig          - git settings
+.gitignore_global   - mostly tex extensions and .o files
+.inputrc            - vim mode EVERYWHERE
+rc.lua              - config for awesome
+.vimrc              - you know
+.xmodmap            - key bindings
+.Xresources         - urxvt setup
+.xinitrc            - setup trackpoint and Awesome
+.zshrc              - mostly my prompt, which shows vim's insert mode and 
+                      git/virtualenv status
+
+Use ./movedot file1 file2 file3 to move files here and symlink them back to
+where they belong
+
