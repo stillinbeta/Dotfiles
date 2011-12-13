@@ -100,12 +100,19 @@ cpu0graph:set_height(10)
 cpu0graph:set_stack(true)
 cpu0graph:set_background_color(beautiful.bg_normal)
 cpu0graph:set_stack_colors({beautiful.fg_normal,beautiful.fg_focus})
+cpu0graph:set_max_value(2)
 memgraph = awful.widget.progressbar()
 memgraph:set_width(150)
 memgraph:set_background_color(beautiful.bg_normal)
 memgraph:set_color(beautiful.fg_normal)
 memgraph:set_border_color(beautiful.fg_normal)
 memgraph:set_height(5)
+batgraph = awful.widget.progressbar()
+batgraph:set_width(150)
+batgraph:set_background_color(beautiful.fg_normal)
+batgraph:set_color(beautiful.bg_normal)
+batgraph:set_border_color(beautiful.fg_normal)
+
 
 jiffies = {}
 function activecpu()
@@ -116,7 +123,7 @@ function activecpu()
            if not jiffies[cpu] then
                jiffies[cpu] = newjiffies
            end
-           t[cpu] = (newjiffies - jiffies[cpu]) / 10
+           t[cpu] = (newjiffies - jiffies[cpu]) / 100
            jiffies[cpu] = newjiffies
        end
    end
@@ -125,6 +132,10 @@ end
 
 function cputemp()
     return io.input('/sys/devices/platform/thinkpad_hwmon/temp1_input'):read("*n") / 1000
+end
+
+function batpercent()
+    return io.input('/sys/devices/platform/smapi/BAT0/remaining_percent'):read("*n") / 100
 end
 
 function memoryusage()
@@ -147,11 +158,12 @@ end
 
 mytimer = timer({timeout = 1})
 mytimer:connect_signal("timeout", function() 
-local t = activecpu()
-cpu0graph:add_value(t.cpu0, 1)
-cpu0graph:add_value(t.cpu1, 2)
-mytextbox:set_markup("    " .. cputemp() .. "°C    ")
-memgraph:set_value(memoryusage())
+    local t = activecpu()
+    cpu0graph:add_value(t.cpu0, 1)
+    cpu0graph:add_value(t.cpu1, 2)
+    mytextbox:set_markup("    " .. cputemp() .. "°C    ")
+    memgraph:set_value(memoryusage())
+    batgraph:set_value(1 - batpercent())
 end)
 mytimer:start()
 
@@ -221,7 +233,7 @@ for s = 1, screen.count() do
 
     -- Widgets that are aligned to the left
     spacer = wibox.widget.textbox()
-    spacer.set_markup("                ")
+    spacer:set_markup("                ")
     local left_layout = wibox.layout.fixed.horizontal()
     left_layout:add(mytaglist[s])
     left_layout:add(mypromptbox[s])
@@ -236,9 +248,13 @@ for s = 1, screen.count() do
 
     -- Gauges and such
     local middle_layout = wibox.layout.fixed.horizontal()
+    spacer2 = wibox.widget.textbox()
+    spacer2:set_markup("   ")
     middle_layout:add(memgraph)
     middle_layout:add(mytextbox)
     middle_layout:add(cpu0graph)
+    middle_layout:add(spacer2)
+    middle_layout:add(batgraph)
 
     -- Now bring it all together (with the tasklist in the middle)
     local layout = wibox.layout.align.horizontal()
