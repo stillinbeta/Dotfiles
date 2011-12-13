@@ -4,7 +4,8 @@
 .inputrc            - vim mode EVERYWHERE
 rc.lua              - config for awesome
 .vimrc              - you know
-.xmodmap            - key bindings
+.xbindkeysrc        - volume, guest mode, media buttons, etc
+.xmodmap            - caps lock is escape 
 .Xresources         - urxvt setup
 .xinitrc            - setup trackpoint and Awesome
 .zshrc              - mostly my prompt, which shows vim's insert mode and 
