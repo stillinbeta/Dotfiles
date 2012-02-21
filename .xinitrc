@@ -31,6 +31,7 @@ export QT_IM_MODULE=ibus
 dropboxd &
 wicd-client &
 xbindkeys &
+sudo xfce4-power-manager &
 
 #Launch Awesome
 exec awesome 
