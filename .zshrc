@@ -72,6 +72,8 @@ alias nosleep="xset s off && xset -dpms"
 alias jesus="sudo"
 alias vless="/usr/share/vim/vim73/macros/less.sh"
 alias vi=vim
+alias mount.tc="truecrypt -t --mount"
+alias umount.tc="truecrypt -t --dismount"
 
 #Ignore all this crap
 fignore=( .o \~ .pyc)
