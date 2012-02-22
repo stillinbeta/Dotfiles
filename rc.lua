@@ -327,7 +327,7 @@ globalkeys = awful.util.table.join(
         elseif tags[1][6].selected then
 		    awful.util.spawn("urxvt -e ssh asimov")
         elseif tags[1][7].selected then
-		    awful.util.spawn("ro banshee-git")
+		    awful.util.spawn("ro rhythmbox")
         elseif tags[1][8].selected then
 		    awful.util.spawn("ro gimp")
         elseif tags[1][9].selected then
@@ -448,7 +448,7 @@ awful.rules.rules = {
       properties = { floating = true } },
     { rule = { name = "Wicd Network Manager"},
       properties = { floating = true } },
-    { rule = { class = "banshee" },
+    { rule = { class = "Rhythmbox" },
     	properties = { tag = tags[1][7] } },
     { rule = { class = "Pidgin" },
     	properties = { tag = tags[1][5] } },

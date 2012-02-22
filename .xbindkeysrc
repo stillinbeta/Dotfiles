@@ -78,21 +78,21 @@
 
 
 #The following media control keys are banshee-specific
-"banshee --toggle-playing"
+"rhythmbox-client --play-pause"
     m:0x0 + c:172
     XF86AudioPlay
 
-"banshee --restart-or-previous"
+"rhythmbox-client --previous"
     m:0x0 + c:173
     XF86AudioPrev
 
-"banshee --next"
+"rhythmbox-client --next"
     m:0x0 + c:171
     XF86AudioNext
 	    
-"banshee --stop"
-    m:0x0 + c:174
-    XF86AudioStop
+#""
+#    m:0x0 + c:174
+#    XF86AudioStop
 	
 #Brightness controls. The BIOS handles the actual brightness
 #These just display it.
