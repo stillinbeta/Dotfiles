@@ -1,0 +1,1 @@
+/home/sib/Scripts/wicd-status.py

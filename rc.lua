@@ -94,6 +94,7 @@ end
 -- Create a textclock widget
 mytextclock = awful.widget.textclock()
 mytextbox = wibox.widget.textbox()
+netinfobox = wibox.widget.textbox()
 cpu0graph = awful.widget.graph()
 cpu0graph:set_width(150)
 cpu0graph:set_height(10)
@@ -135,7 +136,14 @@ function cputemp()
 end
 
 function batpercent()
-    return io.input('/sys/devices/platform/smapi/BAT0/remaining_percent'):read("*n") / 100
+    test, val = pcall(function() 
+        return io.input('/sys/devices/platform/smapi/BAT0/remaining_percent'):read("*n")
+    end)
+    if test then
+        return val / 100
+    else
+        return 0
+    end
 end
 
 function memoryusage()
@@ -156,6 +164,22 @@ function memoryusage()
     return 0
 end
 
+function netinfo()
+    local status = os.execute("/home/sib/Scripts/wicd-status.py") / 256 -- Why
+    local colour = ""
+
+    if status == 0 then
+        colour = "green"
+    elseif status == 1 then
+        colour = "yellow"
+    elseif status == 2 then
+        colour = "red"
+    else
+        colour = "white"
+    end
+    return "  <span color='" .. colour .. "'>N</span> "
+end 
+
 mytimer = timer({timeout = 1})
 mytimer:connect_signal("timeout", function() 
     local t = activecpu()
@@ -164,6 +188,7 @@ mytimer:connect_signal("timeout", function()
     mytextbox:set_markup("    " .. cputemp() .. "°C    ")
     memgraph:set_value(memoryusage())
     batgraph:set_value(1 - batpercent())
+    netinfobox:set_markup(netinfo())
 end)
 mytimer:start()
 
@@ -252,6 +277,7 @@ for s = 1, screen.count() do
     middle_layout:add(memgraph)
     middle_layout:add(mytextbox)
     middle_layout:add(cpu0graph)
+    middle_layout:add(netinfobox)
     middle_layout:add(spacer2)
     middle_layout:add(batgraph)
     -- Don't move everything over when typing
