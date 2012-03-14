@@ -139,7 +139,7 @@ function batpercent()
     test, val = pcall(function() 
         return io.input('/sys/devices/platform/smapi/BAT0/remaining_percent'):read("*n")
     end)
-    if test then
+    if test and val then
         return val / 100
     else
         return 0
