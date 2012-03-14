@@ -75,5 +75,9 @@ alias vi=vim
 alias mount.tc="truecrypt -t --mount"
 alias umount.tc="truecrypt -t --dismount"
 
+function mkcd {
+    mkdir -p $1 && cd $1
+}
+
 #Ignore all this crap
 fignore=( .o \~ .pyc)
