@@ -3,12 +3,8 @@
 #disable the touchpad
 xinput --set-prop "SynPS/2 Synaptics TouchPad" "Device Enabled" 0
 
-
-#setup the pointer for scrolling
-xinput set-int-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation" 8 1
-xinput set-int-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation Button" 8 2
-#xinput set-int-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation Timeout" 8 200
-xinput set-int-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation Axes" 8 6 7 4 5
+#Set up the pointer for scrolling
+. ~/.xinit-trackpoint
 
 #load Xresources
 #mostly for urxvt
