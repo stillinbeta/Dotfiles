@@ -473,6 +473,8 @@ awful.rules.rules = {
 --      properties = { floating = true } },
 --    { rule = { class = "gimp" },
 --      properties = { floating = true } },
+    { rule = { class = "Evince"},
+        properties = { tag = tags[1][1] } },
     { rule = { class = "Vlc" },
       properties = { floating = true } },
     { rule = { name = "Wicd Network Manager"},
