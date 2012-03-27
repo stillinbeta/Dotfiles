@@ -3,3 +3,5 @@
 	email = web@stillinbeta.com
 [core]
 	excludesfile = /home/sib/.gitignore_global
+[color]
+	ui = auto
