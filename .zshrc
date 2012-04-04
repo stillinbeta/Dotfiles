@@ -72,7 +72,7 @@ alias nosleep="xset s off && xset -dpms"
 alias jesus="sudo"
 alias vless="/usr/share/vim/vim73/macros/less.sh"
 alias vi=vim
-alias mount.tc="truecrypt -t --mount"
+alias mount.tc="truecrypt -t -k '' --protect-hidden=no --mount "
 alias umount.tc="truecrypt -t --dismount"
 
 function mkcd {
@@ -80,4 +80,4 @@ function mkcd {
 }
 
 #Ignore all this crap
-fignore=( .o \~ .pyc)
+fignore=( .o \~ .pyc .hi)
