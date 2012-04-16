@@ -9,6 +9,7 @@ URxvt*termName: rxvt-unicode
 
 
 URxvt.scrollBar:false
+URxvt.iso14755:false
 !------------
 !True Transparency
 !------------
