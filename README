@@ -1,6 +1,11 @@
+A collection of .files from my home directory. I've spent more time on these 
+files than is strictly neccessary. They give some insight into how I use my 
+computer, and how much tweaking I'm willing to do.
+
 .ackrc              - Setup ack for some filetype
 .gitconfig          - git settings
 .gitignore_global   - mostly tex extensions and .o files
+.haskellrc          - vim mode in ghci
 .inputrc            - vim mode EVERYWHERE
 rc.lua              - config for awesome
 .vimrc              - you know
