@@ -80,4 +80,4 @@ function mkcd {
 }
 
 #Ignore all this crap
-fignore=( .o \~ .pyc .hi)
+fignore=( .o \~ .pyc .hi .aux) 
