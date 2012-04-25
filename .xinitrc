@@ -30,6 +30,4 @@ xbindkeys &
 sudo xfce4-power-manager &
 
 #Launch Awesome
-exec awesome 
-
-
+exec awesome
