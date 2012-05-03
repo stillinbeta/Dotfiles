@@ -24,11 +24,10 @@ setopt extended_glob
 bindkey -v
 # End of lines configured by zsh-newuser-install
 zmodload -i zsh/complist
-#zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*:mosh' menu known-hosts-files
 
-
-compdef 'python manage.py' './manage.py'
-#compdef 'sudo' 'jesus'
+compdef 'python manage.py'='manage.py'
+compdef mosh=ssh
 
 PROMPT='%B%n@%m:%~%{${VIMODE}%}%(!.#.$)%b%{$reset_color%} '
 function selector {
