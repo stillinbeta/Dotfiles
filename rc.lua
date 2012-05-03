@@ -351,7 +351,7 @@ globalkeys = awful.util.table.join(
 		    awful.util.spawn("ro skype")
 		    awful.util.spawn("ro pidgin")
         elseif tags[1][6].selected then
-		    awful.util.spawn("urxvt -e ssh -t asimov -- screen -r")
+		    awful.util.spawn("urxvt -e ssh -t irssi -- screen -r")
         elseif tags[1][7].selected then
 		    awful.util.spawn("ro rhythmbox")
         elseif tags[1][8].selected then
