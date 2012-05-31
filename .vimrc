@@ -18,5 +18,5 @@ set smartcase
 set incsearch
 set hlsearch
 
-"source ~/.vim/vdb.vim
-
+"Because I keep typing :W
+cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'w')?('W'):('w'))
