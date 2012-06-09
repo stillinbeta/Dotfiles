@@ -79,7 +79,7 @@ layouts =
 
 
 tags = {
-	names= {"₁ etc","₂ web","₃ sh1","₄ sh2",", im","· irssi",". media","ₚ gimp","ᵧ etc2"},
+	names= {"₁ etc","₂ web","₃ sh1","₄ sh2","· im",", irssi",". media","ₚ gimp","ᵧ etc2"},
 	layout = { layouts[1],layouts[2],layouts[2],layouts[2],layouts[1],layouts[2],layouts[1],layouts[1],layouts[2] }
 }
 for s = 1, screen.count() do
@@ -433,31 +433,25 @@ awful.rules.rules = {
                      focus = true,
                      keys = clientkeys,
                      buttons = clientbuttons } },
---    { rule = { class = "MPlayer" },
---      properties = { floating = true } },
---    { rule = { class = "pinentry" },
---      properties = { floating = true } },
---    { rule = { class = "gimp" },
---      properties = { floating = true } },
     { rule = { class = "Evince"},
         properties = { tag = tags[1][1] } },
+    { rule = { class = "Firefox" },
+        properties = { tag = tags[1][2] } },
+    -- Full-screen flash videos
+    { rule = { class = "Plugin-container"},
+        properties = { floating = true } },
     { rule = { class = "Vlc" },
-      properties = { floating = true } },
+        properties = { floating = true } },
     { rule = { name = "Wicd Network Manager"},
-      properties = { floating = true } },
-    { rule = { class = "Rhythmbox" },
-    	properties = { tag = tags[1][7] } },
+        properties = { floating = true } },
     { rule = { class = "Pidgin" },
     	properties = { tag = tags[1][5] } },
     { rule = { class = "Skype" },
     	properties = { tag = tags[1][5] } },
-    { rule = { class = "Namoroka" },
-    	properties = { tag = tags[1][2] } },
-    -- Set Firefox to always map on tags number 2 of screen 1.
-     { rule = { class = "Firefox" },
-       properties = { tag = tags[1][2] } },
-     { rule = { class = "Plugin-container"},
-       properties = { floating = true } }
+    { rule = { class = "Rhythmbox" },
+        properties = { tag = tags[1][7] } },
+    { rule = { class = "Gimp" },
+        properties = { tag = tags[1][8] } },
 }
 -- }}}
 
