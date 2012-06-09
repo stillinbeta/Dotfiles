@@ -25,7 +25,6 @@ export QT_IM_MODULE=ibus
 
 #Extra programs
 dropboxd &
-wicd-client &
 xbindkeys &
 sudo xfce4-power-manager &
 
