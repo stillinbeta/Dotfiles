@@ -1,14 +1,13 @@
 -- Standard awesome library
-require("awful")
+local awful = require("awful")
+awful.rules = require("awful.rules")
 require("awful.autofocus")
-require("awful.rules")
 -- Widget and layout library
-require("wibox")
+local wibox = require("wibox")
 -- Theme handling library
-require("beautiful")
+local beautiful = require("beautiful")
 -- Notification library
-require("naughty")
-require("scratch")
+local naughty = require("naughty")
 --require("vicious")
 
 -- {{{ Error handling
@@ -52,7 +51,7 @@ editor_cmd = terminal .. " -e " .. editor
 -- However, you can use another modifier like Mod1, but it may interact with others.
 modkey = "Mod4"
 -- Table of layouts to cover with awful.layout.inc, order matters.
-layouts =
+local layouts =
 {
     awful.layout.suit.floating,
 --    awful.layout.suit.tile,
@@ -445,9 +444,9 @@ awful.rules.rules = {
     { rule = { name = "Wicd Network Manager"},
         properties = { floating = true } },
     { rule = { class = "Pidgin" },
-    	properties = { tag = tags[1][5] } },
+        properties = { tag = tags[1][5] } },
     { rule = { class = "Skype" },
-    	properties = { tag = tags[1][5] } },
+        properties = { tag = tags[1][5], size_hints_honor = false} },
     { rule = { class = "Rhythmbox" },
         properties = { tag = tags[1][7] } },
     { rule = { class = "Gimp" },
