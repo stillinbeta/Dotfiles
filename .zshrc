@@ -66,7 +66,7 @@ alias ls="ls --color=auto"
 alias grep="grep --color=auto"
 
 #Useful commands
-alias backup_sib="rsync -av --delete --exclude-from=.rsync-exclude ~ /media/usbhd-sdb1/backup"
+alias backup_sib="rsync -av --delete --exclude-from=/home/sib/.rsync-exclude ~"
 alias nosleep="xset s off && xset -dpms"
 alias jesus="sudo"
 alias vless="/usr/share/vim/vim73/macros/less.sh"
