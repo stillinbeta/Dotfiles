@@ -24,9 +24,10 @@ export XMODIFIERS=@im=ibus
 export QT_IM_MODULE=ibus
 
 #Extra programs
-dropboxd &
+~/.dropbox-dist/dropboxd &
 xbindkeys &
 sudo xfce4-power-manager &
 
 #Launch Awesome
 exec awesome
+#~/.xmonad/xmonad-x86_64-linux
