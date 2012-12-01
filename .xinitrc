@@ -6,6 +6,8 @@ xinput --set-prop "SynPS/2 Synaptics TouchPad" "Device Enabled" 0
 #Set up the pointer for scrolling
 . ~/.xinit-trackpoint
 
+setxkbmap dvorak
+
 #load Xresources
 #mostly for urxvt
 xrdb ~/.Xresources
