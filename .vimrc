@@ -20,3 +20,5 @@ set hlsearch
 
 "Because I keep typing :W
 cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'w')?('W'):('w'))
+
+call pathogen#infect()
