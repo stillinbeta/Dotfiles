@@ -35,6 +35,8 @@ function selector {
         zle reset-prompt
 }
 
+PATH="$PATH:/home/sib/.gem/ruby/1.9.1/bin"
+
 #Setup Virtualenv stuff
 VIRTUAL_ENV_DISABLE_PROMPT=1
 function virtualenv_info {
