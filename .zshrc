@@ -76,6 +76,7 @@ alias vi=vim
 alias mount.tc="truecrypt -t -k '' --protect-hidden=no --mount "
 alias umount.tc="truecrypt -t --dismount"
 alias wi="wicd-curses"
+alias erl="rlwrap erl -oldshell"
 
 function mkcd {
     mkdir -p $1 && cd $1
