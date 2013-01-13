@@ -1,7 +1,10 @@
 [user]
-	name = stillinbeta
+	name = Ellie Frost
 	email = web@stillinbeta.com
 [core]
 	excludesfile = /home/sib/.gitignore_global
+    editor = vim
 [color]
 	ui = auto
+[push]
+	default = simple
