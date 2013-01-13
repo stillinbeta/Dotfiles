@@ -72,11 +72,12 @@ alias backup_sib="rsync -av --delete --exclude-from=/home/sib/.rsync-exclude ~"
 alias nosleep="xset s off && xset -dpms"
 alias jesus="sudo"
 alias vless="/usr/share/vim/vim73/macros/less.sh"
-alias vi=vim
 alias mount.tc="truecrypt -t -k '' --protect-hidden=no --mount "
 alias umount.tc="truecrypt -t --dismount"
 alias wi="wicd-curses"
 alias erl="rlwrap erl -oldshell"
+alias inventory="ruby /home/sib/Devel/ruby/inventory/inventory.rb"
+alias lock="xscreensaver-command -lock"
 
 function mkcd {
     mkdir -p $1 && cd $1
