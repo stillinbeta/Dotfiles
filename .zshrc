@@ -85,3 +85,7 @@ function mkcd {
 
 #Ignore all this crap
 fignore=( .o \~ .pyc .hi .aux) 
+
+# Stuff for go
+export GOPATH=$HOME/Devel/go
+export PATH=$PATH:$HOME/Devel/go/bin
