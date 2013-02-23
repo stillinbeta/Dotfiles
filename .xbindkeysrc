@@ -55,12 +55,6 @@
     m:0x0 + c:156
     XF86Launch1
 
-
-#Suspend
-"sudo pm-hibernate"
-    m:0x0 + c:150
-    XF86Sleep
-
 # Increase volume
 "amixer set Master playback unmute 5+ && ~/Scripts/zenity-volume.sh"
     m:0x0 + c:123
