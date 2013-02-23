@@ -311,7 +311,7 @@ globalkeys = awful.util.table.join(
 		    awful.util.spawn("ro skype")
 		    awful.util.spawn("ro pidgin")
         elseif tags[1][6].selected then
-		    awful.util.spawn("urxvt -e mosh -t irssi -- screen -r")
+		    awful.util.spawn("urxvt -e mosh leguin  -- screen -r")
         elseif tags[1][7].selected then
 		    awful.util.spawn("ro rhythmbox")
         elseif tags[1][8].selected then
@@ -323,7 +323,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
     awful.key({ modkey            }, "b",     function () 
-                                                  awful.util.spawn("xscreensaver-command -lock")
+                                                  awful.util.spawn("slock")
                                               end),
 
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)    end),
