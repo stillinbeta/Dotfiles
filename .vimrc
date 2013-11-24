@@ -5,6 +5,8 @@ set mouse=a
 set ruler
 set bs=2
 
+call pathogen#infect()
+
 set tabstop=4
 set shiftwidth=4
 set expandtab
@@ -18,7 +20,26 @@ set smartcase
 set incsearch
 set hlsearch
 
+
+"Ctrlp.vim
+set runtimepath^=~/.vim/bundle/ctrlp.vim
+
+"Disable X mode
+noremap Q <Nop>
+
+set encoding=utf-8
+set laststatus=2
+filetype plugin indent on
+let g:Powerline_theme = 'ellie'
+
+
+let g:detectindent_preferred_expandtab = 1
+let g:detectindent_preferred_indent = 4
+autocmd BufReadPost * :DetectIndent
+"autocmd FileType python compiler pylint
+
 "Because I keep typing :W
 cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'w')?('W'):('w'))
 
-call pathogen#infect()
+set listchars=tab:»\ 
+set list
