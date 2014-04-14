@@ -29,6 +29,7 @@ export QT_IM_MODULE=ibus
 ~/.dropbox-dist/dropboxd &
 xbindkeys &
 sudo xfce4-power-manager &
+nm-applet &
 
 #Launch Awesome
 exec awesome
