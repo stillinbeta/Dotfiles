@@ -1,15 +1,19 @@
-vt.geometry: 400x30 
+vt.geometry: 400x30
 URxvt.buffered: true
 URxvt.background: black
-URxvt.foreground: white 
+URxvt.foreground: white
 URxvt.cursorColor: white
 URxvt.underlineColor: white
-URxvt.font:xft:inconsolata:pixelsize=13:antialias=true
+URxvt.font: xft:inconsolata:pixelsize=13:antialias=true, \
+            xft:Symbola:pixelsize=13:antialias=true:hinting=true, \
+            xft:Droid Sans Fallback:pixelsize=13:style=Regular, \
+            xft:DejaVu Sans Mono:pixelsize=13:antialias=true:hinting=true
 URxvt*termName: rxvt-unicode
 
 
 URxvt.scrollBar:false
 URxvt.iso14755:false
+
 !------------
 !True Transparency
 !------------
@@ -19,12 +23,11 @@ URxvt.iso14755:false
 !urxvt*background: rgba:1111/1111/1111/dddd
 !urxvt*background: rgba:1111/1111/1111/0000
 
-
 !------------------
 !False tranparency
 !------------------
 URxvt.transparent: true
-URxvt.shading: 25 
+URxvt.shading: 25
 
 URxvt.secondaryScroll:  true    # Enable Shift-PageUp/Down in screen
 URxvt*urgentOnBell: true
