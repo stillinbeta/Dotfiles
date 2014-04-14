@@ -35,6 +35,9 @@ function selector {
         zle reset-prompt
 }
 
+# Global shared history
+setopt INC_APPEND_HISTORY
+
 PATH="$PATH:/home/sib/.gem/ruby/1.9.1/bin"
 
 #Setup Virtualenv stuff
@@ -63,6 +66,8 @@ RPROMPT='$(virtualenv_info)$(sep)$(git_prompt_info)'
 zle -N zle-line-init selector
 zle -N zle-keymap-select selector
 
+export EDITOR="vim"
+
 #Add some colour to things
 alias ls="ls --color=auto"
 alias grep="grep --color=auto"
@@ -78,10 +83,19 @@ alias wi="wicd-curses"
 alias erl="rlwrap erl -oldshell"
 alias inventory="ruby /home/sib/Devel/ruby/inventory/inventory.rb"
 alias lock="xscreensaver-command -lock"
+alias cdf='mosh --server="LD_LIBRARY_PATH=~/mosh/lib LANG=C.UTF-8 ~/mosh/bin/mosh-server" cdf'
+
 
 function mkcd {
     mkdir -p $1 && cd $1
 }
+
+function print_cdf {
+    file=$1
+    shift
+    ssh cdf "/local/bin/print $@" < $file
+}
+
 
 #Ignore all this crap
 fignore=( .o \~ .pyc .hi .aux) 
