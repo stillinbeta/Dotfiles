@@ -87,8 +87,8 @@ tags = {}
 
 
 tags_info = {
-	names= {"₁ etc","₂ web","₃ sh1","₄ sh2","· im",", irssi",". media","ₚ gimp","ᵧ etc2"},
-	layout = { layouts[1],layouts[2],layouts[2],layouts[2],layouts[1],layouts[2],layouts[1],layouts[1],layouts[2] }
+    names= {"₁ etc","₂ web","₃ sh1","₄ sh2","· im",", irc",". media","ₚ gimp","ᵧ etc2"},
+    layout = { layouts[1],layouts[2],layouts[2],layouts[2],layouts[1],layouts[2],layouts[1],layouts[1],layouts[2] }
 }
 for s = 1, screen.count() do
       tags[s] = awful.tag(tags_info.names, s, tags_info.layout)
@@ -138,14 +138,14 @@ function activecpu()
        end
    end
    return t
-end 
+end
 
 function cputemp()
     return io.input('/sys/devices/platform/thinkpad_hwmon/temp1_input'):read("*n") / 1000
 end
 
 function batpercent()
-    test, val = pcall(function() 
+    test, val = pcall(function()
         return io.input('/sys/devices/platform/smapi/BAT0/remaining_percent'):read("*n")
     end)
     if test and val then
@@ -156,18 +156,18 @@ function batpercent()
 end
 
 function memoryusage()
-    local memtotal = nil 
-    local active = nil 
+    local memtotal = nil
+    local active = nil
     for line in io.lines("/proc/meminfo") do
         if not memtotal then
             memtotal = string.match(line, "MemTotal:\ +(%d+)")
         end
         if not active then
             active = string.match(line, "Active:\ +(%d+)")
-        end 
+        end
 
         if active and memtotal then
-            return active / memtotal 
+            return active / memtotal
         end
     end
     return 0
@@ -187,10 +187,10 @@ function netinfo()
         colour = "white"
     end
     return "  <span color='" .. colour .. "'>N</span> "
-end 
+end
 
 mytimer = timer({timeout = 1})
-mytimer:connect_signal("timeout", function() 
+mytimer:connect_signal("timeout", function()
     local t = activecpu()
     cpu0graph:add_value(t.cpu0, 1)
     cpu0graph:add_value(t.cpu1, 2)
@@ -293,42 +293,40 @@ globalkeys = awful.util.table.join(
                 client.focus:raise()
             end
         end),
-    awful.key( { modkey }, ";", 
+    awful.key( { modkey }, ";",
         function()
             awful.menu.clients( { width = 250 }, { keygrabber = true } )
         end ),
 
     -- Standard program
     awful.key({ modkey,           }, "\\", function () awful.util.spawn(terminal) end),
-    awful.key({ modkey            }, "Return",function () 
-        if tags[1][2].selected then 
+    awful.key({ modkey            }, "Return",function ()
+        if tags[1][2].selected then
             awful.util.spawn("firefox")
         elseif tags[1][3].selected then
             awful.util.spawn(terminal)
         elseif tags[1][4].selected then
             awful.util.spawn(terminal)
         elseif tags[1][5].selected then
-		    awful.util.spawn("ro skype")
-		    awful.util.spawn("ro pidgin")
+            awful.util.spawn("ro skype")
+            awful.util.spawn("ro pidgin")
         elseif tags[1][6].selected then
-		    awful.util.spawn("urxvt -e mosh leguin  -- screen -r")
+            awful.util.spawn("chromium --app=https://www.irccloud.com")
         elseif tags[1][7].selected then
-		    awful.util.spawn("ro rhythmbox")
+            awful.util.spawn("ro rhythmbox")
         elseif tags[1][8].selected then
-		    awful.util.spawn("ro gimp")
-        elseif tags[1][9].selected then
-		    awful.util.spawn("nxclient")
+            awful.util.spawn("ro gimp")
         end
     end),
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
-    awful.key({ modkey            }, "b",     function () 
-                                                  awful.util.spawn("slock")
+    awful.key({ modkey            }, "b",     function ()
+                                                  awful.util.spawn("i3lock")
                                               end),
 
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)    end),
     awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)    end),
-    awful.key({ modkey,           }, "i",     function () 
+    awful.key({ modkey,           }, "i",     function ()
         awful.util.spawn("pkill firefox")
    end),
     awful.key({ modkey, "Shift"   }, "h",     function () awful.tag.incnmaster( 1)      end),
@@ -379,7 +377,7 @@ keys = {"1","2","3","4","'",",",".","p","y"}
 -- "#" .. i + 9,
 for i = 1, keynumber do
     globalkeys = awful.util.table.join(globalkeys,
-        awful.key({ modkey }, keys[i], 
+        awful.key({ modkey }, keys[i],
                   function ()
                         local screen = mouse.screen
                         if tags[screen][i] then
@@ -445,6 +443,10 @@ awful.rules.rules = {
         properties = { tag = tags[1][7] } },
     { rule = { class = "Gimp" },
         properties = { tag = tags[1][8] } },
+    { rule = { class = "FTL" },
+        properties = { tag = tags[1][1] } },
+    { rule = { class = "Steam" },
+        properties = { tag = tags[1][1] } },
 }
 -- }}}
 
