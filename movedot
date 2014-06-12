@@ -1,8 +1,0 @@
-#!/bin/sh
-DOTFILEDIR=/home/sib/.dotfiles
-
-for file; do
-    NEWNAME="$DOTFILEDIR/$(basename $file)"
-    mv $file $NEWNAME 
-    ln -s $NEWNAME $file
-done
