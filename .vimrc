@@ -1,4 +1,3 @@
-set number
 set smartindent
 syntax on
 set mouse=a
@@ -30,7 +29,8 @@ noremap Q <Nop>
 set encoding=utf-8
 set laststatus=2
 filetype plugin indent on
-let g:Powerline_theme = 'ellie'
+
+let g:airline_powerline_fonts = 1
 
 
 let g:detectindent_preferred_expandtab = 1

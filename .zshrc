@@ -38,7 +38,7 @@ function selector {
 # Global shared history
 setopt INC_APPEND_HISTORY
 
-PATH="$PATH:/home/sib/.gem/ruby/1.9.1/bin"
+PATH="$HOME/.rbenv/shims:$PATH"
 
 #Setup Virtualenv stuff
 VIRTUAL_ENV_DISABLE_PROMPT=1
@@ -48,7 +48,7 @@ function virtualenv_info {
 
 #Git stuff
 #Blatantly stolen from oh my zsh
-. ~/Scripts/git.zsh
+#. ~/Scripts/git.zsh
 
 #maybe I needing later
 ZSH_THEME_GIT_PROMPT_PREFIX=""
@@ -61,7 +61,8 @@ ZSH_THEME_GIT_PROMPT_CLEAN=""
 function sep {
     [ `virtualenv_info` ] && [ `git_prompt_info` ] && echo '|'
 }
-RPROMPT='$(virtualenv_info)$(sep)$(git_prompt_info)'
+#RPROMPT='$(virtualenv_info)$(sep)$(git_prompt_info)'
+RPROMPT=''
 
 zle -N zle-line-init selector
 zle -N zle-keymap-select selector
@@ -69,8 +70,8 @@ zle -N zle-keymap-select selector
 export EDITOR="vim"
 
 #Add some colour to things
-alias ls="ls --color=auto"
-alias grep="grep --color=auto"
+#alias ls="ls --color=auto"
+#alias grep="grep --color=auto"
 
 #Useful commands
 alias backup_sib="rsync -av --delete --exclude-from=/home/sib/.rsync-exclude ~"
