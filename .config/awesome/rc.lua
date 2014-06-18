@@ -9,7 +9,10 @@ local wibox = require("wibox")
 local beautiful = require("beautiful")
 -- Notification library
 local naughty = require("naughty")
---require("vicious")
+local menubar = require("menubar")
+
+-- Load Debian menu entries
+require("debian.menu")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -37,11 +40,11 @@ end
 -- }}}
 
 -- {{{ Variable definitions
--- Themes define colours, icons, and wallpapers
-beautiful.init("/home/sib/.config/awesome/hikontrast/theme.lua")
+-- Themes define colours, icons, font and wallpapers.
+beautiful.init("/usr/share/awesome/themes/default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "urxvt"
+terminal = "gnome-terminal"
 editor = os.getenv("EDITOR") or "nano"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -308,8 +311,7 @@ globalkeys = awful.util.table.join(
         elseif tags[1][4].selected then
             awful.util.spawn(terminal)
         elseif tags[1][5].selected then
-            awful.util.spawn("ro skype")
-            awful.util.spawn("ro pidgin")
+            awful.util.spawn("hipchat")
         elseif tags[1][6].selected then
             awful.util.spawn("chromium --app=https://www.irccloud.com")
         elseif tags[1][7].selected then
@@ -321,7 +323,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
     awful.key({ modkey            }, "b",     function ()
-                                                  awful.util.spawn("i3lock")
+                                                  awful.util.spawn("gnome-screensaver-command -l")
                                               end),
 
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)    end),
@@ -435,7 +437,7 @@ awful.rules.rules = {
         properties = { floating = true } },
     { rule = { name = "Wicd Network Manager"},
         properties = { floating = true } },
-    { rule = { class = "Pidgin" },
+    { rule = { class = "HipChat" },
         properties = { tag = tags[1][5] } },
     { rule = { class = "Skype" },
         properties = { tag = tags[1][5], size_hints_honor = false} },
@@ -452,10 +454,7 @@ awful.rules.rules = {
 
 -- {{{ Signals
 -- Signal function to execute when a new client appears.
-client.add_signal("manage", function (c, startup)
-    -- Add a titlebar
-    -- awful.titlebar.add(c, { modkey = modkey })
-
+client.connect_signal("manage", function (c, startup)
     -- Enable sloppy focus
     c:connect_signal("mouse::enter", function(c)
         if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
@@ -480,5 +479,3 @@ end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
-
---awful.util.spawn("ibus-daemon -d")
