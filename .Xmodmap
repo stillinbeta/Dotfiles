@@ -1,2 +1,15 @@
-remove Lock = Caps_Lock
-keysym Caps_Lock = Escape
+! remove Control = Control_L
+! keycode 37 = Insert
+
+! End => Escape
+keycode 115= Escape
+! Home => Control
+keycode 110 = Control_L
+! Escape => Grave/Tilde
+keycode 9 = grave asciitilde
+! Grave/Tilde => Insert
+keycode 49 = Insert
+! Delete => Backspace
+keycode 119 = BackSpace
+
+add Control = Control_L
