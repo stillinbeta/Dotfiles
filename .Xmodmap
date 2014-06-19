@@ -8,7 +8,7 @@ keycode 110 = Control_L
 ! Escape => Grave/Tilde
 keycode 9 = grave asciitilde
 ! Grave/Tilde => Insert
-keycode 49 = Insert
+keycode 49 = Insert Insert Insert
 ! Delete => Backspace
 keycode 119 = BackSpace
 
