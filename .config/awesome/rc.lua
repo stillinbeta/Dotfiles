@@ -41,7 +41,7 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init("/usr/share/awesome/themes/default/theme.lua")
+beautiful.init("/home/liz/.config/awesome/heroku/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "urxvt"
@@ -479,3 +479,5 @@ end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
+
+awful.util.spawn("xmodmap /home/liz/.Xmodmap")
