@@ -313,11 +313,11 @@ globalkeys = awful.util.table.join(
         elseif tags[1][5].selected then
             awful.util.spawn("hipchat")
         elseif tags[1][6].selected then
-            awful.util.spawn("chromium --app=https://www.irccloud.com")
+            awful.util.spawn("chromium --incognito https://www.irccloud.com")
         elseif tags[1][7].selected then
-            awful.util.spawn("ro rhythmbox")
+            awful.util.spawn("")
         elseif tags[1][8].selected then
-            awful.util.spawn("ro gimp")
+            awful.util.spawn("gimp")
         end
     end),
     awful.key({ modkey, "Control" }, "r", awesome.restart),

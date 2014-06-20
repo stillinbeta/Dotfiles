@@ -8,11 +8,12 @@ theme.font          = "sans 8"
 
 theme.bg_normal     = "#1B1B24"
 theme.bg_focus      = "#464368"
-theme.bg_urgent     = "#ff0000"
+theme.bg_urgent     = "#00AEF0"
+
 theme.bg_minimize   = "#444444"
 theme.bg_systray    = theme.bg_normal
 
-theme.fg_normal     = "#00AEF0"
+theme.fg_normal     = "#7A7A8B"
 theme.fg_focus      = "#ffffff"
 theme.fg_urgent     = "#ffffff"
 theme.fg_minimize   = "#ffffff"
