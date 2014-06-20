@@ -11,5 +11,7 @@ keycode 9 = grave asciitilde
 keycode 49 = Insert Insert Insert
 ! Delete => Backspace
 keycode 119 = BackSpace
+! Backspace => Backspace/Back
+keycode 22 = BackSpace XF86Back
 
 add Control = Control_L
