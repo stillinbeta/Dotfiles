@@ -36,7 +36,7 @@ let g:Powerline_theme = 'ellie'
 let g:detectindent_preferred_expandtab = 1
 let g:detectindent_preferred_indent = 4
 autocmd BufReadPost * :DetectIndent
-"autocmd FileType python compiler pylint
+let g:airline_powerline_fonts = 1
 
 "Because I keep typing :W
 cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'w')?('W'):('w'))
