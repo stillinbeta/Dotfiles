@@ -91,7 +91,7 @@ tags = {}
 
 tags_info = {
     names= {"₁ etc","₂ web","₃ sh1","₄ sh2","· im",", irc",". media","ₚ gimp","ᵧ etc2"},
-    layout = { layouts[1],layouts[2],layouts[2],layouts[2],layouts[1],layouts[2],layouts[1],layouts[1],layouts[2] }
+    layout = { layouts[1],layouts[2],layouts[2],layouts[2],layouts[2],layouts[2],layouts[2],layouts[1],layouts[2] }
 }
 for s = 1, screen.count() do
       tags[s] = awful.tag(tags_info.names, s, tags_info.layout)
@@ -315,7 +315,7 @@ globalkeys = awful.util.table.join(
         elseif tags[1][6].selected then
             awful.util.spawn("chromium --incognito https://www.irccloud.com")
         elseif tags[1][7].selected then
-            awful.util.spawn("")
+            awful.util.spawn("chromium --app=https://rdio.com")
         elseif tags[1][8].selected then
             awful.util.spawn("gimp")
         end
@@ -323,7 +323,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
     awful.key({ modkey            }, "b",     function ()
-                                                  awful.util.spawn("slimlock")
+                                                  awful.util.spawn("gnome-screensaver-command -l")
                                               end),
 
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)    end),
