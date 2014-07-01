@@ -12,8 +12,8 @@ colors
 # End of lines added by compinstall
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
-HISTSIZE=1000
-SAVEHIST=1000
+HISTSIZE=10000
+SAVEHIST=10000
 setopt appendhistory autocd
 setopt prompt_subst
 setopt correct
@@ -29,7 +29,8 @@ zstyle ':completion:*:mosh' menu known-hosts-files
 compdef 'python manage.py'='manage.py'
 compdef mosh=ssh
 
-PROMPT='%B%n@%m:%~%{${VIMODE}%}%(!.#.$)%b%{$reset_color%} '
+PROMPT='%{${VIMODE}%}%(!.#.$)%b%{$reset_color%} '
+RPROMPT='%B%n@%m:%~'
 function selector {
         VIMODE="${${KEYMAP/vicmd/${fg[yellow]}}/(main|viins)/%(?..$fg[red])}"
         zle reset-prompt
@@ -38,30 +39,13 @@ function selector {
 # Global shared history
 setopt INC_APPEND_HISTORY
 
-PATH="$PATH:/home/sib/.gem/ruby/1.9.1/bin"
+PATH="$HOME/.rbenv/shims:$PATH"
 
 #Setup Virtualenv stuff
 VIRTUAL_ENV_DISABLE_PROMPT=1
 function virtualenv_info {
         [ $VIRTUAL_ENV ] && echo `basename $VIRTUAL_ENV`
 }
-
-#Git stuff
-#Blatantly stolen from oh my zsh
-. ~/Scripts/git.zsh
-
-#maybe I needing later
-ZSH_THEME_GIT_PROMPT_PREFIX=""
-ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[yellow]%}"
-ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$fg[green]%}"
-ZSH_THEME_GIT_PROMPT_CLEAN=""
-
-#Add a seperator if need be
-function sep {
-    [ `virtualenv_info` ] && [ `git_prompt_info` ] && echo '|'
-}
-RPROMPT='$(virtualenv_info)$(sep)$(git_prompt_info)'
 
 zle -N zle-line-init selector
 zle -N zle-keymap-select selector
@@ -73,18 +57,14 @@ alias ls="ls --color=auto"
 alias grep="grep --color=auto"
 
 #Useful commands
-alias backup_sib="rsync -av --delete --exclude-from=/home/sib/.rsync-exclude ~"
 alias nosleep="xset s off && xset -dpms"
 alias jesus="sudo"
-alias vless="/usr/share/vim/vim73/macros/less.sh"
-alias mount.tc="truecrypt -t -k '' --protect-hidden=no --mount "
-alias umount.tc="truecrypt -t --dismount"
-alias wi="wicd-curses"
-alias erl="rlwrap erl -oldshell"
-alias inventory="ruby /home/sib/Devel/ruby/inventory/inventory.rb"
-alias lock="xscreensaver-command -lock"
-alias cdf='mosh --server="LD_LIBRARY_PATH=~/mosh/lib LANG=C.UTF-8 ~/mosh/bin/mosh-server" cdf'
+alias vless="/usr/share/vim/vim74/macros/less.sh"
 
+function cd {
+    readlink -f $1 > /tmp/.zsh-last-cd 2>/dev/null
+    builtin cd $@
+}
 
 function mkcd {
     mkdir -p $1 && cd $1
@@ -98,8 +78,12 @@ function print_cdf {
 
 
 #Ignore all this crap
-fignore=( .o \~ .pyc .hi .aux) 
+fignore=( .o \~ .pyc .hi .aux)
 
 # Stuff for go
 export GOPATH=$HOME/Devel/go
 export PATH=$PATH:$HOME/Devel/go/bin
+
+if [[ -f /tmp/.zsh-last-cd && -d "$(cat /tmp/.zsh-last-cd)" ]] ; then
+    cd $(cat /tmp/.zsh-last-cd)
+fi
