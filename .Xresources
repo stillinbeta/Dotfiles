@@ -4,7 +4,7 @@ URxvt.background: black
 URxvt.foreground: white
 URxvt.cursorColor: white
 URxvt.underlineColor: white
-URxvt.font: xft:Inconsolata for Powerline:pixelsize=14:antialias=true, \
+URxvt.font: xft:Inconsolata for Powerline:pixelsize=12:antialias=true, \
             xft:Symbola:pixelsize=13:antialias=true:hinting=true, \
             xft:Droid Sans Fallback:pixelsize=13:style=Regular, \
             xft:DejaVu Sans Mono:pixelsize=11:antialias=true:hinting=true
