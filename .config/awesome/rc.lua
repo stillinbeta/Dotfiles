@@ -481,3 +481,4 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- }}}
 
 awful.util.spawn("xmodmap /home/liz/.Xmodmap")
+awful.util.spawn("dex -a -e Awesome")
