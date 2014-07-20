@@ -39,7 +39,7 @@ function selector {
 # Global shared history
 setopt INC_APPEND_HISTORY
 
-PATH="$HOME/.rbenv/shims:$PATH"
+PATH="$HOME/.rbenv/shims:/home/liz/.gem/ruby/2.1.0/bin:$PATH"
 
 #Setup Virtualenv stuff
 VIRTUAL_ENV_DISABLE_PROMPT=1
@@ -76,14 +76,20 @@ function print_cdf {
     ssh cdf "/local/bin/print $@" < $file
 }
 
+SSH_AUTH_SOCK=/run/user/1000/keyring/ssh
+GPG_AGENT_INFO=/run/user/1000/keyring/gpg:0:1
 
 #Ignore all this crap
 fignore=( .o \~ .pyc .hi .aux)
 
 # Stuff for go
-export GOPATH=$HOME/Devel/go
-export PATH=$PATH:$HOME/Devel/go/bin
+export GOPATH=$HOME/Code/go
+export PATH=$PATH:$HOME/Code/go/bin
 
 if [[ -f /tmp/.zsh-last-cd && -d "$(cat /tmp/.zsh-last-cd)" ]] ; then
     cd $(cat /tmp/.zsh-last-cd)
 fi
+cloud() {
+  eval "$(ion-client shell)"
+  cloud "$@"
+}
