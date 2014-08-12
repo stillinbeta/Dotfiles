@@ -321,7 +321,9 @@ globalkeys = awful.util.table.join(
         end
     end),
     awful.key({ modkey, "Control" }, "r", awesome.restart),
-    awful.key({ modkey, "Shift"   }, "q", awesome.quit),
+    awful.key({ modkey, "Shift"   }, "q", function ()
+       awful.util.spawn("/home/liz/Scripts/awesome_quit.sh")
+    end),
     awful.key({ modkey            }, "b",     function ()
                                                   awful.util.spawn("gnome-screensaver-command -l")
                                               end),
@@ -480,5 +482,5 @@ client.connect_signal("focus", function(c) c.border_color = beautiful.border_foc
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
 
-awful.util.spawn("xmodmap /home/liz/.Xmodmap")
 awful.util.spawn("dex -a -e Awesome")
+awful.util.spawn("xmodmap /home/liz/.Xmodmap")
