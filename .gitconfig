@@ -6,6 +6,7 @@
 [core]
 	autocrlf = false
 	filemode = false
+	excludesfile = /home/liz/.gitignore_global
 [branch]
 	autosetuprebase = always
 [alias]

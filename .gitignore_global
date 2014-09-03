@@ -10,9 +10,3 @@
 #LaTeX things
 *.aux
 *.log
-
-#VirtualEnv
-/lib/
-/lib64/
-/include/
-/bin/
