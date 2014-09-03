@@ -8,3 +8,5 @@
 	filemode = false
 [branch]
 	autosetuprebase = always
+[alias]
+	shipit = push production master
