@@ -58,7 +58,7 @@ modkey = "Mod4"
 local layouts =
 {
     awful.layout.suit.floating,
---    awful.layout.suit.tile,
+    awful.layout.suit.tile,
     awful.layout.suit.tile.left,
     awful.layout.suit.tile.bottom,
 --    awful.layout.suit.tile.top,
@@ -88,13 +88,29 @@ tags = {}
 --    tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[1])
 --end
 
-
-tags_info = {
-    names= {"₁ etc","₂ web","₃ sh1","₄ sh2","· im",", irc",". media","ₚ gimp","ᵧ etc2"},
-    layout = { layouts[1],layouts[2],layouts[2],layouts[2],layouts[2],layouts[2],layouts[2],layouts[1],layouts[2] }
+tag_settings = {
+   {"₁ etc",    awful.layout.suit.floating,  "1" , nil},
+   {"₂ web",    awful.layout.suit.tile.left, "2", "firefox"},
+   {"₃ sh1",    awful.layout.suit.tile.left, "3", terminal},
+   {"₄ sh2",    awful.layout.suit.tile.left, "4", terminal},
+   {"₅ sh3",    awful.layout.suit.tile.left, "5", terminal},
+   {"· im",     awful.layout.suit.tile.left, "'", "hipchat"},
+   {", irc",    awful.layout.suit.tile.left, ",", "chromium --incognito https://www.irccloud.com"},
+   {". media1", awful.layout.suit.tile.left, ".", "chromium --app=https://rdio.com"},
+   {"ₚ media2", awful.layout.suit.floating,  "p", "gimp"},
+   {"ᵧ etc2",   awful.layout.suit.floating,  "y", nil}
 }
+
+tag_names = {}
+tag_layouts = {}
+
+for i, tag in ipairs(tag_settings) do
+   tag_names[i] = tag[1]
+   tag_layouts[i] = tag[2]
+end
+
 for s = 1, screen.count() do
-      tags[s] = awful.tag(tags_info.names, s, tags_info.layout)
+      tags[s] = awful.tag(tag_names, s, tag_layouts)
 end
 -- }}}
 
@@ -304,21 +320,11 @@ globalkeys = awful.util.table.join(
     -- Standard program
     awful.key({ modkey,           }, "\\", function () awful.util.spawn(terminal) end),
     awful.key({ modkey            }, "Return",function ()
-        if tags[1][2].selected then
-            awful.util.spawn("firefox")
-        elseif tags[1][3].selected then
-            awful.util.spawn(terminal)
-        elseif tags[1][4].selected then
-            awful.util.spawn(terminal)
-        elseif tags[1][5].selected then
-            awful.util.spawn("hipchat")
-        elseif tags[1][6].selected then
-            awful.util.spawn("chromium --incognito https://www.irccloud.com")
-        elseif tags[1][7].selected then
-            awful.util.spawn("chromium --app=https://rdio.com")
-        elseif tags[1][8].selected then
-            awful.util.spawn("gimp")
-        end
+       for i, tag in ipairs(tag_settings) do
+          if tags[1][i].selected then
+             awful.util.spawn(tag[4])
+          end
+       end
     end),
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", function ()
@@ -366,42 +372,31 @@ clientkeys = awful.util.table.join(
         end)
 )
 
--- Compute the maximum number of digit we need, limited to 9
-keynumber = 0
-for s = 1, screen.count() do
-   keynumber = math.min(9, math.max(#tags[s], keynumber));
-end
-
-
-
--- Bind all key numbers to tags.
--- Be careful: we use keycodes to make it works on any keyboard layout.
--- This should map on the top row of your keyboard, usually 1 to 9.
-keys = {"1","2","3","4","'",",",".","p","y"}
--- "#" .. i + 9,
-for i = 1, keynumber do
+-- Set up key bindings
+for i, tag in ipairs(tag_settings)  do
+    key = tag[3]
     globalkeys = awful.util.table.join(globalkeys,
-        awful.key({ modkey }, keys[i],
+        awful.key({ modkey }, key,
                   function ()
                         local screen = mouse.screen
                         if tags[screen][i] then
                             awful.tag.viewonly(tags[screen][i])
                         end
                   end),
-        awful.key({ modkey, "Control" }, keys[i],
+        awful.key({ modkey, "Control" }, key,
                   function ()
                       local screen = mouse.screen
                       if tags[screen][i] then
                           awful.tag.viewtoggle(tags[screen][i])
                       end
                   end),
-        awful.key({ modkey, "Shift" }, keys[i],
+        awful.key({ modkey, "Shift" }, key,
                   function ()
                       if client.focus and tags[client.focus.screen][i] then
                           awful.client.movetotag(tags[client.focus.screen][i])
                       end
                   end),
-        awful.key({ modkey, "Control", "Shift" }, keys[i],
+        awful.key({ modkey, "Control", "Shift" }, key,
                   function ()
                       if client.focus and tags[client.focus.screen][i] then
                           awful.client.toggletag(tags[client.focus.screen][i])
