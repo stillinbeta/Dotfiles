@@ -2,3 +2,4 @@
 --type-set=restructedtext=.rst
 --type-set=puppet=.pp
 --type-set=markdown=.md
+--type-set=gemfile=Gemfile
