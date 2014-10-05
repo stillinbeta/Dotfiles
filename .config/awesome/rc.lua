@@ -95,7 +95,7 @@ tag_settings = {
    {"₄ sh2",    awful.layout.suit.tile.left, "4", terminal},
    {"₅ sh3",    awful.layout.suit.tile.left, "5", terminal},
    {"· im",     awful.layout.suit.tile.left, "'", "hipchat"},
-   {", irc",    awful.layout.suit.tile.left, ",", "chromium --incognito https://www.irccloud.com"},
+   {", irc",    awful.layout.suit.tile.left, ",", "chromium --app=https://www.irccloud.com"},
    {". media1", awful.layout.suit.tile.left, ".", "chromium --app=https://rdio.com"},
    {"ₚ media2", awful.layout.suit.floating,  "p", "gimp"},
    {"ᵧ etc2",   awful.layout.suit.floating,  "y", nil}
@@ -114,6 +114,7 @@ for s = 1, screen.count() do
 end
 -- }}}
 
+menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 
 mytextclock = awful.widget.textclock()
 --[[
@@ -355,7 +356,9 @@ globalkeys = awful.util.table.join(
                   mypromptbox[mouse.screen].widget,
                   awful.util.eval, nil,
                   awful.util.getdir("cache") .. "/history_eval")
-              end)
+              end),
+
+    awful.key({ modkey, "Shift"   }, "r", function() menubar.show() end)
 )
 
 clientkeys = awful.util.table.join(
