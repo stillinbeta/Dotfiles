@@ -95,7 +95,7 @@ tag_settings = {
    {"₄ sh2",    awful.layout.suit.tile.left, "4", terminal},
    {"₅ sh3",    awful.layout.suit.tile.left, "5", terminal},
    {"· im",     awful.layout.suit.tile.left, "'", "hipchat"},
-   {", irc",    awful.layout.suit.tile.left, ",", "chromium --incognito https://www.irccloud.com"},
+   {", irc",    awful.layout.suit.tile.left, ",", "chromium https://www.irccloud.com"},
    {". media1", awful.layout.suit.tile.left, ".", "chromium --app=https://rdio.com"},
    {"ₚ media2", awful.layout.suit.floating,  "p", "gimp"},
    {"ᵧ etc2",   awful.layout.suit.floating,  "y", nil}
