@@ -41,10 +41,31 @@ zstyle ':completion:*:mosh' menu known-hosts-files
 compdef 'python manage.py'='manage.py'
 compdef mosh=ssh
 
+autoload -Uz vcs_info
+zstyle ':vcs_info:*' enable git
+zstyle ':vcs_info:git*' formats "%b"
+zstyle ':vcs_info:git*' actionformats "%b (%a)"
+precmd() {
+      vcs_info
+}
+
 PROMPT='%{${VIMODE}%}%(!.#.$)%b%{$reset_color%} '
-RPROMPT='%B%n@%m:%~'
+RPROMPT='${vcs_info_msg_0_} ${CLOUD_ICON} %~'
 function selector {
         VIMODE="${${KEYMAP/vicmd/${fg[yellow]}}/(main|viins)/%(?..$fg[red])}"
+        case "$HEROKU_CLOUD" in
+            liz)
+                CLOUD_COLOUR="${fg[red]}"
+                ;;
+            staging)
+                CLOUD_COLOUR="${fg[yellow]}"
+                ;;
+            production|"")
+                CLOUD_COLOUR="${fg[green]}"
+                ;;
+        esac
+        CLOUD_ICON="%{$CLOUD_COLOUR%}☁%{$reset_color%}"
+
         zle reset-prompt
 }
 
