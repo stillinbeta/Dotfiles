@@ -73,6 +73,7 @@ function selector {
 setopt INC_APPEND_HISTORY
 
 PATH="$HOME/.rbenv/shims:/home/liz/.gem/ruby/2.1.0/bin:$PATH:$HOME/Scripts"
+cdpath=(~/Code ~/Code/go/src/github.com/heroku)
 
 #Setup Virtualenv stuff
 VIRTUAL_ENV_DISABLE_PROMPT=1
