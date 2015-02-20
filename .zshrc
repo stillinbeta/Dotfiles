@@ -85,6 +85,7 @@ zle -N zle-line-init selector
 zle -N zle-keymap-select selector
 
 export EDITOR="vim"
+export LC_ALL=en_GB.UTF-8
 
 #Add some colour to things
 alias ls="ls --color=auto"
@@ -98,8 +99,8 @@ alias rr="foreman run bundle exec"
 alias anyc="(builtin cd ~/Downloads/anyconnect-3.1.03103/vpn/ && sudo ./vpn_install.sh)"
 
 function cd {
-    readlink -f $1 > /tmp/.zsh-last-cd 2>/dev/null
     builtin cd $@
+    pwd > /tmp/.zsh-last-cd 2>/dev/null
 }
 
 function mkcd {
