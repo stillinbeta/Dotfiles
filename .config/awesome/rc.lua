@@ -89,16 +89,16 @@ tags = {}
 --end
 
 tag_settings = {
-   {"₁ etc",    awful.layout.suit.floating,  "1" , nil},
-   {"₂ web",    awful.layout.suit.tile.left, "2", "firefox"},
-   {"₃ sh1",    awful.layout.suit.tile.left, "3", terminal},
-   {"₄ sh2",    awful.layout.suit.tile.left, "4", terminal},
-   {"₅ sh3",    awful.layout.suit.tile.left, "5", terminal},
-   {"· im",     awful.layout.suit.tile.left, "'", "hipchat"},
-   {", irc",    awful.layout.suit.tile.left, ",", "chromium https://www.irccloud.com"},
-   {". media1", awful.layout.suit.tile.left, ".", "chromium --app=https://rdio.com"},
-   {"ₚ media2", awful.layout.suit.floating,  "p", "gimp"},
-   {"ᵧ etc2",   awful.layout.suit.floating,  "y", nil}
+   {"₁ etc",    awful.layout.suit.floating,  "1", nil, {}},
+   {"₂ web",    awful.layout.suit.tile.left, "2", "firefox", {"Firefox"}},
+   {"₃ sh1",    awful.layout.suit.tile.left, "3", terminal, {}},
+   {"₄ sh2",    awful.layout.suit.tile.left, "4", terminal, {}},
+   {"₅ sh3",    awful.layout.suit.tile.left, "5", terminal, {}},
+   {"· im",     awful.layout.suit.tile.left, "'", "hipchat", {}},
+   {", irc",    awful.layout.suit.tile.left, ",", "chromium https://www.irccloud.com", {}},
+   {". media1", awful.layout.suit.tile.left, ".", "chromium --app=https://rdio.com", {}},
+   {"ₚ media2", awful.layout.suit.floating,  "p", "gimp", {"Gimp"}},
+   {"ᵧ etc2",   awful.layout.suit.floating,  "y", nil, {}}
 }
 
 tag_names = {}
@@ -116,111 +116,6 @@ end
 
 
 mytextclock = awful.widget.textclock()
---[[
-
--- {{{ Wibox
--- Create a textclock widget
-mytextclock = awful.widget.textclock()
-mytextbox = wibox.widget.textbox()
-netinfobox = wibox.widget.textbox()
-cpu0graph = awful.widget.graph()
-cpu0graph:set_width(150)
-cpu0graph:set_height(10)
-cpu0graph:set_stack(true)
-cpu0graph:set_background_color(beautiful.bg_normal)
-cpu0graph:set_stack_colors({beautiful.fg_normal,beautiful.fg_focus})
-cpu0graph:set_max_value(2)
-memgraph = awful.widget.progressbar()
-memgraph:set_width(150)
-memgraph:set_background_color(beautiful.bg_normal)
-memgraph:set_color(beautiful.fg_normal)
-memgraph:set_border_color(beautiful.fg_normal)
-memgraph:set_height(5)
-batgraph = awful.widget.progressbar()
-batgraph:set_width(150)
-batgraph:set_background_color(beautiful.fg_normal)
-batgraph:set_color(beautiful.bg_normal)
-batgraph:set_border_color(beautiful.fg_normal)
-
-
-jiffies = {}
-function activecpu()
-   local t = {}
-   for line in io.lines("/proc/stat") do
-       local cpu, newjiffies = string.match(line, "(cpu%d*)\ +(%d+)")
-       if cpu and newjiffies then
-           if not jiffies[cpu] then
-               jiffies[cpu] = newjiffies
-           end
-           t[cpu] = (newjiffies - jiffies[cpu]) / 100
-           jiffies[cpu] = newjiffies
-       end
-   end
-   return t
-end
-
-function cputemp()
-    return io.input('/sys/devices/platform/thinkpad_hwmon/temp1_input'):read("*n") / 1000
-end
-
-function batpercent()
-    test, val = pcall(function()
-        return io.input('/sys/devices/platform/smapi/BAT0/remaining_percent'):read("*n")
-    end)
-    if test and val then
-        return val / 100
-    else
-        return 0
-    end
-end
-
-function memoryusage()
-    local memtotal = nil
-    local active = nil
-    for line in io.lines("/proc/meminfo") do
-        if not memtotal then
-            memtotal = string.match(line, "MemTotal:\ +(%d+)")
-        end
-        if not active then
-            active = string.match(line, "Active:\ +(%d+)")
-        end
-
-        if active and memtotal then
-            return active / memtotal
-        end
-    end
-    return 0
-end
-
-function netinfo()
-    local status = os.execute("/home/sib/Scripts/wicd-status.py") / 256 -- Why
-    local colour = ""
-
-    if status == 0 then
-        colour = "green"
-    elseif status == 1 then
-        colour = "yellow"
-    elseif status == 2 then
-        colour = "red"
-    else
-        colour = "white"
-    end
-    return "  <span color='" .. colour .. "'>N</span> "
-end
-
-mytimer = timer({timeout = 1})
-mytimer:connect_signal("timeout", function()
-    local t = activecpu()
-    cpu0graph:add_value(t.cpu0, 1)
-    cpu0graph:add_value(t.cpu1, 2)
-    mytextbox:set_markup("    " .. cputemp() .. "°C    ")
-    memgraph:set_value(memoryusage())
-    batgraph:set_value(1 - batpercent())
-    netinfobox:set_markup(netinfo())
-end)
-mytimer:start()
-
-]]
 -- Create a wibox for each screen and add it
 mywibox = {}
 mypromptbox = {}
@@ -423,30 +318,16 @@ awful.rules.rules = {
                      focus = awful.client.focus.filter,
                      keys = clientkeys,
                      buttons = clientbuttons } },
-    { rule = { class = "Evince"},
-        properties = { tag = tags[1][1] } },
-    { rule = { class = "Firefox" },
-        properties = { tag = tags[1][2] } },
-    -- Full-screen flash videos
-    { rule = { class = "Plugin-container"},
-        properties = { floating = true } },
-    { rule = { class = "Vlc" },
-        properties = { floating = true } },
-    { rule = { name = "Wicd Network Manager"},
-        properties = { floating = true } },
-    { rule = { class = "HipChat" },
-        properties = { tag = tags[1][5] } },
-    { rule = { class = "Skype" },
-        properties = { tag = tags[1][5], size_hints_honor = false} },
-    { rule = { class = "Rhythmbox" },
-        properties = { tag = tags[1][7] } },
-    { rule = { class = "Gimp" },
-        properties = { tag = tags[1][8] } },
-    { rule = { class = "FTL" },
-        properties = { tag = tags[1][1] } },
-    { rule = { class = "Steam" },
-        properties = { tag = tags[1][1] } },
 }
+
+for i, tag in ipairs(tag_settings) do
+    for j, class in ipairs(tag[5]) do
+        table.insert(awful.rules.rules,
+        { rule = { class = class},
+            properties = { tag = tags[1][i] } }
+        )
+    end
+end
 -- }}}
 
 -- {{{ Signals
