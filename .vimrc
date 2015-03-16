@@ -22,13 +22,14 @@ NeoBundle 'tpope/vim-fugitive'               " git supporm
 NeoBundle 'kien/ctrlp.vim'                   " fuzzy matching
 NeoBundle 'bling/vim-airline'                " neat statusline
 NeoBundle 'jeffkreeftmeijer/vim-numbertoggle'
-NeoBundle 'tpope/vim-jdaddy'                 " json manipulation 
+NeoBundle 'tpope/vim-jdaddy'                 " json manipulation
 NeoBundle 'bronson/vim-trailing-whitespace'  " highlight trailing whitespace
 NeoBundle 'mhinz/vim-signify'                " Use sign column to show VCS changes
 NeoBundle 'mileszs/ack.vim'                  " Ack search
 NeoBundle 'ciaranm/detectindent'             " detects tabstop/shiftwidth from file
 NeoBundle 'rodjek/vim-puppet'
 NeoBundle 'godlygeek/tabular'
+NeoBundle 'fatih/vim-go'                     " fancy golang stuff
 
 call neobundle#end()
 
