@@ -25,11 +25,12 @@ NeoBundle 'jeffkreeftmeijer/vim-numbertoggle'
 NeoBundle 'tpope/vim-jdaddy'                 " json manipulation
 NeoBundle 'bronson/vim-trailing-whitespace'  " highlight trailing whitespace
 NeoBundle 'mhinz/vim-signify'                " Use sign column to show VCS changes
-NeoBundle 'mileszs/ack.vim'                  " Ack search
+NeoBundle 'rking/ag.vim'                     " Ag search
 NeoBundle 'ciaranm/detectindent'             " detects tabstop/shiftwidth from file
 NeoBundle 'rodjek/vim-puppet'
 NeoBundle 'godlygeek/tabular'
 NeoBundle 'fatih/vim-go'                     " fancy golang stuff
+NeoBundle 'kchmck/vim-coffee-script'         " coffeescript for what
 
 call neobundle#end()
 
@@ -42,7 +43,7 @@ NeoBundleCheck
 
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
-set tabstop=4
+set tabstop=2
 set shiftwidth=4
 set expandtab
 
