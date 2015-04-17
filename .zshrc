@@ -93,10 +93,12 @@ alias grep="grep --color=auto"
 
 #Useful commands
 alias nosleep="xset s off && xset -dpms"
-alias jesus="sudo"
 alias vless="/usr/share/vim/vim74/macros/less.sh"
 alias rr="foreman run bundle exec"
 alias anyc="(builtin cd ~/Downloads/anyconnect-3.1.03103/vpn/ && sudo ./vpn_install.sh)"
+alias shipit="heroku preauth -r production && git push production master"
+alias dc="docker-compose"
+alias db="psql $(forego run echo '$DATABASE_URL')"
 
 function cd {
     builtin cd $@
@@ -107,15 +109,13 @@ function mkcd {
     mkdir -p $1 && cd $1
 }
 
-function print_cdf {
-    file=$1
-    shift
-    ssh cdf "/local/bin/print $@" < $file
+cloud() {
+  eval "$(ion-client shell)"
+  cloud "$@"
 }
 
 export SSH_AUTH_SOCK=/run/user/1000/keyring/ssh
 export GPG_AGENT_INFO=/run/user/1000/keyring/gpg:0:1
-export HEROKU_USE_SPECIAL_SUDO_TOKEN=1
 
 #Ignore all this crap
 fignore=( .o \~ .pyc .hi .aux)
@@ -127,10 +127,6 @@ export PATH=$PATH:$HOME/Code/go/bin
 if [[ -f /tmp/.zsh-last-cd && -d "$(cat /tmp/.zsh-last-cd)" ]] ; then
     cd $(cat /tmp/.zsh-last-cd)
 fi
-cloud() {
-  eval "$(ion-client shell)"
-  cloud "$@"
-}
 
 # added by travis gem
 [ -f /home/liz/.travis/travis.sh ] && source /home/liz/.travis/travis.sh
