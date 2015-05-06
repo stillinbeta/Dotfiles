@@ -73,7 +73,12 @@ function selector {
 setopt INC_APPEND_HISTORY
 
 PATH="$HOME/.rbenv/shims:/home/liz/.gem/ruby/2.1.0/bin:$PATH:$HOME/Scripts"
+
+# Stuff for go
 cdpath=(~/Code ~/Code/go/src/github.com/heroku)
+export GOPATH=$HOME/Code/go
+export PATH=$PATH:$HOME/Code/go/bin
+
 
 #Setup Virtualenv stuff
 VIRTUAL_ENV_DISABLE_PROMPT=1
@@ -94,11 +99,14 @@ alias grep="grep --color=auto"
 #Useful commands
 alias nosleep="xset s off && xset -dpms"
 alias vless="/usr/share/vim/vim74/macros/less.sh"
-alias rr="foreman run bundle exec"
+alias rr="forego run bundle exec"
 alias anyc="(builtin cd ~/Downloads/anyconnect-3.1.03103/vpn/ && sudo ./vpn_install.sh)"
 alias shipit="heroku preauth -r production && git push production master"
 alias dc="docker-compose"
-alias db="psql $(forego run echo '$DATABASE_URL')"
+alias db='forego run psql \$DATABASE_URL'
+alias fuck='$(thefuck $(fc -ln -1))'
+alias h="heroku"
+alias ic="ion-client"
 
 function cd {
     builtin cd $@
@@ -119,10 +127,6 @@ export GPG_AGENT_INFO=/run/user/1000/keyring/gpg:0:1
 
 #Ignore all this crap
 fignore=( .o \~ .pyc .hi .aux)
-
-# Stuff for go
-export GOPATH=$HOME/Code/go
-export PATH=$PATH:$HOME/Code/go/bin
 
 if [[ -f /tmp/.zsh-last-cd && -d "$(cat /tmp/.zsh-last-cd)" ]] ; then
     cd $(cat /tmp/.zsh-last-cd)
