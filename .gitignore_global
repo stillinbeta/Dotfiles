@@ -10,3 +10,5 @@
 #LaTeX things
 *.aux
 *.log
+
+.env*
