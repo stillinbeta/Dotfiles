@@ -31,6 +31,8 @@ NeoBundle 'rodjek/vim-puppet'
 NeoBundle 'godlygeek/tabular'
 NeoBundle 'fatih/vim-go'                     " fancy golang stuff
 NeoBundle 'kchmck/vim-coffee-script'         " coffeescript for what
+NeoBundle 'tpope/vim-projectionist'          " dependency for vim-rake
+NeoBundle 'tpope/vim-rake'                   " Rake output in Quickfix
 
 call neobundle#end()
 
