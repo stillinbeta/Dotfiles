@@ -12,6 +12,7 @@ else
 fi
 
 git checkout master && \
+    git pull && \
     git merge $BRANCH && \
     git push origin master && \
     git push origin :$BRANCH && \
