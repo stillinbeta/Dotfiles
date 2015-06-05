@@ -12,3 +12,6 @@
 *.log
 
 .env*
+
+# Ruby
+.ruby-version
