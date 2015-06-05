@@ -105,9 +105,12 @@ alias shipit="heroku preauth -r production && git push production master"
 alias dc="docker-compose"
 alias db='forego run psql \$DATABASE_URL'
 alias fuck='$(thefuck $(fc -ln -1))'
-alias h="heroku"
+alias h="~/.heroku/heroku-cli"
 alias ic="ion-client"
+alias ber="bundle exec rake"
 
+
+source /usr/bin/aws_zsh_completer.sh
 function cd {
     builtin cd $@
     pwd > /tmp/.zsh-last-cd 2>/dev/null
