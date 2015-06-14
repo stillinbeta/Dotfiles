@@ -79,12 +79,18 @@ cdpath=(~/Code ~/Code/go/src/github.com/heroku)
 export GOPATH=$HOME/Code/go
 export PATH=$PATH:$HOME/Code/go/bin
 
+# Stuff for erlang 
+export MANPATH=/usr/lib/erlang/man
+
 
 #Setup Virtualenv stuff
 VIRTUAL_ENV_DISABLE_PROMPT=1
 function virtualenv_info {
         [ $VIRTUAL_ENV ] && echo `basename $VIRTUAL_ENV`
 }
+
+#Vagrat
+export VAGRANT_DEFAULT_PROVIDER=libvirt
 
 zle -N zle-line-init selector
 zle -N zle-keymap-select selector
