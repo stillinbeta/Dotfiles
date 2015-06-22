@@ -88,17 +88,23 @@ tags = {}
 --    tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[1])
 --end
 
+function tag_screen(num)
+   if screen.count() == 2 then
+      return math.floor((num - 1) / 4) + 1, (( num - 1) % 4) + 1
+   else
+      return mouse.screen(), num
+   end
+end
+
 tag_settings = {
    {"₁ etc",    awful.layout.suit.floating,  "1", nil, {}},
    {"₂ web",    awful.layout.suit.tile.left, "2", "firefox", {"Firefox"}},
-   {"₃ sh1",    awful.layout.suit.tile.left, "3", terminal, {}},
-   {"₄ sh2",    awful.layout.suit.tile.left, "4", terminal, {}},
-   {"₅ sh3",    awful.layout.suit.tile.left, "5", terminal, {}},
-   {"· im",     awful.layout.suit.tile.left, "'", "hipchat", {}},
-   {", irc",    awful.layout.suit.tile.left, ",", "chromium https://www.irccloud.com", {}},
-   {". media1", awful.layout.suit.tile.left, ".", "chromium --app=https://rdio.com", {}},
-   {"ₚ media2", awful.layout.suit.floating,  "p", "gimp", {"Gimp"}},
-   {"ᵧ etc2",   awful.layout.suit.floating,  "y", nil, {}}
+   {"₃ irc",    awful.layout.suit.tile.left, "3", "chromium https://www.irccloud.com", {}},
+   {"₄ media2", awful.layout.suit.floating,  "4", "gimp", {"Gimp"}},
+   {"· sh1",    awful.layout.suit.tile.left, "'", terminal, {}},
+   {", sh2",    awful.layout.suit.tile.left, ",", terminal, {}},
+   {". sh3",    awful.layout.suit.tile.left, ".", terminal, {}},
+   {"ₚ etc2",   awful.layout.suit.floating,  "p", nil, {}}
 }
 
 tag_names = {}
@@ -109,8 +115,23 @@ for i, tag in ipairs(tag_settings) do
    tag_layouts[i] = tag[2]
 end
 
-for s = 1, screen.count() do
+if screen.count() == 2 then
+   -- what's a slice
+   tags[1] = awful.tag(
+      {unpack(tag_names, 1, 4)},
+      1,
+      {unpack(tag_layouts, 1, 4)}
+   )
+
+   tags[2] = awful.tag(
+      {unpack(tag_names, 5, 8)},
+      2,
+      {unpack(tag_layouts, 5, 8)}
+   )
+else
+   for s = 1, screen.count() do
       tags[s] = awful.tag(tag_names, s, tag_layouts)
+   end
 end
 -- }}}
 
@@ -216,7 +237,8 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "\\", function () awful.util.spawn(terminal) end),
     awful.key({ modkey            }, "Return",function ()
        for i, tag in ipairs(tag_settings) do
-          if tags[1][i].selected then
+          scr, tag  = tag_screen(i)
+          if tags[scr][tag].selected then
              awful.util.spawn(tag[4])
           end
        end
@@ -273,28 +295,31 @@ for i, tag in ipairs(tag_settings)  do
     globalkeys = awful.util.table.join(globalkeys,
         awful.key({ modkey }, key,
                   function ()
-                        local screen = mouse.screen
-                        if tags[screen][i] then
-                            awful.tag.viewonly(tags[screen][i])
+                        scr, tag = tag_screen(i)
+                        if tags[scr][tag] then
+                            awful.tag.viewonly(tags[scr][tag])
+                            awful.screen.focus(scr)
                         end
                   end),
         awful.key({ modkey, "Control" }, key,
                   function ()
-                      local screen = mouse.screen
-                      if tags[screen][i] then
-                          awful.tag.viewtoggle(tags[screen][i])
+                      scr, tag = tag_screen(i)
+                      if tags[scr][tag] then
+                          awful.tag.viewtoggle(tags[scr][tag])
                       end
                   end),
         awful.key({ modkey, "Shift" }, key,
                   function ()
-                      if client.focus and tags[client.focus.screen][i] then
-                          awful.client.movetotag(tags[client.focus.screen][i])
+                      scr, tag = tag_screen(i)
+                      if client.focus and tags[scr][tag] then
+                          awful.client.movetotag(tags[scr][tag])
                       end
                   end),
         awful.key({ modkey, "Control", "Shift" }, key,
                   function ()
-                      if client.focus and tags[client.focus.screen][i] then
-                          awful.client.toggletag(tags[client.focus.screen][i])
+                      scr, tag = tag_scr(i)
+                      if tags[scr][tag] then
+                          awful.client.toggletag(tags[scr][tag])
                       end
                   end))
 end
