@@ -1,0 +1,15 @@
+xkb_keymap {
+    xkb_keycodes  { include "evdev+aliases(qwerty)" };
+    xkb_types     { include "complete"  };
+    xkb_compat    { include "complete"  };
+    xkb_symbols   {
+        include "pc+us(dvorak)+inet(evdev)+capslock(escape)"
+        key <END>    { [ Escape ] };
+        key <TLDE>   { [ Insert ] };
+        key <ESC> {
+            type= "FOUR_LEVEL",
+            symbols[Group1]= [           grave,      asciitilde,      dead_grave,      dead_tilde ]
+        };
+    };
+    xkb_geometry  { include "pc(pc104)" };
+};
