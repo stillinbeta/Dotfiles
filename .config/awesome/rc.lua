@@ -236,10 +236,10 @@ globalkeys = awful.util.table.join(
     -- Standard program
     awful.key({ modkey,           }, "\\", function () awful.util.spawn(terminal) end),
     awful.key({ modkey            }, "Return",function ()
-       for i, tag in ipairs(tag_settings) do
+       for i, tag_config in ipairs(tag_settings) do
           scr, tag  = tag_screen(i)
-          if tags[scr][tag].selected then
-             awful.util.spawn(tag[4])
+          if tags[scr][tag].selected and scr == mouse.screen then
+             awful.util.spawn(tag_config[4])
           end
        end
     end),
