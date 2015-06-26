@@ -36,11 +36,8 @@ setopt extended_glob
 bindkey -v
 # End of lines configured by zsh-newuser-install
 zmodload -i zsh/complist
-zstyle ':completion:*:mosh' menu known-hosts-files
 
-compdef 'python manage.py'='manage.py'
-compdef mosh=ssh
-
+# Git
 autoload -Uz vcs_info
 zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:git*' formats "%b"
@@ -49,45 +46,28 @@ precmd() {
       vcs_info
 }
 
-PROMPT='%{${VIMODE}%}%(!.#.$)%b%{$reset_color%} '
-RPROMPT='${vcs_info_msg_0_} ${CLOUD_ICON} %~'
-function selector {
-        VIMODE="${${KEYMAP/vicmd/${fg[yellow]}}/(main|viins)/%(?..$fg[red])}"
-        case "$HEROKU_CLOUD" in
-            liz)
-                CLOUD_COLOUR="${fg[red]}"
-                ;;
-            staging)
-                CLOUD_COLOUR="${fg[yellow]}"
-                ;;
-            production|"")
-                CLOUD_COLOUR="${fg[green]}"
-                ;;
-        esac
-        CLOUD_ICON="%{$CLOUD_COLOUR%}☁%{$reset_color%}"
-
-        zle reset-prompt
-}
-
+# Heroku-specific
+source ~/.zshrc.heroku
+#
 # Global shared history
 setopt INC_APPEND_HISTORY
 
+# Ruby
 PATH="$HOME/.rbenv/shims:/home/liz/.gem/ruby/2.1.0/bin:$PATH:$HOME/Scripts"
+alias ber="bundle exec rake"
+alias rr="forego run bundle exec"
 
 # Stuff for go
-cdpath=(~/Code ~/Code/go/src/github.com/heroku)
+cdpath=(~/Code ~/Code/kernel/ ~/Code/go/src/github.com/heroku)
 export GOPATH=$HOME/Code/go
 export PATH=$PATH:$HOME/Code/go/bin
 
-# Stuff for erlang 
-export MANPATH=/usr/lib/erlang/man
+# Stuff for erlang
+export "MANPATH=/usr/share/man:/usr/lib/erlang/man"
 
 
-#Setup Virtualenv stuff
-VIRTUAL_ENV_DISABLE_PROMPT=1
-function virtualenv_info {
-        [ $VIRTUAL_ENV ] && echo `basename $VIRTUAL_ENV`
-}
+# Python
+compdef 'python manage.py'='manage.py'
 
 #Vagrat
 export VAGRANT_DEFAULT_PROVIDER=libvirt
@@ -105,30 +85,12 @@ alias grep="grep --color=auto"
 #Useful commands
 alias nosleep="xset s off && xset -dpms"
 alias vless="/usr/share/vim/vim74/macros/less.sh"
-alias rr="forego run bundle exec"
-alias anyc="(builtin cd ~/Downloads/anyconnect-3.1.03103/vpn/ && sudo ./vpn_install.sh)"
-alias shipit="heroku preauth -r production && git push production master"
 alias dc="docker-compose"
 alias db='forego run psql \$DATABASE_URL'
 alias fuck='$(thefuck $(fc -ln -1))'
-alias h="~/.heroku/heroku-cli"
-alias ic="ion-client"
-alias ber="bundle exec rake"
-
-
-source /usr/bin/aws_zsh_completer.sh
-function cd {
-    builtin cd $@
-    pwd > /tmp/.zsh-last-cd 2>/dev/null
-}
 
 function mkcd {
     mkdir -p $1 && cd $1
-}
-
-cloud() {
-  eval "$(ion-client shell)"
-  cloud "$@"
 }
 
 export SSH_AUTH_SOCK=/run/user/1000/keyring/ssh
@@ -137,6 +99,11 @@ export GPG_AGENT_INFO=/run/user/1000/keyring/gpg:0:1
 #Ignore all this crap
 fignore=( .o \~ .pyc .hi .aux)
 
+# open in last open directory
+function cd {
+    builtin cd $@
+    pwd > /tmp/.zsh-last-cd 2>/dev/null
+}
 if [[ -f /tmp/.zsh-last-cd && -d "$(cat /tmp/.zsh-last-cd)" ]] ; then
     cd $(cat /tmp/.zsh-last-cd)
 fi
