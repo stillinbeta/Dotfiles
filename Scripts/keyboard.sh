@@ -12,6 +12,12 @@ if EXTERNAL=$(xinput list --id-only "keyboard:Lenovo ThinkPad Compact USB Keyboa
     setxkbmap -layout dvorak -option caps:escape -device $EXTERNAL -display $DISPLAY
 fi
 
-echo 'test'
+
+if YUBIKEY=$(xinput list --id-only "Yubico Yubico Yubikey II"); then
+echo 'setting default keymap for yubikey'
+    setxkbmap -layout us -option caps:escape -device $YUBIKEY -display $DISPLAY
+fi
+
+echo 'Setting up laptop keyboard'
 setxkbmap -layout dvorak -device $LAPTOP -display $DISPLAY
 xkbcomp /home/liz/.xkb -i $LAPTOP $DISPLAY
