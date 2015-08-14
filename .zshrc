@@ -48,9 +48,10 @@ precmd() {
 
 # Heroku-specific
 source ~/.zshrc.heroku
-#
+
 # Global shared history
 setopt INC_APPEND_HISTORY
+export REPORTTIME=1
 
 # Ruby
 PATH="$HOME/.rbenv/shims:/home/liz/.gem/ruby/2.1.0/bin:$PATH:$HOME/Scripts"
@@ -64,6 +65,14 @@ export PATH=$PATH:$HOME/Code/go/bin
 
 # Stuff for erlang
 export "MANPATH=/usr/share/man:/usr/lib/erlang/man"
+
+function kerl_path {
+    if KERL=$(basename $_KERL_ACTIVE_DIR 2>/dev/null); then
+        KERL_PROMPT=" {$KERL} "
+    else
+        KERL_PROMPT=""
+    fi
+}
 
 
 # Python
@@ -91,6 +100,19 @@ alias fuck='$(thefuck $(fc -ln -1))'
 
 function mkcd {
     mkdir -p $1 && cd $1
+}
+
+# Prompt
+
+PROMPT='%{${VIMODE}%}%(!.#.$)%b%{$reset_color%} '
+RPROMPT='${vcs_info_msg_0_}${KERL_PROMPT} ${CLOUD_ICON} %~'
+
+function selector {
+    VIMODE="${${KEYMAP/vicmd/${fg[yellow]}}/(main|viins)/%(?..$fg[red])}"
+    kerl_path
+    heroku_selector
+
+    zle reset-prompt
 }
 
 export SSH_AUTH_SOCK=/run/user/1000/keyring/ssh
