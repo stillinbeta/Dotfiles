@@ -92,7 +92,7 @@ function tag_screen(num)
    if screen.count() == 2 then
       return math.floor((num - 1) / 4) + 1, (( num - 1) % 4) + 1
    else
-      return mouse.screen(), num
+      return mouse.screen, num
    end
 end
 
