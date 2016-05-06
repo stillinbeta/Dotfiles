@@ -31,7 +31,7 @@ setopt autocd
 setopt prompt_subst
 setopt correct
 unsetopt beep
-setopt extended_glob
+#setopt extended_glob
 
 bindkey -v
 # End of lines configured by zsh-newuser-install
@@ -64,7 +64,10 @@ export GOPATH=$HOME/Code/go
 export PATH=$PATH:$HOME/Code/go/bin
 
 # Stuff for erlang
-export "MANPATH=/usr/share/man:/usr/lib/erlang/man"
+export MANPATH="/usr/share/man:/usr/lib/erlang/man"
+function ka {
+    . ~/erlang/$1/activate
+}
 
 function kerl_path {
     if KERL=$(basename $_KERL_ACTIVE_DIR 2>/dev/null); then
@@ -85,6 +88,7 @@ zle -N zle-line-init selector
 zle -N zle-keymap-select selector
 
 export EDITOR="vim"
+export BROWSER="google-chrome-stable"
 export LC_ALL=en_GB.UTF-8
 
 #Add some colour to things
@@ -128,6 +132,10 @@ function cd {
 }
 if [[ -f /tmp/.zsh-last-cd && -d "$(cat /tmp/.zsh-last-cd)" ]] ; then
     cd $(cat /tmp/.zsh-last-cd)
+fi
+
+if [[ -f /tmp/.zsh-last-cloud ]] ; then
+  c $(cat /tmp/.zsh-last-cloud)
 fi
 
 # added by travis gem
