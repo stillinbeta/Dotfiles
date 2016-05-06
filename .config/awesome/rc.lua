@@ -98,10 +98,10 @@ end
 
 tag_settings = {
    {"₁ etc",    awful.layout.suit.floating,  "1", nil, {}},
-   {"₂ web",    awful.layout.suit.tile.left, "2", "firefox", {"Firefox"}},
-   {"₃ irc",    awful.layout.suit.tile.left, "3", "chromium https://www.irccloud.com", {}},
+   {"₂ web",    awful.layout.suit.tile.left, "2", "google-chrome-stable", {"Google-chrome-stable"}},
+   {"₃ irc",    awful.layout.suit.tile.left, "3", "google-chrome-beta", {"Google-chrome-beta"}},
    {"₄ media2", awful.layout.suit.floating,  "4", "gimp", {"Gimp"}},
-   {"· sh1",    awful.layout.suit.tile.left, "'", terminal, {}},
+   {"· emacs",    awful.layout.suit.tile.left, "'", "emacs", {"Emacs"}},
    {", sh2",    awful.layout.suit.tile.left, ",", terminal, {}},
    {". sh3",    awful.layout.suit.tile.left, ".", terminal, {}},
    {"ₚ etc2",   awful.layout.suit.floating,  "p", nil, {}}
@@ -384,4 +384,4 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- }}}
 
 awful.util.spawn("dex -a -e Awesome")
-awful.util.spawn("~/Scripts/keyboard.sh")
+-- awful.util.spawn("~/Scripts/keyboard.sh")
