@@ -11,5 +11,11 @@ else
     BRANCH="$1"
 fi
 
-git push -u origin $BRANCH && \
+if (git remote | grep -q stillinbeta); then
+    REMOTE=stillinbeta
+else
+    REMOTE=origin
+fi
+
+git push -u $REMOTE $BRANCH && \
     hub pull-request
