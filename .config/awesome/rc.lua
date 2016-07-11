@@ -98,8 +98,8 @@ end
 
 tag_settings = {
    {"₁ etc",    awful.layout.suit.floating,  "1", nil, {}},
-   {"₂ web",    awful.layout.suit.tile.left, "2", "google-chrome-stable", {"Google-chrome-stable"}},
-   {"₃ irc",    awful.layout.suit.tile.left, "3", "google-chrome-beta", {"Google-chrome-beta"}},
+   {"₂ web",    awful.layout.suit.tile.left, "2", "google-chrome-beta --profile-directory='Profile 1'", {"Google-chrome-stable"}},
+   {"₃ irc",    awful.layout.suit.tile.left, "3", "google-chrome-beta --profile-directory='Default'", {"Google-chrome-beta"}},
    {"₄ media2", awful.layout.suit.floating,  "4", "gimp", {"Gimp"}},
    {"· emacs",    awful.layout.suit.tile.left, "'", "emacs", {"Emacs"}},
    {", sh2",    awful.layout.suit.tile.left, ",", terminal, {}},
