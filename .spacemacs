@@ -32,17 +32,20 @@ values."
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
-     ;; spell-checking
+     spell-checking
      syntax-checking
      version-control
-     erlang
+     ; erlang
      lua
      markdown
-     elixir
+     ; elixir
      go
      python
      javascript
      haskell
+     erlang-elixir
+     c-c++
+     github
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -255,7 +258,6 @@ before packages are loaded. If you are unsure, you should try in setting them in
 (defun dotspacemacs/user-config  ()
   ;; Make linums relative by dnefault
   (global-linum-mode nil)
-  (linum-relative-toggle)
 
     "Configuration function for user code.
 This function is called at the very end of Spacemacs initialization after
