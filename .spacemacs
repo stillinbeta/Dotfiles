@@ -32,7 +32,7 @@ values."
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
-     spell-checking
+     ;; spell-checking
      syntax-checking
      version-control
      ; erlang
@@ -46,6 +46,8 @@ values."
      erlang-elixir
      c-c++
      github
+     sql
+     yaml
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -219,7 +221,7 @@ values."
    ;; If non nil line numbers are turned on in all `prog-mode' and `text-mode'
    ;; derivatives. If set to `relative', also turns on relative line numbers.
    ;; (default nil)
-   dotspacemacs-line-numbers nil
+   dotspacemacs-line-numbers 'relative
    ;; If non-nil smartparens-strict-mode will be enabled in programming modes.
    ;; (default nil)
    dotspacemacs-smartparens-strict-mode nil
@@ -256,15 +258,17 @@ before packages are loaded. If you are unsure, you should try in setting them in
   )
 
 (defun dotspacemacs/user-config  ()
-  ;; Make linums relative by dnefault
-  (global-linum-mode nil)
-
     "Configuration function for user code.
 This function is called at the very end of Spacemacs initialization after
 layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
+    (spacemacs/set-leader-keys
+      "gB" 'magit-branch-spinoff
+      )
+    (setq gofmt-command "goimports")
+    (exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
