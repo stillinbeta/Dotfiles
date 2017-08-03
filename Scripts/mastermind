@@ -1,0 +1,3 @@
+#!/bin/sh
+
+git ls-files -z | xargs -0n1 git blame -c | cut -f 2 | sed 's/(//; s/^ *//; s/ *$//' | sort | uniq -c | sort -rn

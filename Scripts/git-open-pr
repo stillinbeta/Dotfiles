@@ -1,0 +1,21 @@
+#!/bin/bash
+
+if [ -z "$1" ]; then
+    BRANCH=$(git symbolic-ref --short HEAD)
+
+    if [ -z "$BRANCH" ]; then
+        >&2 echo "Specify a branch!"
+        exit 1
+    fi
+else
+    BRANCH="$1"
+fi
+
+if (git remote | grep -q stillinbeta); then
+    REMOTE=stillinbeta
+else
+    REMOTE=origin
+fi
+
+git push -u $REMOTE $BRANCH && \
+    hub pull-request
