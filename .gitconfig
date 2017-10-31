@@ -1,6 +1,6 @@
 [user]
 	name = liz
-	email = liz@heroku.com
+	email = liz@heptio.com
 [push]
 	default = simple
 [core]
