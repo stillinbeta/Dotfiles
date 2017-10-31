@@ -51,16 +51,13 @@ setopt INC_APPEND_HISTORY
 export REPORTTIME=1
 
 # Stuff for go
-cdpath=(~/Code ~/Code/kernel/ )
+cdpath=(~/Code ~/Code/src/github.com/heptio/ )
 export GOPATH=$HOME
 export PATH=$PATH:$HOME/bin
 
 if [ $commands[kubectl] ]; then
     source <(kubectl completion zsh)
 fi
-
-#Vagrat
-export VAGRANT_DEFAULT_PROVIDER=libvirt
 
 zle -N zle-line-init selector
 zle -N zle-keymap-select selector
