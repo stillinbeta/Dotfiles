@@ -66,6 +66,10 @@ export EDITOR="emacsclient --tty"
 export BROWSER="google-chrome-stable"
 export LC_ALL=en_GB.UTF-8
 
+# Add some colour
+alias ls="ls -G"
+alias grep="grep --colour=auto"
+
 #Useful commands
 alias dc="docker-compose"
 alias fuck='$(thefuck $(fc -ln -1))'
