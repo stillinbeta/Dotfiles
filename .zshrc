@@ -51,7 +51,7 @@ setopt INC_APPEND_HISTORY
 export REPORTTIME=1
 
 # Stuff for go
-cdpath=(~/Code ~/Code/src/github.com/heptio/ )
+cdpath=(~/src ~/src/github.com/heptio/ )
 export GOPATH=$HOME
 export PATH=$PATH:$HOME/bin
 
@@ -87,9 +87,6 @@ function selector {
     VIMODE="${${KEYMAP/vicmd/${fg[yellow]}}/(main|viins)/%(?..$fg[red])}"
     zle reset-prompt
 }
-
-export SSH_AUTH_SOCK=/run/user/1000/keyring/ssh
-export GPG_AGENT_INFO=/run/user/1000/keyring/gpg:0:1
 
 #Ignore all this crap
 fignore=( .o \~ .pyc .hi .aux)
