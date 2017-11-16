@@ -1,6 +1,7 @@
 [user]
 	name = liz
 	email = liz@heptio.com
+	signingkey = C4A02586
 [push]
 	default = simple
 [core]
@@ -11,3 +12,7 @@
 	autosetuprebase = always
 [alias]
 	shipit = push production master
+[include]
+	path = /Users/liz/.gitconfig_private
+[commit]
+	gpgsign = true
