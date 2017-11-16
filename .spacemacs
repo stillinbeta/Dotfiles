@@ -36,7 +36,7 @@ This function should only modify configuration layer settings."
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      helm
-     ;; auto-completion
+     auto-completion
      ;; better-defaults
      emacs-lisp
      git
@@ -84,8 +84,6 @@ before layer configuration.
 It should only modify the values of Spacemacs settings."
   ;; This setq-default sexp is an exhaustive list of all the supported
   ;; spacemacs settings.
-  (setq spacemacs-erlang-elixir-use-edts t)
-  (setq spacemacs-show-trailing-whitespace t)
   (setq-default
    ;; If non-nil ELPA repositories are contacted via HTTPS whenever it's
    ;; possible. Set it to nil if you have no way to use HTTPS in your
@@ -97,6 +95,10 @@ It should only modify the values of Spacemacs settings."
    ;; Maximum allowed time in seconds to contact an ELPA repository.
    ;; (default 5)
    dotspacemacs-elpa-timeout 5
+   ;; If non-nil then Spacelpa repository is the primary source to install
+   ;; a locked version of packages. If nil then Spacemacs will install the lastest
+   ;; version of packages from MELPA. (default nil)
+   dotspacemacs-use-spacelpa nil
    ;; If non-nil then verify the signature for downloaded Spacelpa archives.
    ;; (default nil)
    dotspacemacs-verify-spacelpa-archives nil
@@ -256,11 +258,11 @@ It should only modify the values of Spacemacs settings."
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's active or selected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
-   dotspacemacs-active-transparency 95
+   dotspacemacs-active-transparency 90
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's inactive or deselected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
-   dotspacemacs-inactive-transparency 95
+   dotspacemacs-inactive-transparency 90
    ;; If non-nil show the titles of transient states. (default t)
    dotspacemacs-show-transient-state-title t
    ;; If non-nil show the color guide hint for transient state keys. (default t)
@@ -336,7 +338,7 @@ It should only modify the values of Spacemacs settings."
    ;; `trailing' to delete only the whitespace at end of lines, `changed' to
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
    ;; (default nil)
-   dotspacemacs-whitespace-cleanup nil
+   dotspacemacs-whitespace-cleanup "changed"
    ;; Either nil or a number of seconds. If non-nil zone out after the specified
    ;; number of seconds. (default nil)
    dotspacemacs-zone-out-when-idle nil
@@ -364,11 +366,17 @@ you should place your code here."
     (spacemacs/set-leader-keys
       "gB" 'magit-branch-spinoff
       )
-    (setq gofmt-command "goimports")
-    (setq go-tab-width 2)
+    (spacemacs/enable-transparency)
     (exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
     (setq exec-path (append exec-path '("/Users/liz/bin")))
-    (spacemacs/toggle-transparency)
+
+    ;; For go
+    (setq gofmt-command "goimports")
+    (setq go-tab-width 2)
+    ;; only run fast linters
+    (setq go-use-gometalinter t)
+    (setq flycheck-gometalinter-fast t)
+    (setq flycheck-gometalinter-disable-linters '("megacheck"))
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -385,7 +393,7 @@ This function is called at the very end of Spacemacs initialization."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (jsonnet-mode zenburn-theme symon string-inflection powerline solarized-theme password-generator spinner monokai-theme hydra parent-mode helm-purpose window-purpose imenu-list projectile godoctor go-rename pkg-info epl flx magit git-commit with-editor smartparens evil-lion iedit anzu evil goto-chg undo-tree highlight editorconfig magit-popup diminish go-mode company browse-at-remote f dash s bind-map bind-key yasnippet packed helm avy helm-core async auto-complete popup dockerfile-mode docker json-mode tablist docker-tramp json-snatcher json-reformat yaml-mode smeargle orgit mmm-mode markdown-toc markdown-mode magit-gitflow magit-gh-pulls helm-gitignore helm-company helm-c-yasnippet go-guru go-eldoc gitignore-mode github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gist gh marshal logito pcache ht gh-md fuzzy flycheck-pos-tip pos-tip ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flycheck flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump diff-hl define-word company-statistics company-go column-enforce-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
+    (flycheck-gometalinter jsonnet-mode zenburn-theme symon string-inflection powerline solarized-theme password-generator spinner monokai-theme hydra parent-mode helm-purpose window-purpose imenu-list projectile godoctor go-rename pkg-info epl flx magit git-commit with-editor smartparens evil-lion iedit anzu evil goto-chg undo-tree highlight editorconfig magit-popup diminish go-mode company browse-at-remote f dash s bind-map bind-key yasnippet packed helm avy helm-core async auto-complete popup dockerfile-mode docker json-mode tablist docker-tramp json-snatcher json-reformat yaml-mode smeargle orgit mmm-mode markdown-toc markdown-mode magit-gitflow magit-gh-pulls helm-gitignore helm-company helm-c-yasnippet go-guru go-eldoc gitignore-mode github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gist gh marshal logito pcache ht gh-md fuzzy flycheck-pos-tip pos-tip ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flycheck flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump diff-hl define-word company-statistics company-go column-enforce-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
  '(paradox-github-token t)
  '(safe-local-variable-values
    (quote
