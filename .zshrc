@@ -3,8 +3,9 @@ zstyle ':completion:*' completer _expand _complete _ignored
 zstyle :compinstall filename '/home/sib/.zshrc'
 
 #Include useful things
-autoload -Uz compinit promptinit colors vcs_info
+autoload -Uz compinit promptinit colors vcs_info bashcompinit
 compinit
+bashcompinit
 zstyle ':completion:*' menu select
 promptinit
 colors
@@ -55,6 +56,12 @@ cdpath=(~/src ~/src/github.com/heptio/ )
 export GOPATH=$HOME
 export PATH=$PATH:$HOME/bin
 
+source ~/src/google-cloud-sdk/completion.zsh.inc
+source ~/src/google-cloud-sdk/path.zsh.inc
+
+source ~/.zsh/completion/az
+
+
 if [ $commands[kubectl] ]; then
     source <(kubectl completion zsh)
 fi
@@ -87,6 +94,13 @@ function selector {
     VIMODE="${${KEYMAP/vicmd/${fg[yellow]}}/(main|viins)/%(?..$fg[red])}"
     zle reset-prompt
 }
+
+if [ -f ~/.gnupg/.gpg-agent-info ] && [ -n "$(pgrep gpg-agent)" ]; then
+    source ~/.gnupg/.gpg-agent-info
+    export GPG_AGENT_INFO
+else
+    eval $(gpg-agent --daemon --write-env-file ~/.gnupg/.gpg-agent-info)
+fi
 
 #Ignore all this crap
 fignore=( .o \~ .pyc .hi .aux)
