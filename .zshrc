@@ -54,13 +54,13 @@ export REPORTTIME=1
 # Stuff for go
 cdpath=(~/src ~/src/github.com/heptio/ )
 export GOPATH=$HOME
-export PATH=$PATH:$HOME/bin
+export GOBIN=$GOPATH/bin
+export PATH=$PATH:$GOBIN
 
 source ~/src/google-cloud-sdk/completion.zsh.inc
 source ~/src/google-cloud-sdk/path.zsh.inc
-
 source ~/.zsh/completion/az
-
+source ~/.zsh/completion/ktx
 
 if [ $commands[kubectl] ]; then
     source <(kubectl completion zsh)
@@ -88,7 +88,7 @@ function mkcd {
 # Prompt
 
 PROMPT='%{${VIMODE}%}%(!.#.$)%b%{$reset_color%} '
-RPROMPT='${vcs_info_msg_0_} %~'
+RPROMPT='${vcs_info_msg_0_} $(basename "${KUBECONFIG}" | sed s/-config//) %~'
 
 function selector {
     VIMODE="${${KEYMAP/vicmd/${fg[yellow]}}/(main|viins)/%(?..$fg[red])}"
@@ -110,6 +110,23 @@ function cd {
     builtin cd $@
     pwd > /tmp/.zsh-last-cd 2>/dev/null
 }
+
+function ktx {
+    file=$1-config
+    if [[ -f ~/.kube/$file ]] ; then
+        eval $(~/bin/ktx $file)
+        echo $file > /tmp/.zsh-last-ktx
+    else
+        echo "no such ktx $file"
+        false
+    fi
+
+}
+
 if [[ -f /tmp/.zsh-last-cd && -d "$(cat /tmp/.zsh-last-cd)" ]] ; then
     cd $(cat /tmp/.zsh-last-cd)
+fi
+
+if [[ -f /tmp/.zsh-last-ktx ]] ; then
+    eval $(~/bin/ktx $(cat /tmp/.zsh-last-ktx))
 fi
