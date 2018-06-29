@@ -32,7 +32,7 @@ setopt autocd
 setopt prompt_subst
 setopt correct
 unsetopt beep
-#setopt extended_glob
+setopt extended_glob
 
 bindkey -v
 # End of lines configured by zsh-newuser-install
@@ -52,7 +52,7 @@ setopt INC_APPEND_HISTORY
 export REPORTTIME=1
 
 # Stuff for go
-cdpath=(~/src ~/src/github.com/heptio/ )
+cdpath=(~/src ~/src/github.com/heptio/ ~/src/k8s.io/)
 export GOPATH=$HOME
 export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOBIN
@@ -71,15 +71,17 @@ zle -N zle-keymap-select selector
 
 export EDITOR="emacsclient --tty"
 export BROWSER="google-chrome-stable"
-export LC_ALL=en_GB.UTF-8
+# export LC_ALL=en_GB.UTF-8
 
 # Add some colour
 alias ls="ls -G"
 alias grep="grep --colour=auto"
 
 #Useful commands
-alias dc="docker-compose"
 alias fuck='$(thefuck $(fc -ln -1))'
+
+alias k=kubectl
+alias c=ktx
 
 function mkcd {
     mkdir -p $1 && cd $1
@@ -88,18 +90,15 @@ function mkcd {
 # Prompt
 
 PROMPT='%{${VIMODE}%}%(!.#.$)%b%{$reset_color%} '
-RPROMPT='${vcs_info_msg_0_} $(basename "${KUBECONFIG}" | sed s/-config//) %~'
+RPROMPT='${vcs_info_msg_0_} %{${fg[cyan]}%}☁ $(basename "${KUBECONFIG}" | sed s/-config//)%{$reset_color%} %~'
 
 function selector {
     VIMODE="${${KEYMAP/vicmd/${fg[yellow]}}/(main|viins)/%(?..$fg[red])}"
     zle reset-prompt
 }
 
-if [ -f ~/.gnupg/.gpg-agent-info ] && [ -n "$(pgrep gpg-agent)" ]; then
-    source ~/.gnupg/.gpg-agent-info
-    export GPG_AGENT_INFO
-else
-    eval $(gpg-agent --daemon --write-env-file ~/.gnupg/.gpg-agent-info)
+if ! pgrep gpg-agent > /dev/null; then
+    gpg-agent --daemon
 fi
 
 #Ignore all this crap
@@ -130,3 +129,5 @@ fi
 if [[ -f /tmp/.zsh-last-ktx ]] ; then
     eval $(~/bin/ktx $(cat /tmp/.zsh-last-ktx))
 fi
+
+PATH=$PATH:/usr/local/sbin

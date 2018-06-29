@@ -104,4 +104,4 @@ chunkc tiling::rule --owner Stickies --state float
 chunkc tiling::rule --owner \"App Store\" --state float
 # tooltips should float
 chunkc tiling::rule --owner "Emacs" --except "^$" --state tile
-chunkc tiling::rule --owner "zoom.us" --desktop 5
+chunkc tiling::rule --owner "zoom.us" --except ".*Account$" --desktop 6
