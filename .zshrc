@@ -12,94 +12,127 @@ colors
 # End of lines added by compinstall
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
-HISTSIZE=1000
-SAVEHIST=1000
-setopt appendhistory autocd
+HISTSIZE=10000
+SAVEHIST=10000
+
+setopt auto_list            ## Automatically list choices on completion
+setopt auto_menu            ## perform menu completion on subsequent completes
+setopt inc_append_history   ## Append history lines as they are executed, not only on exit
+setopt listambiguous        ## autolists second completions if 1st ambiguous
+setopt list_ambiguous       ## List options even if we can complete some prefix first
+setopt list_types           ## show file types when completing
+setopt no_list_beep         ## don't beep ambiguous completions
+setopt notify               ## Report status of background jobs immediately
+setopt print_exit_value     ## Print non-zero exit status
+setopt rm_star_wait         ## Force a pause before allowing an answer on rm *
+setopt transient_rprompt    ## Remove the right-side prompt if the cursor comes close
+setopt appendhistory
+setopt autocd
 setopt prompt_subst
 setopt correct
 unsetopt beep
-
-setopt extended_glob
+#setopt extended_glob
 
 bindkey -v
 # End of lines configured by zsh-newuser-install
 zmodload -i zsh/complist
-zstyle ':completion:*:mosh' menu known-hosts-files
 
-compdef 'python manage.py'='manage.py'
-compdef mosh=ssh
-
-PROMPT='%B%n@%m:%~%{${VIMODE}%}%(!.#.$)%b%{$reset_color%} '
-function selector {
-        VIMODE="${${KEYMAP/vicmd/${fg[yellow]}}/(main|viins)/%(?..$fg[red])}"
-        zle reset-prompt
+# Git
+autoload -Uz vcs_info
+zstyle ':vcs_info:*' enable git
+zstyle ':vcs_info:git*' formats "%b"
+zstyle ':vcs_info:git*' actionformats "%b (%a)"
+precmd() {
+      vcs_info
 }
 
 # Global shared history
 setopt INC_APPEND_HISTORY
+export REPORTTIME=1
 
-PATH="$PATH:/home/sib/.gem/ruby/1.9.1/bin"
+# Ruby
+PATH="$HOME/.rbenv/shims:/home/liz/.gem/ruby/2.1.0/bin:$PATH:$HOME/Scripts"
+alias ber="bundle exec rake"
+alias rr="forego run bundle exec"
 
-#Setup Virtualenv stuff
-VIRTUAL_ENV_DISABLE_PROMPT=1
-function virtualenv_info {
-        [ $VIRTUAL_ENV ] && echo `basename $VIRTUAL_ENV`
+# Stuff for go
+cdpath=(~/Code ~/Code/kernel/ ~/Code/go/src/github.com/heroku)
+export GOPATH=$HOME/Code/go
+export PATH=$PATH:$HOME/Code/go/bin
+
+# Stuff for erlang
+export MANPATH="/usr/share/man:/usr/lib/erlang/man"
+function ka {
+    . ~/erlang/$1/activate
 }
 
-#Git stuff
-#Blatantly stolen from oh my zsh
-. ~/Scripts/git.zsh
-
-#maybe I needing later
-ZSH_THEME_GIT_PROMPT_PREFIX=""
-ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[yellow]%}"
-ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$fg[green]%}"
-ZSH_THEME_GIT_PROMPT_CLEAN=""
-
-#Add a seperator if need be
-function sep {
-    [ `virtualenv_info` ] && [ `git_prompt_info` ] && echo '|'
+function kerl_path {
+    if KERL=$(basename $_KERL_ACTIVE_DIR 2>/dev/null); then
+        KERL_PROMPT=" {$KERL} "
+    else
+        KERL_PROMPT=""
+    fi
 }
-RPROMPT='$(virtualenv_info)$(sep)$(git_prompt_info)'
+
+
+# Python
+compdef 'python manage.py'='manage.py'
+
+#Vagrat
+export VAGRANT_DEFAULT_PROVIDER=libvirt
 
 zle -N zle-line-init selector
 zle -N zle-keymap-select selector
 
 export EDITOR="vim"
+export BROWSER="google-chrome-stable"
+export LC_ALL=en_GB.UTF-8
 
 #Add some colour to things
 alias ls="ls --color=auto"
 alias grep="grep --color=auto"
 
 #Useful commands
-alias backup_sib="rsync -av --delete --exclude-from=/home/sib/.rsync-exclude ~"
 alias nosleep="xset s off && xset -dpms"
-alias jesus="sudo"
-alias vless="/usr/share/vim/vim73/macros/less.sh"
-alias mount.tc="truecrypt -t -k '' --protect-hidden=no --mount "
-alias umount.tc="truecrypt -t --dismount"
-alias wi="wicd-curses"
-alias erl="rlwrap erl -oldshell"
-alias inventory="ruby /home/sib/Devel/ruby/inventory/inventory.rb"
-alias lock="xscreensaver-command -lock"
-alias cdf='mosh --server="LD_LIBRARY_PATH=~/mosh/lib LANG=C.UTF-8 ~/mosh/bin/mosh-server" cdf'
-
+alias vless="/usr/share/vim/vim74/macros/less.sh"
+alias dc="docker-compose"
+alias db='forego run psql \$DATABASE_URL'
+alias fuck='$(thefuck $(fc -ln -1))'
 
 function mkcd {
     mkdir -p $1 && cd $1
 }
 
-function print_cdf {
-    file=$1
-    shift
-    ssh cdf "/local/bin/print $@" < $file
+# Prompt
+
+PROMPT='%{${VIMODE}%}%(!.#.$)%b%{$reset_color%} '
+RPROMPT='${vcs_info_msg_0_}${KERL_PROMPT} ${CLOUD_ICON} %~'
+
+function selector {
+    VIMODE="${${KEYMAP/vicmd/${fg[yellow]}}/(main|viins)/%(?..$fg[red])}"
+    kerl_path
+
+    zle reset-prompt
 }
 
+export SSH_AUTH_SOCK=/run/user/1000/keyring/ssh
+export GPG_AGENT_INFO=/run/user/1000/keyring/gpg:0:1
 
 #Ignore all this crap
-fignore=( .o \~ .pyc .hi .aux) 
+fignore=( .o \~ .pyc .hi .aux)
 
-# Stuff for go
-export GOPATH=$HOME/Devel/go
-export PATH=$PATH:$HOME/Devel/go/bin
+# open in last open directory
+function cd {
+    builtin cd $@
+    pwd > /tmp/.zsh-last-cd 2>/dev/null
+}
+if [[ -f /tmp/.zsh-last-cd && -d "$(cat /tmp/.zsh-last-cd)" ]] ; then
+    cd $(cat /tmp/.zsh-last-cd)
+fi
+
+if [[ -f /tmp/.zsh-last-cloud ]] ; then
+  c $(cat /tmp/.zsh-last-cloud)
+fi
+
+# added by travis gem
+[ -f /home/liz/.travis/travis.sh ] && source /home/liz/.travis/travis.sh
