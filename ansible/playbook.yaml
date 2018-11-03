@@ -1,0 +1,25 @@
+---
+- name: set up a development environment
+  connection: local
+  hosts: localhost
+  become: true
+  vars:
+    user: ellie
+  tasks:
+  - name: install zsh
+    block:
+    - apt:
+        name: zsh
+    - user:
+        name: "{{ user }}"
+        shell: /bin/zsh
+  - name: install emacs
+    block:
+    - apt:
+      name: "emacs25"
+    - git:
+        repo: "https://github.com/syl20bnr/spacemacs"
+        dest: "/home/{{ user }}/.emacs.d"
+        update: no
+        version: develop
+
