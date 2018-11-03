@@ -3,8 +3,8 @@
 set -o pipefail
 
 if [[ -z "$1" ]]; then 
-	echo "please specify a branch!" >&2
-	exit 1
+    echo "please specify a branch!" >&2
+    exit 1
 fi
 
 cd $HOME
@@ -30,10 +30,13 @@ if [[ ! -d $HOME/.git ]]; then
 fi
 
 if [[ -d $HOME/ansible ]]; then
-    echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main" | sudo tee /etc/apt/sources.list.d/sources.list >/dev/null || exit 1
+    apt_source=/etc/apt/sources.list.d/sources.list
+    if [[ ! -e $apt_source ]]; then
+        echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main" | sudo tee  >/dev/null || exit 1
+    fi
     sudo apt-get update || exit 1
     sudo apt-get install ansible || exit 1
     ansible-playbook ansible/playbook.yaml || exit 1
 fi
-	
+
 
