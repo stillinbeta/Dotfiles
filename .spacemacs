@@ -36,6 +36,7 @@ This function should only modify configuration layer settings."
      protobuf
      rust
      python
+     org
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
@@ -451,21 +452,15 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
-    (spacemacs/set-leader-keys
-      "gB" 'magit-branch-spinoff
-      )
     (spacemacs/enable-transparency)
-    (exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
-    (exec-path-from-shell-copy-env "GOPATH")
-    (setq exec-path (append exec-path '("/Users/liz/bin")))
 
     ;; For go
     (setq gofmt-command "goimports")
     (setq go-tab-width 2)
-    ;; only run fast linters
+    (setq go-format-before-save t)
     (setq go-use-gometalinter t)
     (setq flycheck-gometalinter-fast t)
-    (setq flycheck-gometalinter-disable-linters '("megacheck"))
+    ;; (setq flycheck-gometalinter-disable-linters '("megacheck" "interfacer" "gosec" "gotype"))
     (setq-default js-indent-level 2)
   )
 
@@ -483,7 +478,7 @@ This function is called at the very end of Spacemacs initialization."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (insert-shebang helm-gtags ggtags flycheck-bashate fish-mode counsel-gtags company-shell flycheck-gometalinter iedit highlight epl async powerline dash yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode company-anaconda anaconda-mode pythonic goto-chg flycheck gh marshal ht avy git-commit with-editor hydra f bind-key smartparens evil projectile helm helm-core markdown-mode magit s toml-mode racer orgit magit-popup ghub let-alist helm-company helm-c-yasnippet github-browse-file fuzzy flycheck-rust seq company-statistics company-go company cargo rust-mode auto-yasnippet yasnippet ac-ispell auto-complete yaml-mode ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org symon string-inflection spaceline smeargle restart-emacs rainbow-delimiters popwin persp-mode pcre2el password-generator paradox org-plus-contrib org-bullets open-junk-file neotree move-text mmm-mode markdown-toc magit-gitflow magit-gh-pulls macrostep lorem-ipsum linum-relative link-hint jsonnet-mode info+ indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-purpose helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-ag google-translate golden-ratio godoctor go-rename go-guru go-eldoc github-search github-clone gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist gh-md flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav editorconfig dumb-jump dockerfile-mode docker diff-hl define-word column-enforce-mode clean-aindent-mode browse-at-remote auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line))))
+    (doom-modeline counsel flycheck-gometalinter iedit highlight epl async powerline dash yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode company-anaconda anaconda-mode pythonic goto-chg flycheck gh marshal ht avy git-commit with-editor hydra f bind-key smartparens evil projectile helm helm-core markdown-mode magit s toml-mode racer orgit magit-popup ghub let-alist helm-company helm-c-yasnippet github-browse-file fuzzy flycheck-rust seq company-statistics company-go company cargo rust-mode auto-yasnippet yasnippet ac-ispell auto-complete yaml-mode ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org symon string-inflection spaceline smeargle restart-emacs rainbow-delimiters popwin persp-mode pcre2el password-generator paradox org-plus-contrib org-bullets open-junk-file neotree move-text mmm-mode markdown-toc magit-gitflow magit-gh-pulls macrostep lorem-ipsum linum-relative link-hint jsonnet-mode info+ indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-purpose helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-ag google-translate golden-ratio godoctor go-rename go-guru go-eldoc github-search github-clone gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist gh-md flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav editorconfig dumb-jump dockerfile-mode docker diff-hl define-word column-enforce-mode clean-aindent-mode browse-at-remote auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
