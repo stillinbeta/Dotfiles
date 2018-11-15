@@ -57,10 +57,17 @@ export GOPATH=$HOME
 export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOBIN
 
-source ~/src/google-cloud-sdk/completion.zsh.inc
-source ~/src/google-cloud-sdk/path.zsh.inc
-source ~/.zsh/completion/az
-source ~/.zsh/completion/ktx
+if [[ -e /usr/share/google-cloud-sdk/completion.zsh.inc ]]; then
+    source /usr/share/google-cloud-sdk/completion.zsh.inc
+fi
+if [[ -d ~/.config/zsh/completions ]]; then
+    source ~/.config/zsh/completions/*
+fi
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.zsh/cache
+
+# source ~/.zsh/completion/az
+# source ~/.zsh/completion/ktx
 
 if [ $commands[kubectl] ]; then
     source <(kubectl completion zsh)
