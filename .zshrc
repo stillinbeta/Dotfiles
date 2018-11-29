@@ -50,52 +50,18 @@ precmd() {
 setopt INC_APPEND_HISTORY
 export REPORTTIME=1
 
-# Cargo
-PATH="$PATH:$HOME/Scripts:$HOME/.cargo/bin"
-
 # Stuff for go
 cdpath=(~/Code ~/Code/kernel/ ~/Code/go/src/github.com/heroku)
-export GOPATH=$HOME/Code/go
-export PATH=$PATH:$HOME/Code/go/bin
-
-# Stuff for erlang
-export MANPATH="/usr/share/man:/usr/lib/erlang/man"
-function ka {
-    . ~/erlang/$1/activate
-}
-
-function kerl_path {
-    if KERL=$(basename $_KERL_ACTIVE_DIR 2>/dev/null); then
-        KERL_PROMPT=" {$KERL} "
-    else
-        KERL_PROMPT=""
-    fi
-}
-
 
 # Python
 compdef 'python manage.py'='manage.py'
-
-#Vagrat
-export VAGRANT_DEFAULT_PROVIDER=libvirt
-
-zle -N zle-line-init selector
-zle -N zle-keymap-select selector
-
-export EDITOR="vim"
-export BROWSER="google-chrome-stable"
-export LC_ALL=en_GB.UTF-8
 
 #Add some colour to things
 alias ls="ls --color=auto"
 alias grep="grep --color=auto"
 
 #Useful commands
-alias nosleep="xset s off && xset -dpms"
-alias vless="/usr/share/vim/vim74/macros/less.sh"
 alias dc="docker-compose"
-alias db='forego run psql \$DATABASE_URL'
-alias fuck='$(thefuck $(fc -ln -1))'
 
 function mkcd {
     mkdir -p $1 && cd $1
@@ -124,10 +90,3 @@ function cd {
 if [[ -f /tmp/.zsh-last-cd && -d "$(cat /tmp/.zsh-last-cd)" ]] ; then
     cd $(cat /tmp/.zsh-last-cd)
 fi
-
-if [[ -f /tmp/.zsh-last-cloud ]] ; then
-  c $(cat /tmp/.zsh-last-cloud)
-fi
-
-# added by travis gem
-[ -f /home/liz/.travis/travis.sh ] && source /home/liz/.travis/travis.sh
