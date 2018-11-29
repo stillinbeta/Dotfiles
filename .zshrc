@@ -50,10 +50,8 @@ precmd() {
 setopt INC_APPEND_HISTORY
 export REPORTTIME=1
 
-# Ruby
-PATH="$HOME/.rbenv/shims:/home/liz/.gem/ruby/2.1.0/bin:$PATH:$HOME/Scripts"
-alias ber="bundle exec rake"
-alias rr="forego run bundle exec"
+# Cargo
+PATH="$PATH:$HOME/Scripts:$HOME/.cargo/bin"
 
 # Stuff for go
 cdpath=(~/Code ~/Code/kernel/ ~/Code/go/src/github.com/heroku)
@@ -114,9 +112,6 @@ function selector {
 
     zle reset-prompt
 }
-
-export SSH_AUTH_SOCK=/run/user/1000/keyring/ssh
-export GPG_AGENT_INFO=/run/user/1000/keyring/gpg:0:1
 
 #Ignore all this crap
 fignore=( .o \~ .pyc .hi .aux)

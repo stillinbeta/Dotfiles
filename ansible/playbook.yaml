@@ -13,6 +13,12 @@
     - user:
         name: "{{ user }}"
         shell: /bin/zsh
+  - name: "general utilities"
+    block:
+    - apt:
+        name:
+        - man
+      become: true
   - name: install emacs
     block:
     - apt:
@@ -25,3 +31,16 @@
         dest: "/home/{{ user }}/.emacs.d"
         update: no
         version: develop
+  - name: install rust env
+    block:
+    - command: "curl -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path"
+      args:
+        creates: "~/.cargo/bin/rustup"
+    - command: "~/.cargo/bin/rustup toolchain add nightly"
+      args:
+        creates: "~/.rustup/toolchains/nightly-aarch64-unknown-linux-gnu"
+    - command: "~/.cargo/bin/cargo +nightly install racer"
+      args:
+        creates: "~/.cargo/bin/racer"
+      
+
