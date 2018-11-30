@@ -46,12 +46,11 @@ precmd() {
       vcs_info
 }
 
+source ~/.zshenv
+
 # Global shared history
 setopt INC_APPEND_HISTORY
 export REPORTTIME=1
-
-# Stuff for go
-cdpath=(~/Code ~/Code/kernel/ ~/Code/go/src/github.com/heroku)
 
 # Python
 compdef 'python manage.py'='manage.py'
