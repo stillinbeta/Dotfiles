@@ -30,9 +30,9 @@ if [[ ! -d $HOME/.git ]]; then
 fi
 
 if [[ -d $HOME/ansible ]]; then
-    apt_source=/etc/apt/sources.list.d/sources.list
+    apt_source=/etc/apt/sources.list.d/ansible.list
     if [[ ! -e $apt_source ]]; then
-        echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main" | sudo tee  >/dev/null || exit 1
+        echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main" | sudo tee $apt_source >/dev/null || exit 1
     fi
     sudo apt-get update || exit 1
     sudo apt-get install ansible || exit 1

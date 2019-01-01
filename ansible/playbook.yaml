@@ -13,6 +13,7 @@
     - user:
         name: "{{ user }}"
         shell: /bin/zsh
+      become: true
   - name: "general utilities"
     block:
     - apt:
