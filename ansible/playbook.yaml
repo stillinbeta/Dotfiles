@@ -3,7 +3,7 @@
   connection: local
   hosts: localhost
   vars:
-    user: ellie
+    user: liz
   tasks:
   - name: install zsh
     block:
