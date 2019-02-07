@@ -3,7 +3,7 @@
   connection: local
   hosts: localhost
   vars:
-    user: liz
+    user: ellie
   tasks:
   - name: install zsh
     block:
@@ -34,7 +34,10 @@
         version: develop
   - name: install rust env
     block:
-    - command: "curl -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path"
+    - apt:
+        name: build-essential
+      become: true
+    - shell: "curl -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path"
       args:
         creates: "~/.cargo/bin/rustup"
     - command: "~/.cargo/bin/rustup toolchain add nightly"
