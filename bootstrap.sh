@@ -21,11 +21,16 @@ echo
 echo "Please upload the new public key to github."
 read -p "Press enter to continue" -n 1 -r
 
+sudo apt-get install git
+
 if [[ ! -d $HOME/.git ]]; then
     git clone --bare git@github.com:stillinbeta/dotfiles.git /tmp/dotfiles || exit 1
     mv /tmp/dotfiles $HOME/.git || exit 1
     git config core.bare false || exit 1
     git checkout $1 || exit 1
+    if [[ ! -z "$2" ]]; then
+        git checkout -b $2 || exit 1
+    fi
     git reset HEAD --hard || exit 1
 fi
 
