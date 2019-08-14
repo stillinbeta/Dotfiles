@@ -55,7 +55,8 @@ export REPORTTIME=1
 cdpath=(~/src ~/src/github.com/heptio/ ~/src/k8s.io/)
 export GOPATH=$HOME
 export GOBIN=$GOPATH/bin
-export PATH=$PATH:$GOBIN
+export PATH=$PATH:$GOBIN:/snap/bin
+export GOPROXY=https://proxy.golang.org
 
 if [[ -e /usr/share/google-cloud-sdk/completion.zsh.inc ]]; then
     source /usr/share/google-cloud-sdk/completion.zsh.inc
@@ -103,10 +104,6 @@ function selector {
     VIMODE="${${KEYMAP/vicmd/${fg[yellow]}}/(main|viins)/%(?..$fg[red])}"
     zle reset-prompt
 }
-
-if ! pgrep gpg-agent > /dev/null; then
-    gpg-agent --daemon
-fi
 
 #Ignore all this crap
 fignore=( .o \~ .pyc .hi .aux)
