@@ -55,10 +55,10 @@ This function should only modify configuration layer settings."
      lua
      markdown
      ; elixir
-     go
-     python
-     javascript
-     github
+     ; go
+     ; python
+     ; javascript
+     ; github
      yaml
      rust
      )
