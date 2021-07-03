@@ -30,6 +30,7 @@ setopt appendhistory
 setopt autocd
 setopt prompt_subst
 setopt correct
+setopt histignorespace
 unsetopt beep
 #setopt extended_glob
 
@@ -89,3 +90,8 @@ function cd {
 if [[ -f /tmp/.zsh-last-cd && -d "$(cat /tmp/.zsh-last-cd)" ]] ; then
     cd $(cat /tmp/.zsh-last-cd)
 fi
+source ~/.zsh/lib/zsh-autoenv/autoenv.zsh
+
+export PATH=/snap/bin:$PATH
+
+eval "$(direnv hook zsh)"
