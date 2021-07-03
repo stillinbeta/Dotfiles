@@ -1,0 +1,63 @@
+---
+- name: provision the nas
+  hosts: nas
+  become: true
+  remote_user: ellie
+  tasks:
+  - name: configure mounts
+    block:
+    - group:
+        name: media-users
+      register: media_group
+    - user:
+        name: ellie
+        append: yes
+        groups: media-users
+
+    - file:
+        name: /media/ssd-cache
+        state: directory
+    - ansible.posix.mount:
+        path: /media/ssd-cache
+        src: UUID=30C3-40FE
+        state: mounted
+        fstype: vfat
+    - file:
+        name: /media/media
+        state: directory
+    - ansible.posix.mount:
+        path: /media/media
+        src: UUID=ED0D-F950
+        opts: "gid={{ media_group.gid }},umask=002"
+        state: mounted
+        fstype: vfat
+  - name: enable plex
+    block:
+    - apt_key:
+        url: 'https://downloads.plex.tv/plex-keys/PlexSign.key'
+        state: present
+    - apt_repository: 
+        repo: 'deb https://downloads.plex.tv/repo/deb public main'
+        state: present
+    - apt:
+        name: plexmediaserver
+        state: present
+
+- name: 'configure SAMBA'
+  hosts: nas
+  roles:
+  - bertvv.samba
+  become: true
+  vars:
+    samba_load_printers: false
+    samba_users:
+    - name: ellie
+      
+    samba_shares:
+    - name: media
+      comment: "Media on Montero"
+      path: /media/media
+      group: media-users
+      write_list: '@media-users'
+      browsable: 'yes'
+
