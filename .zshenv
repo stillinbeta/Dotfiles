@@ -1,8 +1,3 @@
-. /etc/environment # get a fresh PATH
-# Rust
-PATH="$PATH:$HOME/Scripts:$HOME/.cargo/bin"
-export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
-
 # go
 export GOBIN=~/.local/bin
 

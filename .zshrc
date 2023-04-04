@@ -1,6 +1,5 @@
 # The following lines were added by compinstall
 zstyle ':completion:*' completer _expand _complete _ignored
-zstyle :compinstall filename '/home/sib/.zshrc'
 
 #Include useful things
 autoload -Uz compinit promptinit colors vcs_info
@@ -101,36 +100,9 @@ if [[ -f /tmp/.zsh-last-cd && -d "$(cat /tmp/.zsh-last-cd)" ]] ; then
     cd $(cat /tmp/.zsh-last-cd)
 fi
 
-function tagpush {
-    registry=us.gcr.io/$(gcloud config get-value project)
-    tag=${registry}/$1
-    docker tag $1 $tag
-    docker push $tag
-}
-
 complete -C '~/.local/bin/aws_completer' aws
-
-source  /usr/share/google-cloud-sdk/completion.zsh.inc
 
 source <(kubectl completion zsh)
 alias k=kubectl
-alias dev=~/mono/dev/src/bash/main
 
 eval "$(direnv hook zsh)"
-
-function jwtcurl {
-    env=${1:u}
-    shift
-
-    secret_env=${env}_JWT_SECRET
-    kid_env=${env}_JWT_KID
-
-    if [ -z "${(P)secret_env}" ]; then
-        echo "\$${secret_env} not found" >&2
-        return 1
-    fi
-
-    token=$(jwt encode --secret @<(echo ${(P)secret_env}  | sed 's/agak!1://' | base64 -d) \
-              --sub $EMAIL -e 30s --kid ${(P)kid_env})
-    curl -H "Authorization: Bearer $token" -H "x-forwarded-email: $EMAIL" $@
-}
