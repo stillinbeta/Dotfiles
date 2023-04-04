@@ -1,0 +1,18 @@
+[user]
+	name = Liz Frost
+	email = liz.frost@buzzfeed.com
+[core]
+	excludesfile = /home/liz/.gitignore_global
+  editor = emacsclient
+[color]
+	ui = auto
+[push]
+	default = simple
+[magithub]
+	online = false
+[magithub "status"]
+	includeStatusHeader = false
+	includePullRequestsSection = false
+	includeIssuesSection = false
+[credential]
+	helper = store
