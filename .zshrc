@@ -68,8 +68,15 @@ function mkcd {
 }
 
 # Prompt
+function archmode {
+    arch=$(arch)
+    if [ $arch != 'arm64' ]; then
+        echo "(${arch}) "
+    fi
+}
 
-PROMPT='%{${VIMODE}%}%(!.#.$)%b%{$reset_color%} '
+
+PROMPT='$(archmode)%{${VIMODE}%}%(!.#.$)%b%{$reset_color%} '
 RPROMPT='${vcs_info_msg_0_}${KERL_PROMPT} ${CLOUD_ICON} %~'
 
 function selector {
@@ -78,7 +85,6 @@ function selector {
 
     zle reset-prompt
 }
-
 
 if command -v pyenv 1>/dev/null 2>&1; then
     eval "$(pyenv init -)"
