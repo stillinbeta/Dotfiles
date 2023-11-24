@@ -76,22 +76,25 @@ function archmode {
 }
 
 
+# if ! pgrep ssh-agent > /dev/null; then
+#     rm -f /tmp/ssh-auth-sock
+#     eval "$(/opt/homebrew/bin/ssh-agent -s -a /tmp/ssh-auth-sock)"
+#     /opt/homebrew/bin/ssh-add ~/.ssh/id_ecdsa_sk
+# else
+#     export SSH_AUTH_SOCK=/tmp/ssh-auth-sock
+# fi
+
 PROMPT='$(archmode)%{${VIMODE}%}%(!.#.$)%b%{$reset_color%} '
-RPROMPT='${vcs_info_msg_0_}${KERL_PROMPT} ${CLOUD_ICON} %~'
+RPROMPT='${vcs_info_msg_0_} ${CLOUD_ICON} %~'
 
 function selector {
     VIMODE="${${KEYMAP/vicmd/${fg[yellow]}}/(main|viins)/%(?..$fg[red])}"
-    kerl_path
 
     zle reset-prompt
 }
 
 if command -v pyenv 1>/dev/null 2>&1; then
     eval "$(pyenv init -)"
-fi
-
-if which ruby >/dev/null && which gem >/dev/null; then
-    PATH="$(ruby -r rubygems -e 'puts Gem.user_dir')/bin:$PATH"
 fi
 
 #Ignore all this crap
@@ -106,9 +109,26 @@ if [[ -f /tmp/.zsh-last-cd && -d "$(cat /tmp/.zsh-last-cd)" ]] ; then
     cd $(cat /tmp/.zsh-last-cd)
 fi
 
-complete -C '~/.local/bin/aws_completer' aws
+complete -C '/opt/homebrew/bin/aws_completer' aws
 
 source <(kubectl completion zsh)
 alias k=kubectl
+alias bx='bundle exec'
+alias bxr='bundle exec rake'
+alias bxbvv='bundle exec berks vendor vendor --delete'
 
 eval "$(direnv hook zsh)"
+eval "$(aws-okta completion zsh)"
+
+
+eval $(op signin)
+eval "$(op completion zsh)"; compdef _op op
+
+export SAML2AWS_USERNAME="$(op read 'op://Private/Okta/username')"
+export SAML2AWS_PASSWORD="$(op read 'op://Private/Okta/password')"
+export PD_CIRCULAR_TOKEN="$(op read 'op://Private/Pagerduty Circular/credential')"
+export CLOUDSMITH_API_KEY="$(op read 'op://Private/Cloudsmith/credential')"
+export CLOUDSMITH_USER="$(op read 'op://Private/Cloudsmith/username')"
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
