@@ -1,6 +1,6 @@
 [user]
 	name = Liz Frost
-	email = liz.frost@buzzfeed.com
+	email = lfrost@pagerduty.com
 [core]
 	excludesfile = /home/liz/.gitignore_global
   editor = emacsclient
@@ -16,3 +16,9 @@
 	includeIssuesSection = false
 [credential]
 	helper = store
+[url "git@github.com:pagerduty"]
+	insteadOf = https://github.com/PagerDuty
+	insteadOf = https://github.com/pagerduty
+[init]
+	defaultBranch = main
+
