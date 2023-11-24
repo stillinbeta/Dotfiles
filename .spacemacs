@@ -32,7 +32,7 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(
+   '(javascript
      (colors :variables
              colors-colorize-identifiers 'all)
      auto-completion
@@ -70,6 +70,7 @@ This function should only modify configuration layer settings."
              )
      yaml
      docker
+     ruby
      )
 
    ;; List of additional packages that will be installed without being
@@ -79,7 +80,10 @@ This function should only modify configuration layer settings."
    ;; To use a local version of a package, use the `:location' property:
    ;; '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '()
+   dotspacemacs-additional-packages '((asdf :location (recipe
+                                                      :fetcher github
+                                                      :repo "tabfugnic/asdf.el"))
+                                      org-gcal)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -568,39 +572,9 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
-    (defun open-worklog ()
-      (interactive)
-      (select-frame (make-frame))
-      (set-frame-name "Worklog")
-      (find-file "~/worklog/log.org")
-      )
-
-    (defun sparse-dirs-popup ()
-      (interactive)
-      (helm :buffer "Dir to sparse"
-            :sources
-            (helm-build-sync-source
-                "pick a dir"
-              :candidates
-              (magit-git-lines
-               "-C"
-               (magit-toplevel)
-               "ls-tree"
-               "-d"
-               "HEAD"
-               "--name-only" ))))
-
-    (defun get-sparse-path()
-      (expand-file-name "sparse-checkout" (expand-file-name "info" (magit-git-dir))))
-
-    (defun add-to-sparse ()
-      (interactive)
-      (write-region (concat "/" (sparse-dirs-popup) "/" "\n") nil (get-sparse-path) 'append)
-      (magit-run-git "sparse-checkout" "init" "--cone"))
-
-    (spacemacs/set-leader-keys "gp" 'add-to-sparse)
-
-    (spacemacs/set-leader-keys "W"  'open-worklog)
+    (use-package asdf)
+    (asdf-enable)
+    (setq asdf-binary "/opt/homebrew/bin/asdf")
 
     (defun git-spinoff(branch)
       (interactive "sname to spinoff: ")
@@ -608,11 +582,18 @@ you should place your code here."
       )
     (spacemacs/set-leader-keys "gB" 'git-spinoff)
 
-    (with-eval-after-load 'org
-      ;; here goes your Org config :)
-      ;; ....
-      (setq org-agenda-files '("~/worklog/log.org"))
-      )
+    (defun add-org-date-to-end ()
+      (interactive)
+      (goto-char (point-max))
+      (insert (format-time-string "\n* [%Y-%m-%d]")))
+
+    (spacemacs/set-leader-keys-for-major-mode 'org-mode "D" 'add-org-date-to-end)
+
+    ;; (with-eval-after-load 'org
+    ;;   ;; here goes your Org config :)
+    ;;   ;; ....
+    ;;   (setq org-agenda-files '("~/worklog/log2.org"))
+    ;;   )
 
 
     ;; (require 'flycheck-mypy)
@@ -665,13 +646,13 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(auth-source-save-behavior nil)
+ '(org-agenda-files '("~/src/worklog/log2.org"))
  '(package-selected-packages
-   '(rainbow-mode rainbow-identifiers color-identifiers-mode nginx-mode orgit transient magit-section dash org-rich-yank org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download org-cliplink org-brain helm-org-rifle gnuplot evil-org jinja2-mode company-ansible ansible-doc ansible company-terraform terraform-mode hcl-mode graphviz-dot-mode sqlup-mode sql-indent rust-mode web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode counsel-css company-web web-completion-data nodejs-repl skewer-mode multiple-cursors js2-mode import-js grizzl impatient-mode htmlize simple-httpd helm-gtags ggtags counsel-gtags add-node-modules-path lsp-ui lsp-treemacs lsp-python-ms helm-lsp company-lsp lsp-mode dash-functional dockerfile-mode docker tablist docker-tramp json-snatcher json-reformat epc ctable concurrent deferred go-mode blacken anaconda-mode pythonic exec-path-from-shell yasnippet-snippets writeroom-mode visual-fill-column winum toc-org neotree magithub ghub+ live-py-mode helm-make git-timemachine evil-matchit evil-magit evil-goggles editorconfig dumb-jump doom-modeline diff-hl counsel-projectile counsel swiper ivy auto-yasnippet ace-link tern iedit flycheck company request projectile helm helm-core avy magit git-commit ghub with-editor markdown-mode which-key use-package org-plus-contrib evil hydra yapfify yaml-mode ws-butler web-beautify volatile-highlights vi-tilde-fringe uuidgen undo-tree treepy toml-mode symon string-inflection spaceline-all-the-icons smeargle shrink-path restart-emacs rainbow-delimiters racer pyvenv pytest pyenv-mode py-isort prettier-js popwin pippel pipenv pip-requirements persp-mode pcre2el password-generator paradox overseer org-bullets open-junk-file nameless move-text mmm-mode markdown-toc magit-svn magit-gitflow magit-gh-pulls macrostep lorem-ipsum livid-mode linum-relative link-hint json-navigator json-mode js2-refactor js-doc indent-guide importmagic hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-pydoc helm-purpose helm-projectile helm-mode-manager helm-gitignore helm-git-grep helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag graphql goto-chg google-translate golden-ratio godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc gitignore-templates github-search github-clone gitconfig-mode gitattributes-mode git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist gh-md fuzzy font-lock+ flycheck-rust flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-numbers evil-nerd-commenter evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu elisp-slime-nav eldoc-eval dotenv-mode diminish define-word cython-mode company-tern company-statistics company-lua company-go company-anaconda column-enforce-mode clean-aindent-mode centered-cursor-mode cargo browse-at-remote bind-key auto-highlight-symbol auto-compile apiwrap aggressive-indent ace-window ace-jump-helm-line ac-ispell))
+   '(org-gcal request-deferred persist elnode db fakir creole web noflet kv npm-mode rainbow-mode rainbow-identifiers color-identifiers-mode nginx-mode orgit transient magit-section dash org-rich-yank org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download org-cliplink org-brain helm-org-rifle gnuplot evil-org jinja2-mode company-ansible ansible-doc ansible company-terraform terraform-mode hcl-mode graphviz-dot-mode sqlup-mode sql-indent rust-mode web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode counsel-css company-web web-completion-data nodejs-repl skewer-mode multiple-cursors js2-mode import-js grizzl impatient-mode htmlize simple-httpd helm-gtags ggtags counsel-gtags add-node-modules-path lsp-ui lsp-treemacs lsp-python-ms helm-lsp company-lsp lsp-mode dash-functional dockerfile-mode docker tablist docker-tramp json-snatcher json-reformat epc ctable concurrent deferred go-mode blacken anaconda-mode pythonic exec-path-from-shell yasnippet-snippets writeroom-mode visual-fill-column winum toc-org neotree magithub ghub+ live-py-mode helm-make git-timemachine evil-matchit evil-magit evil-goggles editorconfig dumb-jump doom-modeline diff-hl counsel-projectile counsel swiper ivy auto-yasnippet ace-link tern iedit flycheck company request projectile helm helm-core avy magit git-commit ghub with-editor markdown-mode which-key use-package org-plus-contrib evil hydra yapfify yaml-mode ws-butler web-beautify volatile-highlights vi-tilde-fringe uuidgen undo-tree treepy toml-mode symon string-inflection spaceline-all-the-icons smeargle shrink-path restart-emacs rainbow-delimiters racer pyvenv pytest pyenv-mode py-isort prettier-js popwin pippel pipenv pip-requirements persp-mode pcre2el password-generator paradox overseer org-bullets open-junk-file nameless move-text mmm-mode markdown-toc magit-svn magit-gitflow magit-gh-pulls macrostep lorem-ipsum livid-mode linum-relative link-hint json-navigator json-mode js2-refactor js-doc indent-guide importmagic hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-pydoc helm-purpose helm-projectile helm-mode-manager helm-gitignore helm-git-grep helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag graphql goto-chg google-translate golden-ratio godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc gitignore-templates github-search github-clone gitconfig-mode gitattributes-mode git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist gh-md fuzzy font-lock+ flycheck-rust flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-numbers evil-nerd-commenter evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu elisp-slime-nav eldoc-eval dotenv-mode diminish define-word cython-mode company-tern company-statistics company-lua company-go company-anaconda column-enforce-mode clean-aindent-mode centered-cursor-mode cargo browse-at-remote bind-key auto-highlight-symbol auto-compile apiwrap aggressive-indent ace-window ace-jump-helm-line ac-ispell))
  '(paradox-github-token t)
  '(safe-local-variable-values
-   '((eval setq projectile-project-root-files-bottom-up
-           '(".projectile" "go.mod" "requirements.txt" "service.yml"))
-     (haskell-process-use-ghci . t)
+   '((haskell-process-use-ghci . t)
      (haskell-indent-spaces . 4))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
