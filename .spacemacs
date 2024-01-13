@@ -27,50 +27,23 @@ This function should only modify configuration layer settings."
    dotspacemacs-ask-for-lazy-installation t
 
    ;; List of additional paths where to look for configuration layers.
-   ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
+   ;; Paths must have a trailing slash (i.e. "~/.mycontribs/")
    dotspacemacs-configuration-layer-path '()
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(javascript
-     (colors :variables
+   '((colors :variables
              colors-colorize-identifiers 'all)
      auto-completion
      ;; better-defaults
      emacs-lisp
      git
-     helm
      markdown
      org
      syntax-checking
      version-control
-     (terraform
-      ;; :variables terraform-auto-format-on-save t
-      )
      markdown
-     (go :variables
-         go-format-before-save t
-         gofmt-command "goimports"
-         go-tab-width 2
-         go-backend 'lsp
-         )
-     (lsp :variables
-          ;; lsp-go-build-flags '(-tags integration)
-          lsp-ui-sideline-enable nil
-          lsp-ui-peek-enable nil
-          lsp-headerline-bread nil
-          lsp-lens-enable nil
-          lsp-ui-doc-enable nil
-          )
-     (python :variables
-             python-backend 'lsp
-             pyvenv-tracking-mode nil
-             python-lsp-server 'pyright
-             python-auto-set-local-pyvenv-virtualenv nil
-             )
      yaml
-     docker
-     ruby
      )
 
    ;; List of additional packages that will be installed without being
@@ -147,8 +120,7 @@ It should only modify the values of Spacemacs settings."
    ;; This is an advanced option and should not be changed unless you suspect
    ;; performance issues due to garbage collection operations.
    ;; (default '(100000000 0.1))
-   ;; dotspacemacs-gc-cons '(100000000 0.1)
-   dotspacemacs-gc-cons '(16777216 0.1)
+   dotspacemacs-gc-cons '(100000000 0.1)
 
    ;; Set `read-process-output-max' when startup finishes.
    ;; This defines how much data is read from a foreign process.
@@ -199,6 +171,13 @@ It should only modify the values of Spacemacs settings."
    ;; by your Emacs build.
    ;; If the value is nil then no banner is displayed. (default 'official)
    dotspacemacs-startup-banner 'official
+
+   ;; Scale factor controls the scaling (size) of the startup banner. Default
+   ;; value is `auto' for scaling the logo automatically to fit all buffer
+   ;; contents, to a maximum of the full image height and a minimum of 3 line
+   ;; heights. If set to a number (int or float) it is used as a constant
+   ;; scaling factor for the default logo size.
+   dotspacemacs-startup-banner-scale 'auto
 
    ;; List of items to show in startup buffer or an association list of
    ;; the form `(list-type . list-size)`. If nil then it is disabled.
@@ -370,12 +349,12 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil the frame is maximized when Emacs starts up.
    ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
-   ;; (default nil) (Emacs 24.4+ only)
-   dotspacemacs-maximized-at-startup nil
+   ;; (default t) (Emacs 24.4+ only)
+   dotspacemacs-maximized-at-startup t
 
    ;; If non-nil the frame is undecorated when Emacs starts up. Combine this
-   ;; variable with `dotspacemacs-maximized-at-startup' in OSX to obtain
-   ;; borderless fullscreen. (default nil)
+   ;; variable with `dotspacemacs-maximized-at-startup' to obtain fullscreen
+   ;; without external boxes. Also disables the internal border. (default nil)
    dotspacemacs-undecorated-at-startup nil
 
    ;; A value from the range (0..100), in increasing opacity, which describes
@@ -387,6 +366,11 @@ It should only modify the values of Spacemacs settings."
    ;; the transparency level of a frame when it's inactive or deselected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
    dotspacemacs-inactive-transparency 90
+
+   ;; A value from the range (0..100), in increasing opacity, which describes the
+   ;; transparency level of a frame background when it's active or selected. Transparency
+   ;; can be toggled through `toggle-background-transparency'. (default 90)
+   dotspacemacs-background-transparency 90
 
    ;; If non-nil show the titles of transient states. (default t)
    dotspacemacs-show-transient-state-title t
@@ -497,7 +481,9 @@ It should only modify the values of Spacemacs settings."
    ;; (default nil - same as frame-title-format)
    dotspacemacs-icon-title-format nil
 
-   ;; Show trailing whitespace (default t)
+   ;; Color highlight trailing whitespace in all prog-mode and text-mode derived
+   ;; modes such as c++-mode, python-mode, emacs-lisp, html-mode, rst-mode etc.
+   ;; (default t)
    dotspacemacs-show-trailing-whitespace t
 
    ;; Delete whitespace while saving buffer. Possible values are `all'
@@ -647,7 +633,8 @@ This function is called at the very end of Spacemacs initialization."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(auth-source-save-behavior nil)
- '(org-agenda-files '("~/src/worklog/log2.org"))
+ '(org-agenda-files
+   '("~/src/worklog/career.org" "/Users/lfrost/src/worklog/me.org" "/Users/lfrost/src/worklog/oncall.org" "/Users/lfrost/src/worklog/servicemesh.org" "/Users/lfrost/src/worklog/team.org" "/Users/lfrost/src/worklog/log2.org"))
  '(package-selected-packages
    '(org-gcal request-deferred persist elnode db fakir creole web noflet kv npm-mode rainbow-mode rainbow-identifiers color-identifiers-mode nginx-mode orgit transient magit-section dash org-rich-yank org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download org-cliplink org-brain helm-org-rifle gnuplot evil-org jinja2-mode company-ansible ansible-doc ansible company-terraform terraform-mode hcl-mode graphviz-dot-mode sqlup-mode sql-indent rust-mode web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode counsel-css company-web web-completion-data nodejs-repl skewer-mode multiple-cursors js2-mode import-js grizzl impatient-mode htmlize simple-httpd helm-gtags ggtags counsel-gtags add-node-modules-path lsp-ui lsp-treemacs lsp-python-ms helm-lsp company-lsp lsp-mode dash-functional dockerfile-mode docker tablist docker-tramp json-snatcher json-reformat epc ctable concurrent deferred go-mode blacken anaconda-mode pythonic exec-path-from-shell yasnippet-snippets writeroom-mode visual-fill-column winum toc-org neotree magithub ghub+ live-py-mode helm-make git-timemachine evil-matchit evil-magit evil-goggles editorconfig dumb-jump doom-modeline diff-hl counsel-projectile counsel swiper ivy auto-yasnippet ace-link tern iedit flycheck company request projectile helm helm-core avy magit git-commit ghub with-editor markdown-mode which-key use-package org-plus-contrib evil hydra yapfify yaml-mode ws-butler web-beautify volatile-highlights vi-tilde-fringe uuidgen undo-tree treepy toml-mode symon string-inflection spaceline-all-the-icons smeargle shrink-path restart-emacs rainbow-delimiters racer pyvenv pytest pyenv-mode py-isort prettier-js popwin pippel pipenv pip-requirements persp-mode pcre2el password-generator paradox overseer org-bullets open-junk-file nameless move-text mmm-mode markdown-toc magit-svn magit-gitflow magit-gh-pulls macrostep lorem-ipsum livid-mode linum-relative link-hint json-navigator json-mode js2-refactor js-doc indent-guide importmagic hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-pydoc helm-purpose helm-projectile helm-mode-manager helm-gitignore helm-git-grep helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag graphql goto-chg google-translate golden-ratio godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc gitignore-templates github-search github-clone gitconfig-mode gitattributes-mode git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist gh-md fuzzy font-lock+ flycheck-rust flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-numbers evil-nerd-commenter evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu elisp-slime-nav eldoc-eval dotenv-mode diminish define-word cython-mode company-tern company-statistics company-lua company-go company-anaconda column-enforce-mode clean-aindent-mode centered-cursor-mode cargo browse-at-remote bind-key auto-highlight-symbol auto-compile apiwrap aggressive-indent ace-window ace-jump-helm-line ac-ispell))
  '(paradox-github-token t)
