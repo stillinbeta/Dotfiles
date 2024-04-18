@@ -2,7 +2,7 @@
 	name = Ellie Frost
 	email = web@stillinbeta.com
 [core]
-	excludesfile = /home/sib/.gitignore_global
+	excludesfile = /home/ellie/.gitignore_global
   editor = emacs
 [color]
 	ui = auto
@@ -14,3 +14,5 @@
 	includeStatusHeader = false
 	includePullRequestsSection = false
 	includeIssuesSection = false
+[init]
+	defaultBranch = main

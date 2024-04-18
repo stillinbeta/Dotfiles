@@ -16,3 +16,5 @@
 /lib64/
 /include/
 /bin/
+/default.nix
+/.envrc
