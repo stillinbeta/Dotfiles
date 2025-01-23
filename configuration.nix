@@ -6,11 +6,13 @@
 
 {
   imports = [ # Include the results of the hardware scan.
-    /etc/nixos/hardware-configuration.nix
+    ./hardware-configuration.nix
     # ./sway-gnome.nix
+    # /home/ellie/suspend-and-hibernate.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -24,7 +26,7 @@
   networking.networkmanager.enable =
     true; # Easiest to use and most distros use this by default.
 
-  # Set your time zone.
+  # Set your time zonek
   time.timeZone = "America/Vancouver";
 
   # Configure network proxy if necessary
@@ -35,7 +37,7 @@
   i18n.defaultLocale = "en_GB.UTF-8";
   console = {
     #   font = "Lat2-Terminus16";
-    keyMap = "dvorak";
+    # keyMap = "dvorak";
     #   useXkbConfig = true; # use xkbOptions in tty.
   };
 
@@ -46,13 +48,15 @@
   # Enable CUPS to print documents.
   services.printing = {
     enable = true;
-    drivers = [ pkgs.brlaser ];
+    drivers = [ pkgs.brlaser pkgs.cups-brother-mfcl2750dw ];
   };
   services.avahi = {
     enable = true;
-    nssmdns = true;
+    nssmdns4 = true;
     openFirewall = true;
   };
+
+  services.logind.lidSwitch = "suspend";
 
   programs.sway = {
     enable = true;
@@ -60,8 +64,10 @@
   };
   programs.zsh.enable = true;
 
+  programs.direnv.enable = true;
+
   # Enable sound.
-  sound.enable = true;
+  # sound.enable = true;
   hardware.pulseaudio.enable = false;
   hardware.sane.enable = true;
 
@@ -80,33 +86,17 @@
       "lp" # printing
     ];
     packages = with pkgs; [
-      # gui apps
-      firefox
-      calibre
-      emacs29-pgtk
-      inconsolata
-      libreoffice
-      gnome.simple-scan
-      gimp
-      wireshark
-
-      # dev tools
-      rustup
-      ripgrep
-      direnv
-
-      # cli utils
-      jq
-      tree
-      htop
-      file
-      ispell
-
-      # gnome extensions
-      gnomeExtensions.caffeine
-      gnomeExtensions.pop-shell
     ];
   };
+
+  # home-manager.users.ellie = { pkgs, ... }: {
+  #   home.packages = [ pkgs.atool pkgs.httpie ];
+  #   programs.zsh.enable = true;
+
+  #   # The state version is required and should stay at the version you
+  #   # originally installed.
+  #   home.stateVersion = "24.11";
+  # };
 
   virtualisation.docker.enable = true;
 
@@ -120,10 +110,15 @@
     xdg-utils
     git
     gcc
-    nixfmt
+    nixfmt-classic
     openssl
     pkg-config
+    wireguard-tools
+    kdePackages.qt6ct
+    cachix
   ];
+
+  qt.platformTheme = "gnome";
 
   services.xserver = {
     enable = true; # even tho this I use wayland.
@@ -146,6 +141,7 @@
     enable = true;
     alsa.enable = true;
     pulse.enable = true;
+
   };
 
   services.dbus.enable = true;
@@ -178,7 +174,27 @@
   # services.openssh.enable = true;
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 8000 ];
+  networking.firewall = {
+    allowedTCPPorts = [ 8000 ];
+    allowedUDPPorts = [ 51820 ];
+  };
+
+  # networking.wireguard.interfaces = {
+  #   wg0 = {
+  #     metric = 1001;
+  #     ips = [ "192.168.2.4/24" ];
+  #     listenPort = 51820;
+
+  #     privateKeyFile = "/home/ellie/.config/wireguard/private";
+  #     peers = [{
+  #       publicKey = "o4FDF7gzOf2xrR83jHSHLIinIcMYU84prbxE/1uTLQ0=";
+  #       allowedIPs = [ "192.168.2.0/24" "192.168.4.0/22" ];
+
+  #       endpoint = (builtins.readFile /home/ellie/.config/wireguard/host);
+  #       persistentKeepalive = 25;
+  #     }];
+  #   };
+  # };
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
