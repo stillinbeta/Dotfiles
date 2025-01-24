@@ -9,22 +9,22 @@
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    stylix.url = "github:danth/stylix";
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, ... }: {
+  outputs = inputs@{ nixpkgs, home-manager, stylix, ... }: {
     nixosConfigurations = {
       asterius = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
+          stylix.nixosModules.stylix
           ./configuration.nix
+          ./stylix.nix
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.ellie = import ./home.nix;
-
-            # Optionally, use home-manager.extraSpecialArgs to pass
-            # arguments to home.nix
           }
         ];
       };
