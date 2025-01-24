@@ -26,8 +26,6 @@
 
     # dev tools
     ripgrep
-    direnv
-    python3
 
     # cli utils
     jq
@@ -103,14 +101,18 @@
     interactiveShellInit = ''
       fish_vi_key_bindings
     '';
-
-    shellInitLast = ''
-      direnv hook fish | source
-    '';
   };
 
   home.stateVersion = "24.11";
 
+  programs = {
+    direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+      # enableFishIntegration = true;
+    };
+
   # Let home Manager install and manage itself.
-  programs.home-manager.enable = true;
+    home-manager.enable = true;
+  };
 }
