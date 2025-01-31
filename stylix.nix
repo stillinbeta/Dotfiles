@@ -8,5 +8,6 @@
       name = "Inconsolata";
       package = pkgs.inconsolata;
     };
+    base16Scheme = "${pkgs.base16-schemes}/share/themes/outrun-dark.yaml";
   };
 }

@@ -77,7 +77,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.ellie = {
     isNormalUser = true;
-    shell = pkgs.zsh;
+    shell = pkgs.bash;
     extraGroups = [
       "wheel" # Enable ‘sudo’ for the user.
       "networkmanager"
