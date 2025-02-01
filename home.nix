@@ -23,10 +23,8 @@
     blender
     zeal-qt6
 
-    # dev tools
-    ripgrep
-
     # cli utils
+    ripgrep
     jq
     tree
     htop
@@ -36,7 +34,6 @@
     mtr
     zip
     unzip
-    conda
 
     # gnome extensions
     gnomeExtensions.caffeine
@@ -71,9 +68,9 @@
       };
     };
 
-    # apparently fish is a bad default shell
     bash = {
       enable = true;
+      # apparently fish is a bad default shell
       initExtra = ''
         if [[ $(${pkgs.procps}/bin/ps --no-header --pid=$PPID --format=comm) != "fish" && -z ''${BASH_EXECUTION_STRING} ]]
         then
@@ -124,7 +121,6 @@
       '';
     };
 
-
     emacs = {
       enable = true;
       package = pkgs.emacs29-pgtk;
@@ -134,7 +130,6 @@
     direnv = {
       enable = true;
       nix-direnv.enable = true;
-      # enableFishIntegration = true;
     };
 
     # Let home Manager install and manage itself.
