@@ -9,7 +9,6 @@
     # gui apps
     kicad
     calibre
-    emacs29-pgtk
     inconsolata
     libreoffice
     simple-scan
@@ -43,6 +42,18 @@
     gnomeExtensions.caffeine
     gnomeExtensions.pop-shell
   ];
+
+  home.file.".emacs.d" = {
+    # don't make the directory read only so that impure melpa can still happen
+    # for now
+    recursive = true;
+    source = pkgs.fetchFromGitHub {
+      owner = "syl20bnr";
+      repo = "spacemacs";
+      rev = "f036abf4c72b2af441a6aa3afda72f47c322fb95";
+      sha256 = "sha256-Rb1HM1lDUQWef5KnvPCEBuBwvDDLruJfG4rhFzJ+pVU=";
+    };
+  };
 
   programs = {
     git = {
@@ -111,6 +122,12 @@
       interactiveShellInit = ''
         fish_vi_key_bindings
       '';
+    };
+
+
+    emacs = {
+      enable = true;
+      package = pkgs.emacs29-pgtk;
     };
 
     firefox = { enable = true; };

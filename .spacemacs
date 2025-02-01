@@ -59,6 +59,7 @@ This function should only modify configuration layer settings."
      git
      ;; markdown
      org
+
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
@@ -66,9 +67,9 @@ This function should only modify configuration layer settings."
      syntax-checking
      version-control
      direnv
-     ; erlang
+                                        ; erlang
      markdown
-     ; elixir
+                                        ; elixir
      ;; go
      ;; pdf
      (python :variables
@@ -79,7 +80,7 @@ This function should only modify configuration layer settings."
      (rust :variables
            rust-backend 'lsp
            rustic-lsp-server 'rust-analyzer
-           
+
            )
      ;; asm
      ;; c-c++
@@ -89,29 +90,33 @@ This function should only modify configuration layer settings."
      (latex :variables latex-view-pdf-in-split-window t)
      )
 
-   ;; List of additional packages that will be installed without being
-   ;; wrapped in a layer. If you need some configuration for these
-   ;; packages, then consider creating a layer. You can also put the
-   ;; configuration in `dotspacemacs/user-config'.
-   ;; To use a local version of a package, use the `:location' property:
-   ;; '(your-package :location "~/path/to/your-package/")
-   ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '(sqlite3) 
+   treemacs)
 
-   ;; A list of packages that cannot be updated.
-   dotspacemacs-frozen-packages '()
 
-   ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '()
+  ;; List of additional packages that will be installed without being wrapped
+  ;; in a layer (generally the packages are installed only and should still be
+  ;; loaded using load/require/use-package in the user-config section below in
+  ;; this file). If you need some configuration for these packages, then
+  ;; consider creating a layer. You can also put the configuration in
+  ;; `dotspacemacs/user-config'. To use a local version of a package, use the
+  ;; `:location' property: '(your-package :location "~/path/to/your-package/")
+  ;; Also include the dependencies as they will not be resolved automatically.
+  dotspacemacs-additional-packages '()
 
-   ;; Defines the behaviour of Spacemacs when installing packages.
-   ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
-   ;; `used-only' installs only explicitly used packages and deletes any unused
-   ;; packages as well as their unused dependencies. `used-but-keep-unused'
-   ;; installs only the used packages but won't delete unused ones. `all'
-   ;; installs *all* packages supported by Spacemacs and never uninstalls them.
-   ;; (default is `used-only')
-   dotspacemacs-install-packages 'used-only))
+  ;; A list of packages that cannot be updated.
+  dotspacemacs-frozen-packages '()
+
+  ;; A list of packages that will not be installed and loaded.
+  dotspacemacs-excluded-packages '()
+
+  ;; Defines the behaviour of Spacemacs when installing packages.
+  ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
+  ;; `used-only' installs only explicitly used packages and deletes any unused
+  ;; packages as well as their unused dependencies. `used-but-keep-unused'
+  ;; installs only the used packages but won't delete unused ones. `all'
+  ;; installs *all* packages supported by Spacemacs and never uninstalls them.
+  ;; (default is `used-only')
+  dotspacemacs-install-packages 'used-only))
 
 (defun dotspacemacs/init ()
   "Initialization:
@@ -270,7 +275,10 @@ It should only modify the values of Spacemacs settings."
 
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
-   ;; with 2 themes variants, one dark and one light)
+   ;; with 2 themes variants, one dark and one light). A theme from external
+   ;; package can be defined with `:package', or a theme can be defined with
+   ;; `:location' to download the theme package, refer the themes section in
+   ;; DOCUMENTATION.org for the full theme specifications.
    dotspacemacs-themes '(spacemacs-dark
                          spacemacs-light)
 
@@ -287,7 +295,9 @@ It should only modify the values of Spacemacs settings."
    ;; (default t)
    dotspacemacs-colorize-cursor-according-to-state t
 
-   ;; Default font or prioritized list of fonts. The `:size' can be specified as
+   ;; Default font or prioritized list of fonts. This setting has no effect when
+   ;; running Emacs in terminal. The font set here will be used for default and
+   ;; fixed-pitch faces. The `:size' can be specified as
    ;; a non-negative integer (pixel size), or a floating-point (point size).
    ;; Point size is recommended, because it's device independent. (default 10.0)
    dotspacemacs-default-font '("Inconsolata"
@@ -368,6 +378,10 @@ It should only modify the values of Spacemacs settings."
    ;; Which-key frame position. Possible values are `right', `bottom' and
    ;; `right-then-bottom'. right-then-bottom tries to display the frame to the
    ;; right; if there is insufficient space it displays it at the bottom.
+   ;; It is also possible to use a posframe with the following cons cell
+   ;; `(posframe . position)' where position can be one of `center',
+   ;; `top-center', `bottom-center', `top-left-corner', `top-right-corner',
+   ;; `top-right-corner', `bottom-left-corner' or `bottom-right-corner'
    ;; (default 'bottom)
    dotspacemacs-which-key-position 'bottom
 
@@ -377,6 +391,22 @@ It should only modify the values of Spacemacs settings."
    ;; displays the buffer in a same-purpose window even if the buffer can be
    ;; displayed in the current window. (default nil)
    dotspacemacs-switch-to-buffer-prefers-purpose nil
+
+   ;; Whether side windows (such as those created by treemacs or neotree)
+   ;; are kept or minimized by `spacemacs/toggle-maximize-window' (SPC w m).
+   ;; (default t)
+   dotspacemacs-maximize-window-keep-side-windows t
+
+   ;; If nil, no load-hints enabled. If t, enable the `load-hints' which will
+   ;; put the most likely path on the top of `load-path' to reduce walking
+   ;; through the whole `load-path'. It's an experimental feature to speedup
+   ;; Spacemacs on Windows. Refer the FAQ.org "load-hints" session for details.
+   dotspacemacs-enable-load-hints nil
+
+   ;; If t, enable the `package-quickstart' feature to avoid full package
+   ;; loading, otherwise no `package-quickstart' attemption (default nil).
+   ;; Refer the FAQ.org "package-quickstart" section for details.
+   dotspacemacs-enable-package-quickstart nil
 
    ;; If non-nil a progress bar is displayed when spacemacs is loading. This
    ;; may increase the boot time on some systems and emacs builds, set it to
@@ -499,6 +529,13 @@ It should only modify the values of Spacemacs settings."
    ;; (default '("rg" "ag" "pt" "ack" "grep"))
    dotspacemacs-search-tools '("rg" "ag" "pt" "ack" "grep")
 
+   ;; The backend used for undo/redo functionality. Possible values are
+   ;; `undo-fu', `undo-redo' and `undo-tree' see also `evil-undo-system'.
+   ;; Note that saved undo history does not get transferred when changing
+   ;; your undo system. The default is currently `undo-fu' as `undo-tree'
+   ;; is not maintained anymore and `undo-redo' is very basic."
+   dotspacemacs-undo-system 'undo-fu
+
    ;; Format specification for setting the frame title.
    ;; %a - the `abbreviated-file-name', or `buffer-name'
    ;; %t - `projectile-project-name'
@@ -534,6 +571,9 @@ It should only modify the values of Spacemacs settings."
    ;; to aggressively delete empty line and long sequences of whitespace,
    ;; `trailing' to delete only the whitespace at end of lines, `changed' to
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
+   ;; The variable `global-spacemacs-whitespace-cleanup-modes' controls
+   ;; which major modes have whitespace cleanup enabled or disabled
+   ;; by default.
    ;; (default nil)
    dotspacemacs-whitespace-cleanup nil
 
@@ -577,7 +617,7 @@ default it calls `spacemacs/load-spacemacs-env' which loads the environment
 variables declared in `~/.spacemacs.env' or `~/.spacemacs.d/.spacemacs.env'.
 See the header of this file for more information."
   (spacemacs/load-spacemacs-env)
-)
+  )
 
 (defun dotspacemacs/user-init ()
   "Initialization for user code:
@@ -585,7 +625,7 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
-)
+  )
 
 
 (defun dotspacemacs/user-load ()
@@ -593,53 +633,53 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 This function is called only while dumping Spacemacs configuration. You can
 `require' or `load' the libraries of your choice that will be included in the
 dump."
-)
+  )
 
 
 
 (defun dotspacemacs/user-config  ()
-    "Configuration function for user code.
+  "Configuration function for user code.
 This function is called at the very end of Spacemacs initialization after
 layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
-    ;; (spacemacs/enable-transparency)
-    (spacemacs/set-leader-keys
-      "gB" 'magit-branch-spinoff
-      )
-    ;; (setq gofmt-command "goimports")
-    ;; (exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
-    (add-to-list 'exec-path "/home/ellie/.cargo/bin")
-    (load-file "~/Projects/org-static-blog/org-static-blog.el")
-    (require 'org-static-blog)
-    (setq rust-format-on-save t)
-    (with-eval-after-load 'dap-mode
-      (dap-register-debug-template
-       "stm32-hello"
-       (list :type "gdb"
-             :name "stm32-hello"
-             :request "attach"
-             :target "extended-remote :3333"
-             :cwd "/home/ellie/Projects/keyboards/stm32-hello/"
-             :executable "/home/ellie/Projects/keyboards/stm32-hello/target/thumbv6m-none-eabi/debug/stm32-hello"
-             :debugger_args ["-x" "openocd.gdb" "/home/ellie/Projects/keyboards/stm32-hello/target/thumbv6m-none-eabi/debug/stm32-hello"]
-             :gdbpath "/usr/bin/gdb-multiarch"
-             :printCalls :json-true)))
+  ;; (spacemacs/enable-transparency)
+  (spacemacs/set-leader-keys
+    "gB" 'magit-branch-spinoff
+    )
+  ;; (setq gofmt-command "goimports")
+  ;; (exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
+  (add-to-list 'exec-path "/home/ellie/.cargo/bin")
+  (load-file "~/Projects/org-static-blog/org-static-blog.el")
+  (require 'org-static-blog)
+  (setq rust-format-on-save t)
+  (with-eval-after-load 'dap-mode
+    (dap-register-debug-template
+     "stm32-hello"
+     (list :type "gdb"
+           :name "stm32-hello"
+           :request "attach"
+           :target "extended-remote :3333"
+           :cwd "/home/ellie/Projects/keyboards/stm32-hello/"
+           :executable "/home/ellie/Projects/keyboards/stm32-hello/target/thumbv6m-none-eabi/debug/stm32-hello"
+           :debugger_args ["-x" "openocd.gdb" "/home/ellie/Projects/keyboards/stm32-hello/target/thumbv6m-none-eabi/debug/stm32-hello"]
+           :gdbpath "/usr/bin/gdb-multiarch"
+           :printCalls :json-true)))
 
-    (setq org-static-blog-drafts-directory "~/Projects/blog/drafts")
-    (setq org-static-blog-posts-directory "~/Projects/blog/posts")
-    (setq org-static-blog-publish-directory "~/Projects/blog/")
-    (setq org-static-blog-publish-url "https://blog.stillinbeta.com")
-    (setq org-static-blog-publish-title "blog.stillinbeta.com")
-    (setq org-export-with-toc nil)
-    (setq org-static-blog-enable-og-tags t)
-    (setq org-export-with-section-numbers nil)
-    (setq org-static-blog-page-header "<link href=\"static/style.css\" rel=\"stylesheet\" type=\"text/css\"></link>
+  (setq org-static-blog-drafts-directory "~/Projects/blog/drafts")
+  (setq org-static-blog-posts-directory "~/Projects/blog/posts")
+  (setq org-static-blog-publish-directory "~/Projects/blog/")
+  (setq org-static-blog-publish-url "https://blog.stillinbeta.com")
+  (setq org-static-blog-publish-title "blog.stillinbeta.com")
+  (setq org-export-with-toc nil)
+  (setq org-static-blog-enable-og-tags t)
+  (setq org-export-with-section-numbers nil)
+  (setq org-static-blog-page-header "<link href=\"static/style.css\" rel=\"stylesheet\" type=\"text/css\"></link>
 <link rel=\"stylesheet\" href=\"//fonts.googleapis.com/css?family=Inconsolata\" type=\"text/css\"></link>
 ")
-    (setq org-static-blog-preview-ellipsis "")
-    (setq org-static-blog-page-preamble "<nav>
+  (setq org-static-blog-preview-ellipsis "")
+  (setq org-static-blog-page-preamble "<nav>
 <ul>
 <li><a href=\"https://stillinbeta.com\">stillinbeta.com</a></li>
 <li><a href=\"\">/index</a></li>
@@ -647,28 +687,28 @@ you should place your code here."
 <li><a href=\"/rss.xml\">/feed</a></li>
 </ul>
 </nav>")
-    (setq org-static-blog-page-postamble "")
-    (setq org-static-blog-post-preamble-text "<div class=\"post\">")
-    (setq org-static-blog-post-postamble-text "</div>")
+  (setq org-static-blog-page-postamble "")
+  (setq org-static-blog-post-preamble-text "<div class=\"post\">")
+  (setq org-static-blog-post-postamble-text "</div>")
 
-    (defun projectile-realgud ()
-      "Invoke realgud in the correct directory"
-      (interactive)
-      (cd (locate-dominating-file default-directory "openocd.gdb"))
-      (realgud:gdb)
-      )
-    (defun spawn-openocd ()
-      (interactive)
-      (cd (locate-dominating-file default-directory "openocd.cfg"))
-      (display-buffer
-       (make-comint-in-buffer "openocd" "openocd" "openocd")
-       (split-window-sensibly))
-      )
-    (spacemacs/set-leader-keys
-      "dg" 'projectile-realgud
-      "do" 'spawn-openocd
-     )
+  (defun projectile-realgud ()
+    "Invoke realgud in the correct directory"
+    (interactive)
+    (cd (locate-dominating-file default-directory "openocd.gdb"))
+    (realgud:gdb)
     )
+  (defun spawn-openocd ()
+    (interactive)
+    (cd (locate-dominating-file default-directory "openocd.cfg"))
+    (display-buffer
+     (make-comint-in-buffer "openocd" "openocd" "openocd")
+     (split-window-sensibly))
+    )
+  (spacemacs/set-leader-keys
+    "dg" 'projectile-realgud
+    "do" 'spawn-openocd
+    )
+  )
 
 
 
@@ -696,25 +736,25 @@ you should place your code here."
 This is an auto-generated function, do not modify its content directly, use
 Emacs customize menu instead.
 This function is called at the very end of Spacemacs initialization."
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(auth-source-save-behavior nil)
- '(evil-want-Y-yank-to-eol nil)
- '(package-selected-packages
-   '(add-node-modules-path counsel-gtags counsel swiper ivy ggtags import-js grizzl js-doc js2-refactor multiple-cursors livid-mode nodejs-repl npm-mode skewer-mode js2-mode tern systemd journalctl-mode erlang zig-mode reformatter docker aio dockerfile-mode direnv company-nixos-options helm-nixos-options nix-mode nixos-options sqlite3 yasnippet-snippets yapfify yaml-mode xterm-color x86-lookup ws-butler writeroom-mode winum which-key web-mode web-beautify volatile-highlights vim-powerline vi-tilde-fringe uuidgen undo-tree treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil toml-mode toc-org terminal-here term-cursor tagedit symon symbol-overlay sql-indent sphinx-doc spacemacs-purpose-popwin spaceline space-doc smeargle slim-mode shell-pop scss-mode sass-mode rust-mode ron-mode restart-emacs realgud rainbow-delimiters quickrun pytest pylookup pyenv-mode pydoc py-isort pug-mode prettier-js popwin poetry pippel pipenv pip-requirements pdf-view-restore pcre2el paradox overseer orgit-forge org-superstar org-rich-yank org-projectile org-present org-pomodoro org-mime org-download org-contrib org-cliplink open-junk-file nose nasm-mode nameless multi-vterm multi-term move-text mmm-mode markdown-toc macrostep lsp-ui lsp-python-ms lsp-pyright lsp-origami lsp-latex lorem-ipsum live-py-mode link-hint jinja2-mode inspector info+ indent-guide importmagic impatient-mode hybrid-mode hungry-delete holy-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-xref helm-themes helm-swoop helm-rtags helm-pydoc helm-purpose helm-projectile helm-org-rifle helm-org helm-mode-manager helm-make helm-lsp helm-ls-git helm-git-grep helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag graphviz-dot-mode google-translate google-c-style golden-ratio godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc gnuplot gitignore-templates git-timemachine git-modes git-messenger git-link git-gutter-fringe gh-md gendoxy fuzzy flyspell-correct-helm flycheck-ycmd flycheck-rust flycheck-rtags flycheck-pos-tip flycheck-package flycheck-elsa flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-tex evil-surround evil-org evil-numbers evil-nerd-commenter evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-evilified-state evil-escape evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emr emmet-mode elisp-slime-nav elisp-def dumb-jump dotenv-mode disaster diminish devdocs define-word dap-mode cython-mode cpp-auto-include company-ycmd company-web company-rtags company-reftex company-math company-lua company-go company-c-headers company-auctex company-ansible company-anaconda column-enforce-mode code-cells clean-aindent-mode centered-cursor-mode ccls cargo browse-at-remote blacken auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile auctex-latexmk ansible-doc ansible all-the-icons aggressive-indent ace-link ace-jump-helm-line ac-ispell))
- '(paradox-github-token t)
- '(safe-local-variable-values
-   '((haskell-process-use-ghci . t)
-     (haskell-indent-spaces . 4))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
- '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil))))
- '(highlight-parentheses-highlight ((nil (:weight ultra-bold))) t))
-)
+  (custom-set-variables
+   ;; custom-set-variables was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(auth-source-save-behavior nil)
+   '(evil-want-Y-yank-to-eol nil)
+   '(package-selected-packages
+     '(base16-theme add-node-modules-path counsel-gtags counsel swiper ivy ggtags import-js grizzl js-doc js2-refactor multiple-cursors livid-mode nodejs-repl npm-mode skewer-mode js2-mode tern systemd journalctl-mode erlang zig-mode reformatter docker aio dockerfile-mode direnv company-nixos-options helm-nixos-options nix-mode nixos-options sqlite3 yasnippet-snippets yapfify yaml-mode xterm-color x86-lookup ws-butler writeroom-mode winum which-key web-mode web-beautify volatile-highlights vim-powerline vi-tilde-fringe uuidgen undo-tree treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil toml-mode toc-org terminal-here term-cursor tagedit symon symbol-overlay sql-indent sphinx-doc spacemacs-purpose-popwin spaceline space-doc smeargle slim-mode shell-pop scss-mode sass-mode rust-mode ron-mode restart-emacs realgud rainbow-delimiters quickrun pytest pylookup pyenv-mode pydoc py-isort pug-mode prettier-js popwin poetry pippel pipenv pip-requirements pdf-view-restore pcre2el paradox overseer orgit-forge org-superstar org-rich-yank org-projectile org-present org-pomodoro org-mime org-download org-contrib org-cliplink open-junk-file nose nasm-mode nameless multi-vterm multi-term move-text mmm-mode markdown-toc macrostep lsp-ui lsp-python-ms lsp-pyright lsp-origami lsp-latex lorem-ipsum live-py-mode link-hint jinja2-mode inspector info+ indent-guide importmagic impatient-mode hybrid-mode hungry-delete holy-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-xref helm-themes helm-swoop helm-rtags helm-pydoc helm-purpose helm-projectile helm-org-rifle helm-org helm-mode-manager helm-make helm-lsp helm-ls-git helm-git-grep helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag graphviz-dot-mode google-translate google-c-style golden-ratio godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc gnuplot gitignore-templates git-timemachine git-modes git-messenger git-link git-gutter-fringe gh-md gendoxy fuzzy flyspell-correct-helm flycheck-ycmd flycheck-rust flycheck-rtags flycheck-pos-tip flycheck-package flycheck-elsa flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-tex evil-surround evil-org evil-numbers evil-nerd-commenter evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-evilified-state evil-escape evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emr emmet-mode elisp-slime-nav elisp-def dumb-jump dotenv-mode disaster diminish devdocs define-word dap-mode cython-mode cpp-auto-include company-ycmd company-web company-rtags company-reftex company-math company-lua company-go company-c-headers company-auctex company-ansible company-anaconda column-enforce-mode code-cells clean-aindent-mode centered-cursor-mode ccls cargo browse-at-remote blacken auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile auctex-latexmk ansible-doc ansible all-the-icons aggressive-indent ace-link ace-jump-helm-line ac-ispell))
+   '(paradox-github-token t)
+   '(safe-local-variable-values
+     '((haskell-process-use-ghci . t)
+       (haskell-indent-spaces . 4))))
+  (custom-set-faces
+   ;; custom-set-faces was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
+   '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil))))
+   '(highlight-parentheses-highlight ((nil (:weight ultra-bold))) t))
+  )

@@ -35,11 +35,6 @@
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_GB.UTF-8";
-  console = {
-    #   font = "Lat2-Terminus16";
-    # keyMap = "dvorak";
-    #   useXkbConfig = true; # use xkbOptions in tty.
-  };
 
   # Configure keymap in X11
   # services.xserver.layout = "us";
@@ -57,12 +52,6 @@
   };
 
   services.logind.lidSwitch = "suspend";
-
-  programs.sway = {
-    enable = true;
-    wrapperFeatures.gtk = true;
-  };
-  programs.zsh.enable = true;
 
   programs.direnv.enable = true;
 
@@ -179,23 +168,23 @@
     allowedUDPPorts = [ 51820 ];
   };
 
-  networking.wireguard.interfaces = {
-    wg0 = {
-      metric = 1001;
-      ips = [ "192.168.2.4/24" ];
-      listenPort = 51820;
+  # networking.wireguard.interfaces = {
+  #   wg0 = {
+  #     metric = 1001;
+  #     ips = [ "192.168.2.4/32" ];
+  #     listenPort = 51820;
 
-      privateKeyFile = "/home/ellie/.config/wireguard/private";
-      peers = [{
-        publicKey = "o4FDF7gzOf2xrR83jHSHLIinIcMYU84prbxE/1uTLQ0=";
-        allowedIPs = [ "192.168.2.0/24" "192.168.4.0/22" ];
+  #     privateKeyFile = "/home/ellie/.config/wireguard/private";
+  #     peers = [{
+  #       publicKey = "o4FDF7gzOf2xrR83jHSHLIinIcMYU84prbxE/1uTLQ0=";
+  #       allowedIPs = [ "192.168.2.0/24" "192.168.4.0/22" ];
 
-        # requires `--impure` :(
-        endpoint = (builtins.readFile /home/ellie/.config/wireguard/host);
-        persistentKeepalive = 25;
-      }];
-    };
-  };
+  #       # requires `--impure` :(
+  #       endpoint = (builtins.readFile /home/ellie/.config/wireguard/host);
+  #       persistentKeepalive = 25;
+  #     }];
+  #   };
+  # };
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
