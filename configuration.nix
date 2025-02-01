@@ -181,6 +181,7 @@
         # requires `--impure` :(
         endpoint = (lib.trim (builtins.readFile /home/ellie/.config/wireguard/host));
         persistentKeepalive = 25;
+        dynamicEndpointRefreshSeconds = 300; # five minutes
       }];
     };
   };
