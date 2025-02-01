@@ -83,6 +83,9 @@
     fish = {
       enable = true;
       functions = {
+        mkcd = ''
+          mkdir $argv && cd $argv
+        '';
         fish_mode_prompt = ''
           set -l last_status $status
           switch $fish_bind_mode
