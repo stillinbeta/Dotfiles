@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   imports = [ # Include the results of the hardware scan.
@@ -74,8 +74,7 @@
       "scanner" # (USB) scanning
       "lp" # printing
     ];
-    packages = with pkgs; [
-    ];
+    packages = with pkgs; [ ];
   };
 
   # home-manager.users.ellie = { pkgs, ... }: {
@@ -168,23 +167,23 @@
     allowedUDPPorts = [ 51820 ];
   };
 
-  # networking.wireguard.interfaces = {
-  #   wg0 = {
-  #     metric = 1001;
-  #     ips = [ "192.168.2.4/32" ];
-  #     listenPort = 51820;
+  networking.wireguard.interfaces = {
+    wg0 = {
+      metric = 1001;
+      ips = [ "192.168.2.4/32" ];
+      listenPort = 51820;
 
-  #     privateKeyFile = "/home/ellie/.config/wireguard/private";
-  #     peers = [{
-  #       publicKey = "o4FDF7gzOf2xrR83jHSHLIinIcMYU84prbxE/1uTLQ0=";
-  #       allowedIPs = [ "192.168.2.0/24" "192.168.4.0/22" ];
+      privateKeyFile = "/home/ellie/.config/wireguard/private";
+      peers = [{
+        publicKey = "o4FDF7gzOf2xrR83jHSHLIinIcMYU84prbxE/1uTLQ0=";
+        allowedIPs = [ "192.168.2.0/24" "192.168.4.0/22" ];
 
-  #       # requires `--impure` :(
-  #       endpoint = (builtins.readFile /home/ellie/.config/wireguard/host);
-  #       persistentKeepalive = 25;
-  #     }];
-  #   };
-  # };
+        # requires `--impure` :(
+        endpoint = (lib.trim (builtins.readFile /home/ellie/.config/wireguard/host));
+        persistentKeepalive = 25;
+      }];
+    };
+  };
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
