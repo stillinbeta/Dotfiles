@@ -7,6 +7,7 @@
 {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ./cachix.nix
     # ./sway-gnome.nix
     # /home/ellie/suspend-and-hibernate.nix
   ];
