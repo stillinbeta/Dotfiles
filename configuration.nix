@@ -159,6 +159,16 @@
   # List services that you want to enable:
   services.fwupd.enable = true;
 
+  services.lorri.enable = true;
+
+  services.tailscale = {
+    enable = true;
+    useRoutingFeatures = "client";
+    extraSetFlags = [
+      "--accept-routes"
+    ];
+  };
+
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
 
