@@ -82,41 +82,43 @@ This function should only modify configuration layer settings."
            rustic-lsp-server 'rust-analyzer
 
            )
+
+     dap
      ;; asm
      ;; c-c++
      lsp
      debug
      ;; dap
      (latex :variables latex-view-pdf-in-split-window t)
+     treemacs
      )
 
-   treemacs)
 
 
-  ;; List of additional packages that will be installed without being wrapped
-  ;; in a layer (generally the packages are installed only and should still be
-  ;; loaded using load/require/use-package in the user-config section below in
-  ;; this file). If you need some configuration for these packages, then
-  ;; consider creating a layer. You can also put the configuration in
-  ;; `dotspacemacs/user-config'. To use a local version of a package, use the
-  ;; `:location' property: '(your-package :location "~/path/to/your-package/")
-  ;; Also include the dependencies as they will not be resolved automatically.
-  dotspacemacs-additional-packages '()
+   ;; List of additional packages that will be installed without being wrapped
+   ;; in a layer (generally the packages are installed only and should still be
+   ;; loaded using load/require/use-package in the user-config section below in
+   ;; this file). If you need some configuration for these packages, then
+   ;; consider creating a layer. You can also put the configuration in
+   ;; `dotspacemacs/user-config'. To use a local version of a package, use the
+   ;; `:location' property: '(your-package :location "~/path/to/your-package/")
+   ;; Also include the dependencies as they will not be resolved automatically.
+   dotspacemacs-additional-packages '()
 
-  ;; A list of packages that cannot be updated.
-  dotspacemacs-frozen-packages '()
+   ;; A list of packages that cannot be updated.
+   dotspacemacs-frozen-packages '()
 
-  ;; A list of packages that will not be installed and loaded.
-  dotspacemacs-excluded-packages '()
+   ;; A list of packages that will not be installed and loaded.
+   dotspacemacs-excluded-packages '()
 
-  ;; Defines the behaviour of Spacemacs when installing packages.
-  ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
-  ;; `used-only' installs only explicitly used packages and deletes any unused
-  ;; packages as well as their unused dependencies. `used-but-keep-unused'
-  ;; installs only the used packages but won't delete unused ones. `all'
-  ;; installs *all* packages supported by Spacemacs and never uninstalls them.
-  ;; (default is `used-only')
-  dotspacemacs-install-packages 'used-only))
+   ;; Defines the behaviour of Spacemacs when installing packages.
+   ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
+   ;; `used-only' installs only explicitly used packages and deletes any unused
+   ;; packages as well as their unused dependencies. `used-but-keep-unused'
+   ;; installs only the used packages but won't delete unused ones. `all'
+   ;; installs *all* packages supported by Spacemacs and never uninstalls them.
+   ;; (default is `used-only')
+   dotspacemacs-install-packages 'used-only))
 
 (defun dotspacemacs/init ()
   "Initialization:
@@ -434,7 +436,7 @@ It should only modify the values of Spacemacs settings."
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's active or selected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
-   dotspacemacs-active-transparency 90
+   dotspacemacs-active-transparency 100
 
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's inactive or deselected.
@@ -645,6 +647,8 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
   ;; (spacemacs/enable-transparency)
+  (setq max-lisp-eval-depth 10000)
+
   (spacemacs/set-leader-keys
     "gB" 'magit-branch-spinoff
     )
@@ -744,11 +748,62 @@ This function is called at the very end of Spacemacs initialization."
    '(auth-source-save-behavior nil)
    '(evil-want-Y-yank-to-eol nil)
    '(package-selected-packages
-     '(base16-theme add-node-modules-path counsel-gtags counsel swiper ivy ggtags import-js grizzl js-doc js2-refactor multiple-cursors livid-mode nodejs-repl npm-mode skewer-mode js2-mode tern systemd journalctl-mode erlang zig-mode reformatter docker aio dockerfile-mode direnv company-nixos-options helm-nixos-options nix-mode nixos-options sqlite3 yasnippet-snippets yapfify yaml-mode xterm-color x86-lookup ws-butler writeroom-mode winum which-key web-mode web-beautify volatile-highlights vim-powerline vi-tilde-fringe uuidgen undo-tree treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil toml-mode toc-org terminal-here term-cursor tagedit symon symbol-overlay sql-indent sphinx-doc spacemacs-purpose-popwin spaceline space-doc smeargle slim-mode shell-pop scss-mode sass-mode rust-mode ron-mode restart-emacs realgud rainbow-delimiters quickrun pytest pylookup pyenv-mode pydoc py-isort pug-mode prettier-js popwin poetry pippel pipenv pip-requirements pdf-view-restore pcre2el paradox overseer orgit-forge org-superstar org-rich-yank org-projectile org-present org-pomodoro org-mime org-download org-contrib org-cliplink open-junk-file nose nasm-mode nameless multi-vterm multi-term move-text mmm-mode markdown-toc macrostep lsp-ui lsp-python-ms lsp-pyright lsp-origami lsp-latex lorem-ipsum live-py-mode link-hint jinja2-mode inspector info+ indent-guide importmagic impatient-mode hybrid-mode hungry-delete holy-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-xref helm-themes helm-swoop helm-rtags helm-pydoc helm-purpose helm-projectile helm-org-rifle helm-org helm-mode-manager helm-make helm-lsp helm-ls-git helm-git-grep helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag graphviz-dot-mode google-translate google-c-style golden-ratio godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc gnuplot gitignore-templates git-timemachine git-modes git-messenger git-link git-gutter-fringe gh-md gendoxy fuzzy flyspell-correct-helm flycheck-ycmd flycheck-rust flycheck-rtags flycheck-pos-tip flycheck-package flycheck-elsa flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-tex evil-surround evil-org evil-numbers evil-nerd-commenter evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-evilified-state evil-escape evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emr emmet-mode elisp-slime-nav elisp-def dumb-jump dotenv-mode disaster diminish devdocs define-word dap-mode cython-mode cpp-auto-include company-ycmd company-web company-rtags company-reftex company-math company-lua company-go company-c-headers company-auctex company-ansible company-anaconda column-enforce-mode code-cells clean-aindent-mode centered-cursor-mode ccls cargo browse-at-remote blacken auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile auctex-latexmk ansible-doc ansible all-the-icons aggressive-indent ace-link ace-jump-helm-line ac-ispell))
+     '(ac-ispell ace-jump-helm-line ace-link add-node-modules-path aggressive-indent
+                 aio all-the-icons ansible ansible-doc auctex-latexmk auto-compile
+                 auto-dictionary auto-highlight-symbol auto-yasnippet base16-theme
+                 blacken browse-at-remote bui cargo ccls centered-cursor-mode
+                 clean-aindent-mode code-cells column-enforce-mode
+                 company-anaconda company-ansible company-auctex company-c-headers
+                 company-go company-lua company-math company-nixos-options
+                 company-reftex company-rtags company-web company-ycmd counsel
+                 counsel-gtags cpp-auto-include cython-mode dap-mode define-word
+                 devdocs diminish direnv disaster docker dockerfile-mode
+                 dotenv-mode dumb-jump elisp-def elisp-slime-nav emmet-mode emr
+                 erlang esh-help eshell-prompt-extras eshell-z eval-sexp-fu
+                 evil-anzu evil-args evil-cleverparens evil-collection evil-escape
+                 evil-evilified-state evil-exchange evil-goggles evil-iedit-state
+                 evil-indent-plus evil-lion evil-lisp-state evil-matchit
+                 evil-nerd-commenter evil-numbers evil-org evil-surround evil-tex
+                 evil-textobj-line evil-tutor evil-unimpaired
+                 evil-visual-mark-mode evil-visualstar expand-region eyebrowse
+                 fancy-battery flx-ido flycheck-elsa flycheck-package
+                 flycheck-pos-tip flycheck-rtags flycheck-rust flycheck-ycmd
+                 flyspell-correct-helm fuzzy gendoxy ggtags gh-md
+                 git-gutter-fringe git-link git-messenger git-modes
+                 git-timemachine gitignore-templates gnuplot go-eldoc
+                 go-fill-struct go-gen-test go-guru go-impl go-rename go-tag
+                 godoctor golden-ratio google-c-style google-translate
+                 graphviz-dot-mode grizzl helm-ag helm-c-yasnippet helm-company
+                 helm-css-scss helm-descbinds helm-git-grep helm-ls-git helm-lsp
+                 helm-make helm-mode-manager helm-nixos-options helm-org
+                 helm-org-rifle helm-projectile helm-purpose helm-pydoc helm-rtags
+                 helm-swoop helm-themes helm-xref help-fns+ hide-comnt
+                 highlight-indentation highlight-numbers highlight-parentheses
+                 hl-todo holy-mode hungry-delete hybrid-mode impatient-mode
+                 import-js importmagic indent-guide info+ inspector ivy
+                 jinja2-mode journalctl-mode js-doc js2-mode js2-refactor
+                 link-hint live-py-mode livid-mode lorem-ipsum lsp-docker
+                 lsp-latex lsp-origami lsp-pyright lsp-python-ms lsp-ui macrostep
+                 markdown-toc mmm-mode move-text multi-term multi-vterm
+                 multiple-cursors nameless nasm-mode nix-mode nixos-options
+                 nodejs-repl nose npm-mode open-junk-file org-cliplink org-contrib
+                 org-download org-mime org-pomodoro org-present org-projectile
+                 org-rich-yank org-superstar orgit-forge overseer paradox pcre2el
+                 pdf-view-restore pip-requirements pipenv pippel poetry popwin
+                 prettier-js pug-mode py-isort pydoc pyenv-mode pylookup pytest
+                 quickrun rainbow-delimiters realgud reformatter restart-emacs
+                 ron-mode rust-mode sass-mode scss-mode shell-pop skewer-mode
+                 slim-mode smeargle space-doc spaceline spacemacs-purpose-popwin
+                 sphinx-doc sql-indent sqlite3 swiper symbol-overlay symon systemd
+                 tagedit term-cursor terminal-here tern toc-org toml-mode
+                 treemacs-evil treemacs-icons-dired treemacs-magit treemacs-persp
+                 treemacs-projectile undo-tree uuidgen vi-tilde-fringe
+                 vim-powerline volatile-highlights web-beautify web-mode which-key
+                 winum writeroom-mode ws-butler x86-lookup xterm-color yaml-mode
+                 yapfify yasnippet-snippets zig-mode))
    '(paradox-github-token t)
    '(safe-local-variable-values
-     '((haskell-process-use-ghci . t)
-       (haskell-indent-spaces . 4))))
+     '((haskell-process-use-ghci . t) (haskell-indent-spaces . 4))))
   (custom-set-faces
    ;; custom-set-faces was added by Custom.
    ;; If you edit it by hand, you could mess it up, so be careful.
