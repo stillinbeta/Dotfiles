@@ -52,6 +52,8 @@
     };
   };
 
+  services.lorri.enable = true;
+
   programs = {
     git = {
       enable = true;
@@ -66,6 +68,10 @@
         };
         magithub = { online = false; };
       };
+    };
+
+    alacritty = {
+      enable = true;
     };
 
     bash = {
@@ -126,7 +132,7 @@
 
     emacs = {
       enable = true;
-      package = pkgs.emacs29-pgtk;
+      package = pkgs.emacs-pgtk;
     };
 
     firefox = { enable = true; };
@@ -134,6 +140,7 @@
       enable = true;
       nix-direnv.enable = true;
     };
+
 
     # Let home Manager install and manage itself.
     home-manager.enable = true;
