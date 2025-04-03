@@ -121,6 +121,21 @@
     };
   };
 
+  services.udev.packages = [
+    (pkgs.callPackage
+      "/home/ellie/Projects/nixpkgs/pkgs/by-name/pr/probe-rs-tools/package.nix"
+      { })
+    (pkgs.writeTextFile {
+      name = "adafruit-rules";
+      text = ''
+        ACTION!="add|change", GOTO="adafruit_rules_end"
+        SUBSYSTEM!="usb|tty|hidraw", GOTO="adafruit_rules_end"
+        ATTRS{idVendor}=="239a", ATTRS{idProduct}=="8035", MODE="664", TAG+="uaccess"
+        LABEL="adafruit_rules_end"
+      '';
+      destination = "/etc/udev/rules.d/50-adafruit.rules";
+    })
+  ];
   # gnome = {
   #   core-developer-tools.enable = true;
   #   games.enable = true;
@@ -159,14 +174,10 @@
   # List services that you want to enable:
   services.fwupd.enable = true;
 
-  services.lorri.enable = true;
-
   services.tailscale = {
     enable = true;
     useRoutingFeatures = "client";
-    extraSetFlags = [
-      "--accept-routes"
-    ];
+    extraSetFlags = [ "--accept-routes" ];
   };
 
   # Enable the OpenSSH daemon.
@@ -190,7 +201,8 @@
         allowedIPs = [ "192.168.2.0/24" "192.168.4.0/22" ];
 
         # requires `--impure` :(
-        endpoint = (lib.trim (builtins.readFile /home/ellie/.config/wireguard/host));
+        endpoint =
+          (lib.trim (builtins.readFile /home/ellie/.config/wireguard/host));
         persistentKeepalive = 25;
         dynamicEndpointRefreshSeconds = 300; # five minutes
       }];
