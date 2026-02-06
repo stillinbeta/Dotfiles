@@ -4,6 +4,8 @@
   hosts: localhost
   vars:
     yq_version: 4.44.2
+    kind_version: v0.31.0
+    up_version: 0.44.3
   tasks:
   - name: install fish
     block:
@@ -50,9 +52,16 @@
     get_url:
       url: "https://github.com/mikefarah/yq/releases/download/v{{ yq_version }}/yq_linux_amd64"
       dest: "{{ ansible_user_dir }}/.local/bin/yq"
+      mode: 'u+rwx'
+  - name: "install kind"
+    get_url:
+      url: "https://kind.sigs.k8s.io/dl/{{ kind_version }}/kind-linux-amd64"
+      dest: "{{ ansible_user_dir }}/.local/bin/kind"
+      mode: 'u+rwx'
   - name: "latest ansible"
     block:
-    - shell:
+    - name: 'ansible ppa'
+      shell:
         cmd: add-apt-repository -y ppa:ansible/ansible
         creates: "/etc/apt/sources.list.d/fish-shell-ansible-ansible-{{ ansible_distribution_release }}.sources"
       become: true
@@ -71,6 +80,16 @@
       - docker
       append: true
     become: true
+  - name: "upbound packages"
+    block:
+    - name: 'install up'
+      apt:
+        deb:  https://cli.upbound.io/stable/v{{ up_version }}/deb/up_{{ up_version }}_linux_amd64.deb
+      become: true
+    - name: 'install docker-credential-up'
+      apt:
+        deb:  https://cli.upbound.io/stable/v{{ up_version }}/deb/docker-credential-up_{{ up_version }}_linux_amd64.deb
+      become: true
   - name: "install aws-cli"
     block:
     - name: "download AWS CLI"
@@ -87,15 +106,14 @@
         creates: "/usr/local/bin/aws"
       when: "aws_cli_archive.changed"
       become: true
-    - name: "install session manager plugin"
-      apt:
-        deb: "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_amd64/session-manager-plugin.deb"
-      become: true
-    block:
-    - name: "make directory"
-      file:
-        state: "directory"
-        path: "{{ ansible_user_dir}}/.local/src"
+    # - name: "install session manager plugin"
+    #   apt:
+    #     deb: "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_amd64/session-manager-plugin.deb"
+    #   become: true
+  - name: "make directory"
+    file:
+      state: "directory"
+      path: "{{ ansible_user_dir}}/.local/src"
   roles:
   - role: repo_with_key
     vars:
@@ -137,8 +155,4 @@
     asdf_plugins:
     - name: golang
       versions:
-      - "1.13"
-      - "1.16"
-      - "1.20"
-      - "1.22.7"
-      - "1.24.0"
+      - "1.25"
