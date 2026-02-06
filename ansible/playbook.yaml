@@ -12,7 +12,7 @@
     - name: "fish repo"
       shell:
         cmd: add-apt-repository -y ppa:fish-shell/release-4
-        creates: "/etc/apt/sources.list.d/fish-shell-ubuntu-release-4-{{ ansible_distribution_release }}.sources"
+        creates: "/etc/apt/sources.list.d/fish-shell-ubuntu-release-4-{{ ansible_facts['distribution_release'] }}.sources"
       become: true
     - name: "install fish"
       apt:
@@ -20,7 +20,7 @@
       become: true
     - name: "set shell"
       user:
-        name: "{{ ansible_user_id }}"
+        name: "{{ ansible_facts['user_id'] }}"
         shell: /bin/fish
       become: true
   - name: ".local/bin"
@@ -30,7 +30,7 @@
   - name: "checkout spacemacs"
     git:
       repo: "https://github.com/syl20bnr/spacemacs"
-      dest: "{{ ansible_user_dir }}/.emacs.d"
+      dest: "{{ ansible_facts['user_dir'] }}/.emacs.d"
       update: yes
       version: develop
   - name: "install dev tools"
@@ -51,19 +51,19 @@
   - name: "install yq"
     get_url:
       url: "https://github.com/mikefarah/yq/releases/download/v{{ yq_version }}/yq_linux_amd64"
-      dest: "{{ ansible_user_dir }}/.local/bin/yq"
+      dest: "{{ ansible_facts['user_dir'] }}/.local/bin/yq"
       mode: 'u+rwx'
   - name: "install kind"
     get_url:
       url: "https://kind.sigs.k8s.io/dl/{{ kind_version }}/kind-linux-amd64"
-      dest: "{{ ansible_user_dir }}/.local/bin/kind"
+      dest: "{{ ansible_facts['user_dir'] }}/.local/bin/kind"
       mode: 'u+rwx'
   - name: "latest ansible"
     block:
     - name: 'ansible ppa'
       shell:
         cmd: add-apt-repository -y ppa:ansible/ansible
-        creates: "/etc/apt/sources.list.d/fish-shell-ansible-ansible-{{ ansible_distribution_release }}.sources"
+        creates: "/etc/apt/sources.list.d/fish-shell-ansible-ansible-{{ ansible_facts['distribution_release'] }}.sources"
       become: true
     - name: "upgrade ansible"
       apt:
@@ -75,7 +75,7 @@
     become: true
   - name: "add user to docker group"
     user:
-      name: "{{ ansible_user_id }}"
+      name: "{{ ansible_facts['user_id'] }}"
       groups:
       - docker
       append: true
@@ -96,8 +96,8 @@
       unarchive:
         remote_src: true
         src: "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip"
-        creates: "{{ ansible_user_dir }}/.local/share/aws"
-        dest: "{{ ansible_user_dir }}/.local/share"
+        creates: "{{ ansible_facts['user_dir'] }}/.local/share/aws"
+        dest: "{{ ansible_facts['user_dir'] }}/.local/share"
       register: aws_cli_archive
     - name: install AWS CLI
       shell:
@@ -117,9 +117,9 @@
   roles:
   - role: repo_with_key
     vars:
-      name: "docker"
+      repo_name: "docker"
       key_url:  "https://download.docker.com/linux/ubuntu/gpg"
-      repo_url: "https://download.docker.com/linux/ubuntu/ {{ ansible_distribution_release }} stable"
+      repo_url: "https://download.docker.com/linux/ubuntu/ {{ ansible_facts['distribution_release'] }} stable"
       package:
       - "docker-ce"
       - "docker-ce-cli"
@@ -128,14 +128,14 @@
       - "docker-compose-plugin"
   - role: repo_with_key
     vars:
-      name: "helm"
+      repo_name: "helm"
       key_url: "https://packages.buildkite.com/helm-linux/helm-debian/gpgkey"
       repo_url: "https://packages.buildkite.com/helm-linux/helm-debian/any/ any main"
       package:
       - helm
   - role: repo_with_key
     vars:
-      name: "github"
+      repo_name: "github"
       key_name: "github.gpg"
       key_url:  "https://cli.github.com/packages/githubcli-archive-keyring.gpg"
       repo_url: "https://cli.github.com/packages stable main"
@@ -143,16 +143,16 @@
       - "gh"
   - role: repo_with_key
     vars:
-      name: "kubernetes"
+      repo_name: "kubernetes"
       key_url: https://pkgs.k8s.io/core:/stable:/v1.35/deb/Release.key
       repo_url: "https://pkgs.k8s.io/core:/stable:/v1.35/deb/ /"
       package:
       - "kubectl"
 #  - role: emacs
   - role: cimon-io.asdf
-    asdf_user: "{{ ansible_user_id }}"
-    asdf_group: "{{ ansible_user_gid }}"
+    asdf_user: "{{ ansible_facts['user_id'] }}"
+    asdf_group: "{{ ansible_facts['user_gid'] }}"
     asdf_plugins:
     - name: golang
       versions:
-      - "1.25"
+      - "1.25.7"
