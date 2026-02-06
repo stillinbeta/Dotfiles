@@ -1,0 +1,144 @@
+---
+- name: set up a development environment
+  connection: local
+  hosts: localhost
+  vars:
+    yq_version: 4.44.2
+  tasks:
+  - name: install fish
+    block:
+    - name: "fish repo"
+      shell:
+        cmd: add-apt-repository -y ppa:fish-shell/release-4
+        creates: "/etc/apt/sources.list.d/fish-shell-ubuntu-release-4-{{ ansible_distribution_release }}.sources"
+      become: true
+    - name: "install fish"
+      apt:
+        name: fish
+      become: true
+    - name: "set shell"
+      user:
+        name: "{{ ansible_user_id }}"
+        shell: /bin/fish
+      become: true
+  - name: ".local/bin"
+    file:
+      state: "directory"
+      path: "{{ ansible_user_dir}}/.local/bin"
+  - name: "checkout spacemacs"
+    git:
+      repo: "https://github.com/syl20bnr/spacemacs"
+      dest: "{{ ansible_user_dir }}/.emacs.d"
+      update: yes
+      version: develop
+  - name: "install dev tools"
+    apt:
+      name:
+      - build-essential
+      - ripgrep
+      - jq
+      - gist
+      - direnv
+      - gopls
+      - pre-commit
+      - emacs-pgtk
+      - fonts-inconsolata
+      - clamav # compliance
+      - htop
+    become: true
+  - name: "install yq"
+    get_url:
+      url: "https://github.com/mikefarah/yq/releases/download/v{{ yq_version }}/yq_linux_amd64"
+      dest: "{{ ansible_user_dir }}/.local/bin/yq"
+  - name: "latest ansible"
+    block:
+    - shell:
+        cmd: add-apt-repository -y ppa:ansible/ansible
+        creates: "/etc/apt/sources.list.d/fish-shell-ansible-ansible-{{ ansible_distribution_release }}.sources"
+      become: true
+    - name: "upgrade ansible"
+      apt:
+        name: ansible
+      become: true
+  - name: "add docker group"
+    group:
+      name: docker
+    become: true
+  - name: "add user to docker group"
+    user:
+      name: "{{ ansible_user_id }}"
+      groups:
+      - docker
+      append: true
+    become: true
+  - name: "install aws-cli"
+    block:
+    - name: "download AWS CLI"
+      unarchive:
+        remote_src: true
+        src: "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip"
+        creates: "{{ ansible_user_dir }}/.local/share/aws"
+        dest: "{{ ansible_user_dir }}/.local/share"
+      register: aws_cli_archive
+    - name: install AWS CLI
+      shell:
+        chdir: "{{ aws_cli_archive.dest }}"
+        cmd: "./aws/install"
+        creates: "/usr/local/bin/aws"
+      when: "aws_cli_archive.changed"
+      become: true
+    - name: "install session manager plugin"
+      apt:
+        deb: "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_amd64/session-manager-plugin.deb"
+      become: true
+    block:
+    - name: "make directory"
+      file:
+        state: "directory"
+        path: "{{ ansible_user_dir}}/.local/src"
+  roles:
+  - role: repo_with_key
+    vars:
+      name: "docker"
+      key_url:  "https://download.docker.com/linux/ubuntu/gpg"
+      repo_url: "https://download.docker.com/linux/ubuntu/ {{ ansible_distribution_release }} stable"
+      package:
+      - "docker-ce"
+      - "docker-ce-cli"
+      - "containerd.io"
+      - "docker-buildx-plugin"
+      - "docker-compose-plugin"
+  - role: repo_with_key
+    vars:
+      name: "helm"
+      key_url: "https://packages.buildkite.com/helm-linux/helm-debian/gpgkey"
+      repo_url: "https://packages.buildkite.com/helm-linux/helm-debian/any/ any main"
+      package:
+      - helm
+  - role: repo_with_key
+    vars:
+      name: "github"
+      key_name: "github.gpg"
+      key_url:  "https://cli.github.com/packages/githubcli-archive-keyring.gpg"
+      repo_url: "https://cli.github.com/packages stable main"
+      package:
+      - "gh"
+  - role: repo_with_key
+    vars:
+      name: "kubernetes"
+      key_url: https://pkgs.k8s.io/core:/stable:/v1.35/deb/Release.key
+      repo_url: "https://pkgs.k8s.io/core:/stable:/v1.35/deb/ /"
+      package:
+      - "kubectl"
+#  - role: emacs
+  - role: cimon-io.asdf
+    asdf_user: "{{ ansible_user_id }}"
+    asdf_group: "{{ ansible_user_gid }}"
+    asdf_plugins:
+    - name: golang
+      versions:
+      - "1.13"
+      - "1.16"
+      - "1.20"
+      - "1.22.7"
+      - "1.24.0"

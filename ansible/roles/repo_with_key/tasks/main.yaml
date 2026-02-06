@@ -1,0 +1,14 @@
+- name: "get {{ name }} key"
+  get_url:
+    url: "{{ key_url }}"
+    dest: "{{ key_path }}"
+    mode: 0644
+  become: true
+- name: "setup {{ name }} repository"
+  apt_repository:
+    repo: "deb [arch=amd64 signed-by={{key_path}}] {{repo_url}}"
+  become: true
+- name: "install {{ name }} packages"
+  apt:
+    name: "{{ package }}"
+  become: true

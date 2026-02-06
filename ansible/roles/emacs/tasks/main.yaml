@@ -1,0 +1,93 @@
+- name: ubuntu-toolchain-ppa
+  command:
+    cmd: add-apt-repository -P ubuntu-toolchain-r/ppa
+    creates: '/etc/apt/sources.list.d/ubuntu-toolchain-r-ubuntu-ppa-{{ ansible_distribution_release }}.list'
+  become: true
+- name: "install emacs deps"
+  apt:
+    name:
+    - libxpm-dev
+    - libgif-dev
+    - libjpeg-dev
+    - libpng-dev
+    - libtiff-dev
+    - libx11-dev
+    - libncurses5-dev
+    - automake
+    - autoconf
+    - texinfo
+    - libgtk2.0-dev
+    - gcc-10
+    - g++-10
+    - libgccjit0
+    - libgccjit-10-dev
+    - librsvg2-dev
+    - libjansson4
+    - libjansson-dev
+    - libgtk-3-dev
+    - libwebkit2gtk-4.0-dev
+    - libgnutls28-dev
+    update_cache: true
+  become: true
+- name: "checkout emacs"
+  git:
+    repo: "https://git.savannah.gnu.org/git/emacs.git"
+    refspec: "emacs-29.1"
+    dest: "{{ ansible_user_dir }}/emacs"
+    version: "6a299b3caceb2c73b932ba73849738faa8c5d975"
+    update: true
+    depth: 1
+  register: emacsrepo
+- name: "checkout spacemacs"
+  git:
+    repo: "https://github.com/syl20bnr/spacemacs"
+    dest: "{{ ansible_user_dir }}/.emacs.d"
+    update: no
+    version: develop
+- name: "autogen emacs"
+  shell:
+    chdir: "{{ ansible_user_dir }}/emacs"
+    cmd: "./autogen.sh git && ./autogen.sh autoconf"
+    creates: "./configure"
+  when: emacsrepo.changed
+- name: "configure emacs"
+  vars:
+    config_flags:
+    - "--prefix=/usr"
+    - "--sysconfdir=/etc"
+    - "--libexecdir=/usr/lib"
+    - "--localstatedir=/var"
+    - "--mandir=/usr/share/man"
+    - "--with-gameuser=:games"
+    - "--with-modules"
+    - "--with-x-toolkit=gtk3"
+    - "--with-cairo"
+    - "--with-xwidgets"
+    - "--with-rsvg"
+    - "--with-native-compilation"
+    # - "--with-pgtk" # not over x
+    - "--with-sqlite3"
+    - "--without-compress-install"
+    - "--without-gconf"
+    - "--without-gsettings"
+    - "--without-m17n-flt"
+    - "--enable-autodepend"
+    - "--enable-link-time-optimization"
+  shell:
+    chdir: "{{ ansible_user_dir }}/emacs"
+    cmd: "./configure {{ config_flags | join(' ') }}"
+  environment:
+    CC: /usr/bin/gcc-10
+    CXX: /usr/bin/gcc-10
+  when: emacsrepo.changed
+- name: "build emacs"
+  shell:
+    chdir: "{{ ansible_user_dir }}/emacs"
+    cmd: "make -j{{ansible_processor_nproc}} NATIVE_FULL_AOT=1"
+  when: emacsrepo.changed
+- name: "install emacs"
+  shell:
+    chdir: "{{ ansible_user_dir }}/emacs"
+    cmd: "make install"
+  become: true
+  when: emacsrepo.changed

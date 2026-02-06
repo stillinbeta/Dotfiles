@@ -1,0 +1,24 @@
+---
+argument_specs:
+  main:
+    options:
+      name:
+        type: "str"
+        required: true
+      key_name:
+        type: "str"
+        required: false
+        description: "filename to download the key to"
+      key_url:
+        type: "str"
+        required: true
+        description: "URL to retrieve the key from"
+      repo_url:
+        type: "str"
+        required: true
+        description: "the repo URL, including distribution"
+      package:
+        type: "list"
+        elements: "str"
+        required: true
+        description: "the package to install"
