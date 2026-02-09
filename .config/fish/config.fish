@@ -26,8 +26,11 @@ status is-interactive; and begin
     fish_vi_key_bindings
 
     direnv hook fish | source
+    helmfile completion fish | source
 
+    abbr --add k kubectl
 end
+
 
 # ASDF configuration code
 if test -z $ASDF_DATA_DIR
