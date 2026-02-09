@@ -61,12 +61,39 @@
       dest: "{{ ansible_facts['user_dir'] }}/.local/bin/kind"
       mode: 'u+rwx'
   - name: "cloud-provider-kind"
-    unarchive:
-      remote_src: true
-      src: https://github.com/kubernetes-sigs/cloud-provider-kind/releases/download/v{{ cloud_provider_kind_version }}/cloud-provider-kind_{{ cloud_provider_kind_version }}_linux_amd64.tar.gz
-      creates: "{{ ansible_facts['user_dir'] }}/.local/bin/cloud-provider-kind"
-      dest: "{{ ansible_facts['user_dir'] }}/.local/bin"
-      include: 'cloud-provider-kind'
+    block:
+    - name: "cloud-provider-kind"
+      unarchive:
+        remote_src: true
+        src: https://github.com/kubernetes-sigs/cloud-provider-kind/releases/download/v{{ cloud_provider_kind_version }}/cloud-provider-kind_{{ cloud_provider_kind_version }}_linux_amd64.tar.gz
+        creates: "/usr/local/bin/.local/bin/cloud-provider-kind"
+        dest: "/usr/local/bin/"
+        include: 'cloud-provider-kind'
+      become: true
+    - name: 'cloud-provider-kind unit'
+      register: cpk_unit
+      copy:
+        content: |
+          [Unit]
+          Description=
+          After=network.target
+
+          [Service]
+          Type=simple
+          User=
+          ExecStart="/usr/local/bin/cloud-provider-kind"
+          Restart=on-failure
+
+          [Install]
+          WantedBy=multi-user.target
+        dest: /etc/systemd/system/cloud-provider-kind.service
+      become: true
+    - name: "start cloud-provider-kind service"
+      systemd_service:
+        name: cloud-provider-kind
+        state: started
+        daemon-reload: "{{ cpk_unit.changed }}"
+      become: true
   - name: "latest ansible"
     block:
     - name: 'ansible ppa'
