@@ -5,6 +5,7 @@
   vars:
     yq_version: 4.44.2
     kind_version: v0.31.0
+    cloud_provider_kind_version: 0.10.0
     up_version: 0.44.3
     jolt_version: 1.1.3
   tasks:
@@ -59,16 +60,27 @@
       url: "https://kind.sigs.k8s.io/dl/{{ kind_version }}/kind-linux-amd64"
       dest: "{{ ansible_facts['user_dir'] }}/.local/bin/kind"
       mode: 'u+rwx'
+  - name: "cloud-provider-kind"
+    unarchive:
+      remote_src: true
+      src: https://github.com/kubernetes-sigs/cloud-provider-kind/releases/download/v{{ cloud_provider_kind_version }}/cloud-provider-kind_{{ cloud_provider_kind_version }}_linux_amd64.tar.gz
+      creates: "{{ ansible_facts['user_dir'] }}/.local/bin/cloud-provider-kind"
+      dest: "{{ ansible_facts['user_dir'] }}/.local/bin"
+      include: 'cloud-provider-kind'
   - name: "latest ansible"
     block:
     - name: 'ansible ppa'
       shell:
         cmd: add-apt-repository -y ppa:ansible/ansible
-        creates: "/etc/apt/sources.list.d/fish-shell-ansible-ansible-{{ ansible_facts['distribution_release'] }}.sources"
+        creates: "/etc/apt/sources.list.d/ansible-ubuntu-ansible-{{ ansible_facts['distribution_release'] }}.sources"
       become: true
     - name: "upgrade ansible"
       apt:
-        name: ansible
+        name:
+        # https://github.com/ansible/ansible/issues/86268
+        - ansible-core=2.19.0-1ubuntu1
+        - ansible
+        allow_downgrade: true
       become: true
   - name: "add docker group"
     group:
