@@ -68,6 +68,10 @@
       creates: "{{ ansible_facts['user_dir'] }}/.local/bin/helmfile"
       dest: "{{ ansible_facts['user_dir'] }}/.local/bin"
       include: 'helmfile'
+  - name: "helm diff plugin"
+    kubernetes.core.helm_plugin:
+      plugin_path: https://github.com/databus23/helm-diff
+      state: present
   - name: "cloud-provider-kind"
     block:
     - name: "cloud-provider-kind"
