@@ -174,6 +174,53 @@
     file:
       state: "directory"
       path: "{{ ansible_facts['user_dir']}}/.local/src"
+  - name: keyd
+    block:
+    - name: "latest keyd"
+      block:
+      - name: "keyd ppa"
+        shell:
+          cmd: "add-apt-repository -y ppa:keyd-team/ppa"
+          creates: "/etc/apt/sources.list.d/keyd-team-ubuntu-ppa-{{ ansible_facts['distribution_release'] }}.sources"
+        become: true
+        register: keyd_ppa
+      - name: "keyd"
+        apt:
+          name: keyd
+          update_cache: "{{ keyd_ppa.changed }}"
+        become: true
+      - name: "dvorak config"
+        copy:
+          content: |
+            include layouts/dvorak
+
+            [ids]
+            0001:0001
+
+            [global]
+            default_layout = dvorak
+          dest: /etc/keyd/default.conf
+        become: true
+        register: keyd_file
+      - name: enable daemon
+        systemd_service:
+          name: keyd
+          state: "started"
+          enabled: true
+        become: true
+      - name: "bounce keyd"
+        systemd_service:
+          state: "reloaded"
+        become: true
+        when: keyd_file.changed
+      # - name: 'ansible ppa'
+      #   shell:
+      #     cmd: ppa:keyd-team/ppa
+      #     creates: "/etc/apt/sources.list.d/keyd-team-ubuntu-keyd-{{ ansible_facts['distribution_release'] }}.sources"
+      #   become: true
+
+    
+
   roles:
   - role: repo_with_key
     vars:
