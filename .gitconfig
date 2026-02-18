@@ -3,3 +3,5 @@
 	name = Liz Frost
 [init]
 	defaultBranch = main
+[color]
+	ui = auto
