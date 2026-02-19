@@ -50,6 +50,7 @@
       - fonts-inconsolata
       - clamav # compliance
       - htop
+      - net-tools
     become: true
   - name: "install yq"
     get_url:
@@ -87,13 +88,13 @@
       copy:
         content: |
           [Unit]
-          Description=
+          Description=cloud-provider-kind daemon
           After=network.target
 
           [Service]
           Type=simple
           User=
-          ExecStart="/usr/local/bin/cloud-provider-kind"
+          ExecStart="/usr/local/bin/cloud-provider-kind" --gateway-channel experimental
           Restart=on-failure
 
           [Install]
@@ -103,7 +104,7 @@
     - name: "start cloud-provider-kind service"
       systemd_service:
         name: cloud-provider-kind
-        state: started
+        state: "{{ cpk_unit.changed | ternary('restarted', 'started') }}"
         daemon-reload: "{{ cpk_unit.changed }}"
       become: true
   - name: "latest ansible"
@@ -218,9 +219,6 @@
       #     cmd: ppa:keyd-team/ppa
       #     creates: "/etc/apt/sources.list.d/keyd-team-ubuntu-keyd-{{ ansible_facts['distribution_release'] }}.sources"
       #   become: true
-
-    
-
   roles:
   - role: repo_with_key
     vars:
