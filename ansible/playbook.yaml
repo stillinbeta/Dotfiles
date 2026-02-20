@@ -156,7 +156,7 @@
     - name: "download AWS CLI"
       unarchive:
         remote_src: true
-        src: "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip"
+        src: "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
         creates: "{{ ansible_facts['user_dir'] }}/.local/share/aws"
         dest: "{{ ansible_facts['user_dir'] }}/.local/share"
       register: aws_cli_archive
@@ -175,6 +175,9 @@
     file:
       state: "directory"
       path: "{{ ansible_facts['user_dir']}}/.local/src"
+  - name: gcloud proxies
+    block:
+
   - name: keyd
     block:
     - name: "latest keyd"
@@ -219,7 +222,27 @@
       #     cmd: ppa:keyd-team/ppa
       #     creates: "/etc/apt/sources.list.d/keyd-team-ubuntu-keyd-{{ ansible_facts['distribution_release'] }}.sources"
       #   become: true
+  - name: "inotify limits"
+    ansible.posix.sysctl:
+      name: fs.inotify.max_user_instances
+      value: '256'
+      state: present
+    become: true
   roles:
+  - role: repo_with_key
+    vars:
+      repo_name: azure
+      key_url: https://packages.microsoft.com/keys/microsoft.asc
+      repo_url: "https://packages.microsoft.com/repos/azure-cli/ noble main" # no questing
+      package:
+      - azure-cli
+  - role: repo_with_key
+    vars:
+      repo_name: gcloud
+      key_url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+      repo_url: https://packages.cloud.google.com/apt cloud-sdk main
+      package:
+      - "google-cloud-cli"
   - role: repo_with_key
     vars:
       repo_name: "docker"
