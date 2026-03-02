@@ -9,6 +9,7 @@
     up_version: 0.44.3
     jolt_version: 1.1.3
     helmfile_version: 1.2.3
+    actionlint_version: 1.7.11 
   tasks:
   - name: install fish
     block:
@@ -69,6 +70,13 @@
       creates: "{{ ansible_facts['user_dir'] }}/.local/bin/helmfile"
       dest: "{{ ansible_facts['user_dir'] }}/.local/bin"
       include: 'helmfile'
+  - name: "install actionlint"
+    unarchive:
+      remote_src: true
+      src: "https://github.com/rhysd/actionlint/releases/download/v{{ actionlint_version }}/actionlint_{{ actionlint_version }}_linux_amd64.tar.gz"
+      creates: "{{ ansible_facts['user_dir'] }}/.local/bin/actionlint"
+      dest: "{{ ansible_facts['user_dir'] }}/.local/bin"
+      include: actionlint
   - name: "helm diff plugin"
     kubernetes.core.helm_plugin:
       plugin_path: https://github.com/databus23/helm-diff
@@ -177,6 +185,52 @@
       path: "{{ ansible_facts['user_dir']}}/.local/src"
   - name: gcloud proxies
     block:
+    - name: 'gcloud iap dev proxy'
+      register: iap_dev_unit
+      copy:
+        content: |
+          [Unit]
+          Description=
+          After=network.target
+
+          [Service]
+          Type=simple
+          User=
+          ExecStart=gcloud compute start-iap-tunnel jump-dev 8888 --local-host-port=localhost:8888 --project=upbound-cloud-dev --zone us-west1-a
+          Restart=on-failure
+
+          [Install]
+          WantedBy=default.target
+        dest: "{{ ansible_facts['user_dir']}}/.config/systemd/user/gcloud-ip-proxy-dev.service"
+    - name: "start cloud-provider-kind service"
+      systemd_service:
+        scope: user
+        name: gcloud-ip-proxy-dev
+        state: "{{ iap_dev_unit.changed | ternary('restarted', 'started') }}"
+        daemon-reload: "{{ iap_dev_unit.changed }}"
+    - name: 'gcloud iap prod proxy'
+      register: iap_prod_unit
+      copy:
+        content: |
+          [Unit]
+          Description=
+          After=network.target
+
+          [Service]
+          Type=simple
+          User=
+          ExecStart=gcloud compute start-iap-tunnel jump-production 8888 --local-host-port=localhost:8889 --project=upbound-cloud-production --zone us-west1-a
+          Restart=on-failure
+
+          [Install]
+          WantedBy=default.target
+        dest: "{{ ansible_facts['user_dir']}}/.config/systemd/user/gcloud-ip-proxy-prod.service"
+    - name: "start cloud-provider-kind service"
+      systemd_service:
+        scope: user
+        name: gcloud-ip-proxy-prod
+        state: "{{ iap_prod_unit.changed | ternary('restarted', 'started') }}"
+        daemon-reload: "{{ iap_prod_unit.changed }}"
 
   - name: keyd
     block:
@@ -228,6 +282,38 @@
       value: '256'
       state: present
     become: true
+  - name: "goimports"
+    shell:
+      cmd: "go install golang.org/x/tools/cmd/goimports@latest"
+      creates: "{{ ansible_facts['user_dir'] }}/.local/bin/goimports"
+    environment:
+      GOBIN: "{{ ansible_facts['user_dir'] }}/.local/bin"
+  - name: "theme grub"
+    block:
+    - name: check for background
+      stat:
+        path: "{{ ansible_facts['user_dir'] }}/Pictures/grubbg.png"
+      register: grubpng
+    - name: "copy to boot"
+      register: bootpng
+      when: grubpng.stat.exists
+      copy:
+        src: "{{ grubpng.stat.path }}"
+        dest: "/boot/grub/grubbg.png"
+      become: true
+    - name: "set GRUB_BACKGROUND cfg"
+      copy:
+        content: |
+          GRUB_BACKGROUND="/boot/grub/grubbg.png"
+        dest: "/etc/default/grub.d/background.cfg"
+      register: backgroundcfg
+      become: true
+    - name: "run update-grub"
+      shell:
+        cmd: update-grub
+      become: true
+      when: backgroundcfg.changed
+
   roles:
   - role: repo_with_key
     vars:
@@ -243,6 +329,7 @@
       repo_url: https://packages.cloud.google.com/apt cloud-sdk main
       package:
       - "google-cloud-cli"
+      - "google-cloud-cli-gke-gcloud-auth-plugin"
   - role: repo_with_key
     vars:
       repo_name: "docker"
