@@ -8,6 +8,8 @@ status is-login; and begin
 
 end
 
+set -gx ASDF_GOLANG_MOD_VERSION_ENABLED "true"
+
 if test -z $ASDF_DATA_DIR
     set _asdf_shims "$HOME/.asdf/shims"
 else
@@ -24,6 +26,12 @@ set --erase _asdf_shims
 if not contains $HOME/.local/bin $PATH
     set -gx --prepend PATH $HOME/.local/bin
 end
+
+if not contains $HOME/.asdf/bin $PATH
+    set -gx --prepend PATH $HOME/.asdf/bin
+end
+
+
 
 function __aws_complete
     set --local --export COMP_SHELL fish
