@@ -9,7 +9,8 @@
     up_version: 0.44.3
     jolt_version: 1.1.3
     helmfile_version: 1.2.3
-    actionlint_version: 1.7.11 
+    actionlint_version: 1.7.11
+    goreleaser_version: 2.14.1
   tasks:
   - name: install fish
     block:
@@ -141,6 +142,10 @@
       - docker
       append: true
     become: true
+  - name: "Install go-releaser"
+    apt:
+      deb: https://github.com/goreleaser/goreleaser/releases/download/v{{ goreleaser_version }}/goreleaser_{{ goreleaser_version }}_amd64.deb
+    become: true
   - name: "upbound packages"
     block:
     - name: 'install up'
@@ -219,7 +224,7 @@
           [Service]
           Type=simple
           User=
-          ExecStart=gcloud compute start-iap-tunnel jump-production 8888 --local-host-port=localhost:8889 --project=upbound-cloud-production --zone us-west1-a
+          ExecStart=gcloud compute start-iap-tunnel jump-production 8888 --local-host-port=localhost:8890 --project=upbound-cloud-production --zone us-west1-a
           Restart=on-failure
 
           [Install]
@@ -279,7 +284,7 @@
   - name: "inotify limits"
     ansible.posix.sysctl:
       name: fs.inotify.max_user_instances
-      value: '256'
+      value: '4096'
       state: present
     become: true
   - name: "goimports"
