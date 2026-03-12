@@ -33,23 +33,10 @@ end
 
 
 
-function __aws_complete
-    set --local --export COMP_SHELL fish
-    set --local --export COMP_LINE (commandline -pc)
-
-    if string match -q -- - (commandline -pt)
-        set COMP_LINE "$COMP_LINE-"
-    end
-
-    aws_completer | command sed 's/ $//'
-end
-
-# Enable AWS CLI autocompletion: github.com/aws/aws-cli/issues/1079
-complete --command aws --no-files --arguments '(__aws_complete)'
-
 status is-interactive; and begin
 
     # Abbreviations
+    abbr --add k kubectl
 
     # Aliases
 
@@ -62,10 +49,28 @@ status is-interactive; and begin
         set -l post (string split " " (string trim $post_joined))
     end
 
+    function __aws_complete
+        set --local --export COMP_SHELL fish
+        set --local --export COMP_LINE (commandline -pc)
+
+        if string match -q -- - (commandline -pt)
+            set COMP_LINE "$COMP_LINE-"
+        end
+
+        aws_completer | command sed 's/ $//'
+    end
+
+    # Enable AWS CLI autocompletion: github.com/aws/aws-cli/issues/1079
+    complete --command aws --no-files --arguments '(__aws_complete)'
+
+    if type -q up
+          up completion | source
+    end
+
     fish_vi_key_bindings
 
     direnv hook fish | source
-    helmfile completion fish | source
-
-    abbr --add k kubectl
+    if type -q helmfile
+      helmfile completion fish | source
+    end
 end
