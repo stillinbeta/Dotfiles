@@ -65,7 +65,9 @@ This function should only modify configuration layer settings."
                                         ; erlang
      markdown
                                         ; elixir
-     (go :variables gofmt-command "goimports")
+     (go :variables
+         gofmt-command "goimports"
+         go-tab-width 2)
      ;; pdf
      (python :variables
              python-backend 'lsp
