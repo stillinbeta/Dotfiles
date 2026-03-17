@@ -84,14 +84,14 @@
       state: present
   - name: "cloud-provider-kind"
     block:
-    - name: "cloud-provider-kind"
-      unarchive:
-        remote_src: true
-        src: https://github.com/kubernetes-sigs/cloud-provider-kind/releases/download/v{{ cloud_provider_kind_version }}/cloud-provider-kind_{{ cloud_provider_kind_version }}_linux_amd64.tar.gz
-        creates: "/usr/local/bin/.local/bin/cloud-provider-kind"
-        dest: "/usr/local/bin/"
-        include: 'cloud-provider-kind'
-      become: true
+    # - name: "cloud-provider-kind"
+    #   unarchive:
+    #     remote_src: true
+    #     src: https://github.com/kubernetes-sigs/cloud-provider-kind/releases/download/v{{ cloud_provider_kind_version }}/cloud-provider-kind_{{ cloud_provider_kind_version }}_linux_amd64.tar.gz
+    #     creates: "/usr/local/bin/.local/bin/cloud-provider-kind"
+    #     dest: "/usr/local/bin/"
+    #     include: 'cloud-provider-kind'
+    #   become: true
     - name: 'cloud-provider-kind unit'
       register: cpk_unit
       copy:
@@ -284,7 +284,13 @@
   - name: "inotify limits"
     ansible.posix.sysctl:
       name: fs.inotify.max_user_instances
-      value: '4096'
+      value: '524288'
+      state: present
+    become: true
+  - name: "inotify limits"
+    ansible.posix.sysctl:
+      name: fs.inotify.max_user_instances
+      value: '512'
       state: present
     become: true
   - name: "goimports"
