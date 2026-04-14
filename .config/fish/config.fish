@@ -32,7 +32,7 @@ if not contains $HOME/.asdf/bin $PATH
 end
 
 status is-interactive; and begin
-    fish_vi_key_bindings
+    set --global fish_key_bindings fish_vi_key_bindings
 
     set -g fish_transient_prompt 1
 
