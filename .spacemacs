@@ -654,106 +654,109 @@ you should place your code here."
     )
   ;; (setq gofmt-command "goimports")
   (exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
-  )
 
 
 
-;; Do not write anything past this comment. This is where Emacs will
-;; auto-generate custom variable definitions.
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(paradox-github-token t)
- '(safe-local-variable-values
-   (quote
-    ((haskell-process-use-ghci . t)
-     (haskell-indent-spaces . 4)))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
- '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
-(defun dotspacemacs/emacs-custom-settings ()
-  "Emacs custom settings.
-This is an auto-generated function, do not modify its content directly, use
-Emacs customize menu instead.
-This function is called at the very end of Spacemacs initialization."
+
+  ;; Do not write anything past this comment. This is where Emacs will
+  ;; auto-generate custom variable definitions.
   (custom-set-variables
    ;; custom-set-variables was added by Custom.
    ;; If you edit it by hand, you could mess it up, so be careful.
    ;; Your init file should contain only one such instance.
    ;; If there is more than one, they won't work right.
-   '(auth-source-save-behavior nil)
-   '(evil-want-Y-yank-to-eol nil)
-   '(package-selected-packages
-     '(ac-ispell ace-jump-helm-line ace-link add-node-modules-path aggressive-indent
-                 aio all-the-icons ansible ansible-doc auctex-latexmk auto-compile
-                 auto-dictionary auto-highlight-symbol auto-yasnippet base16-theme
-                 blacken browse-at-remote bui cargo ccls centered-cursor-mode
-                 clean-aindent-mode code-cells column-enforce-mode
-                 company-anaconda company-ansible company-auctex company-c-headers
-                 company-go company-lua company-math company-nixos-options
-                 company-reftex company-rtags company-shell company-web
-                 company-ycmd counsel counsel-gtags cpp-auto-include cython-mode
-                 dap-mode define-word devdocs diminish direnv disaster docker
-                 dockerfile-mode dotenv-mode dumb-jump elisp-def elisp-slime-nav
-                 emmet-mode emr erlang esh-help eshell-prompt-extras eshell-z
-                 eval-sexp-fu evil-anzu evil-args evil-cleverparens
-                 evil-collection evil-escape evil-evilified-state evil-exchange
-                 evil-goggles evil-iedit-state evil-indent-plus evil-lion
-                 evil-lisp-state evil-matchit evil-nerd-commenter evil-numbers
-                 evil-org evil-surround evil-tex evil-textobj-line evil-tutor
-                 evil-unimpaired evil-visual-mark-mode evil-visualstar
-                 expand-region eyebrowse fancy-battery fish-mode flx-ido
-                 flycheck-bashate flycheck-elsa flycheck-package flycheck-pos-tip
-                 flycheck-rtags flycheck-rust flycheck-ycmd flyspell-correct-helm
-                 fuzzy gendoxy ggtags gh-md git-gutter-fringe git-link
-                 git-messenger git-modes git-timemachine gitignore-templates
-                 gnuplot go-eldoc go-fill-struct go-gen-test go-guru go-impl
-                 go-rename go-tag godoctor golden-ratio google-c-style
-                 google-translate graphviz-dot-mode grizzl helm-ag
-                 helm-c-yasnippet helm-company helm-css-scss helm-descbinds
-                 helm-git-grep helm-ls-git helm-lsp helm-make helm-mode-manager
-                 helm-nixos-options helm-org helm-org-rifle helm-projectile
-                 helm-purpose helm-pydoc helm-rtags helm-swoop helm-themes
-                 helm-xref help-fns+ hide-comnt highlight-indentation
-                 highlight-numbers highlight-parentheses hl-todo holy-mode
-                 hungry-delete hybrid-mode impatient-mode import-js importmagic
-                 indent-guide info+ insert-shebang inspector ivy jinja2-mode
-                 journalctl-mode js-doc js2-mode js2-refactor link-hint
-                 live-py-mode livid-mode lorem-ipsum lsp-docker lsp-latex
-                 lsp-origami lsp-pyright lsp-python-ms lsp-ui macrostep
-                 markdown-toc mmm-mode move-text multi-term multi-vterm
-                 multiple-cursors nameless nasm-mode nix-mode nixos-options
-                 nodejs-repl nose npm-mode open-junk-file org-cliplink org-contrib
-                 org-download org-mime org-pomodoro org-present org-projectile
-                 org-rich-yank org-superstar orgit-forge overseer paradox pcre2el
-                 pdf-view-restore pip-requirements pipenv pippel poetry popwin
-                 prettier-js pug-mode py-isort pydoc pyenv-mode pylookup pytest
-                 quickrun rainbow-delimiters realgud reformatter restart-emacs
-                 ron-mode rust-mode sass-mode scss-mode shell-pop shfmt
-                 skewer-mode slim-mode smeargle space-doc spaceline
-                 spacemacs-purpose-popwin sphinx-doc sql-indent sqlite3 swiper
-                 symbol-overlay symon systemd tagedit term-cursor terminal-here
-                 tern toc-org toml-mode treemacs-evil treemacs-icons-dired
-                 treemacs-magit treemacs-persp treemacs-projectile undo-tree
-                 uuidgen vi-tilde-fringe vim-powerline volatile-highlights
-                 web-beautify web-mode which-key winum writeroom-mode ws-butler
-                 x86-lookup xterm-color yaml-mode yapfify yasnippet-snippets
-                 zig-mode))
    '(paradox-github-token t)
    '(safe-local-variable-values
-     '((haskell-process-use-ghci . t) (haskell-indent-spaces . 4))))
+     (quote
+      ((haskell-process-use-ghci . t)
+       (haskell-indent-spaces . 4)))))
   (custom-set-faces
    ;; custom-set-faces was added by Custom.
    ;; If you edit it by hand, you could mess it up, so be careful.
    ;; Your init file should contain only one such instance.
    ;; If there is more than one, they won't work right.
    '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
-   '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil))))
-   '(highlight-parentheses-highlight ((nil (:weight ultra-bold))) t))
-  )
+   '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
+  (defun dotspacemacs/emacs-custom-settings ()
+    "Emacs custom settings.
+This is an auto-generated function, do not modify its content directly, use
+Emacs customize menu instead.
+This function is called at the very end of Spacemacs initialization."
+    (custom-set-variables
+     ;; custom-set-variables was added by Custom.
+     ;; If you edit it by hand, you could mess it up, so be careful.
+     ;; Your init file should contain only one such instance.
+     ;; If there is more than one, they won't work right.
+     '(auth-source-save-behavior nil)
+     '(evil-want-Y-yank-to-eol nil)
+     '(org-agenda-files
+       '("~/src/worklog/ops.org" "/home/liz/src/worklog/me.org"
+         "/home/liz/src/worklog/team.org" "/home/liz/src/worklog/spaces.org"))
+     '(package-selected-packages
+       '(ac-ispell ace-jump-helm-line ace-link add-node-modules-path aggressive-indent
+                   aio all-the-icons ansible ansible-doc auctex-latexmk auto-compile
+                   auto-dictionary auto-highlight-symbol auto-yasnippet base16-theme
+                   blacken browse-at-remote bui cargo ccls centered-cursor-mode
+                   clean-aindent-mode code-cells column-enforce-mode
+                   company-anaconda company-ansible company-auctex company-c-headers
+                   company-go company-lua company-math company-nixos-options
+                   company-reftex company-rtags company-shell company-web
+                   company-ycmd counsel counsel-gtags cpp-auto-include cython-mode
+                   dap-mode define-word devdocs diminish direnv disaster docker
+                   dockerfile-mode dotenv-mode dumb-jump elisp-def elisp-slime-nav
+                   emmet-mode emr erlang esh-help eshell-prompt-extras eshell-z
+                   eval-sexp-fu evil-anzu evil-args evil-cleverparens
+                   evil-collection evil-escape evil-evilified-state evil-exchange
+                   evil-goggles evil-iedit-state evil-indent-plus evil-lion
+                   evil-lisp-state evil-matchit evil-nerd-commenter evil-numbers
+                   evil-org evil-surround evil-tex evil-textobj-line evil-tutor
+                   evil-unimpaired evil-visual-mark-mode evil-visualstar
+                   expand-region eyebrowse fancy-battery fish-mode flx-ido
+                   flycheck-bashate flycheck-elsa flycheck-package flycheck-pos-tip
+                   flycheck-rtags flycheck-rust flycheck-ycmd flyspell-correct-helm
+                   fuzzy gendoxy ggtags gh-md git-gutter-fringe git-link
+                   git-messenger git-modes git-timemachine gitignore-templates
+                   gnuplot go-eldoc go-fill-struct go-gen-test go-guru go-impl
+                   go-rename go-tag godoctor golden-ratio google-c-style
+                   google-translate graphviz-dot-mode grizzl helm-ag
+                   helm-c-yasnippet helm-company helm-css-scss helm-descbinds
+                   helm-git-grep helm-ls-git helm-lsp helm-make helm-mode-manager
+                   helm-nixos-options helm-org helm-org-rifle helm-projectile
+                   helm-purpose helm-pydoc helm-rtags helm-swoop helm-themes
+                   helm-xref help-fns+ hide-comnt highlight-indentation
+                   highlight-numbers highlight-parentheses hl-todo holy-mode
+                   hungry-delete hybrid-mode impatient-mode import-js importmagic
+                   indent-guide info+ insert-shebang inspector ivy jinja2-mode
+                   journalctl-mode js-doc js2-mode js2-refactor link-hint
+                   live-py-mode livid-mode lorem-ipsum lsp-docker lsp-latex
+                   lsp-origami lsp-pyright lsp-python-ms lsp-ui macrostep
+                   markdown-toc mmm-mode move-text multi-term multi-vterm
+                   multiple-cursors nameless nasm-mode nix-mode nixos-options
+                   nodejs-repl nose npm-mode open-junk-file org-cliplink org-contrib
+                   org-download org-mime org-pomodoro org-present org-projectile
+                   org-rich-yank org-superstar orgit-forge overseer paradox pcre2el
+                   pdf-view-restore pip-requirements pipenv pippel poetry popwin
+                   prettier-js pug-mode py-isort pydoc pyenv-mode pylookup pytest
+                   quickrun rainbow-delimiters realgud reformatter restart-emacs
+                   ron-mode rust-mode sass-mode scss-mode shell-pop shfmt
+                   skewer-mode slim-mode smeargle space-doc spaceline
+                   spacemacs-purpose-popwin sphinx-doc sql-indent sqlite3 swiper
+                   symbol-overlay symon systemd tagedit term-cursor terminal-here
+                   tern toc-org toml-mode treemacs-evil treemacs-icons-dired
+                   treemacs-magit treemacs-persp treemacs-projectile undo-tree
+                   uuidgen vi-tilde-fringe vim-powerline volatile-highlights
+                   web-beautify web-mode which-key winum writeroom-mode ws-butler
+                   x86-lookup xterm-color yaml-mode yapfify yasnippet-snippets
+                   zig-mode))
+     '(paradox-github-token t)
+     '(safe-local-variable-values
+       '((haskell-process-use-ghci . t) (haskell-indent-spaces . 4))))
+    (custom-set-faces
+     ;; custom-set-faces was added by Custom.
+     ;; If you edit it by hand, you could mess it up, so be careful.
+     ;; Your init file should contain only one such instance.
+     ;; If there is more than one, they won't work right.
+     '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
+     '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil))))
+     '(highlight-parentheses-highlight ((nil (:weight ultra-bold))) t))
+    )
