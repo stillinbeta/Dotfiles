@@ -6,11 +6,12 @@
     yq_version: 4.44.2
     kind_version: v0.31.0
     cloud_provider_kind_version: 0.10.0
-    up_version: 0.44.3
+    up_version: 0.45.0
     jolt_version: 1.1.3
     helmfile_version: 1.2.3
     actionlint_version: 1.7.11
     goreleaser_version: 2.14.1
+    crank_version: 2.2.0
   tasks:
   - name: install fish
     block:
@@ -32,6 +33,11 @@
     file:
       state: "directory"
       path: "{{ ansible_user_dir}}/.local/bin"
+  - name: "crossplane-cli"
+    get_url:
+      url: "https://releases.crossplane.io/stable/v{{ crank_version }}/bin/linux_amd64/crank"
+      mode: "u+rwx"
+      dest: "{{ ansible_user_dir}}/.local/bin/crossplane"
   - name: "checkout spacemacs"
     git:
       repo: "https://github.com/syl20bnr/spacemacs"
@@ -283,15 +289,17 @@
       #   become: true
   - name: "inotify limits"
     ansible.posix.sysctl:
-      name: fs.inotify.max_user_instances
+      name: fs.inotify.max_user_watches
       value: '524288'
       state: present
+      sysctl_set: true
     become: true
   - name: "inotify limits"
     ansible.posix.sysctl:
       name: fs.inotify.max_user_instances
-      value: '512'
+      value: '1024'
       state: present
+      sysctl_set: true
     become: true
   - name: "goimports"
     shell:
