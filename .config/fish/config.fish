@@ -31,9 +31,10 @@ if not contains $HOME/.asdf/bin $PATH
     set -gx --prepend PATH $HOME/.asdf/bin
 end
 
-
-
 status is-interactive; and begin
+    fish_vi_key_bindings
+
+    set -g fish_transient_prompt 1
 
     # Abbreviations
     abbr --add k kubectl
@@ -66,11 +67,16 @@ status is-interactive; and begin
     if type -q up
           up completion | source
     end
-
-    fish_vi_key_bindings
-
-    direnv hook fish | source
+    if type -q crossplane
+        crossplane completions | source
+    end
+    if type -q direnv
+      direnv hook fish | source
+    end
     if type -q helmfile
       helmfile completion fish | source
+    end
+    if type -q kubectl
+        kubectl completion fish | source
     end
 end
