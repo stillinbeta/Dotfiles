@@ -12,6 +12,8 @@
     actionlint_version: 1.7.11
     goreleaser_version: 2.14.1
     crank_version: 2.2.0
+    kubectl_tree_version: 0.6.0
+    argocd_version: 3.3.8
   tasks:
   - name: install fish
     block:
@@ -38,6 +40,11 @@
       url: "https://releases.crossplane.io/stable/v{{ crank_version }}/bin/linux_amd64/crank"
       mode: "u+rwx"
       dest: "{{ ansible_user_dir}}/.local/bin/crossplane"
+  - name: "argocd cli"
+    get_url:
+      url: https://github.com/argoproj/argo-cd/releases/download/v{{ argocd_version }}/argocd-linux-amd64
+      mode: "u+rwx"
+      dest: "{{ ansible_user_dir}}/.local/bin/argocd"
   - name: "checkout spacemacs"
     git:
       repo: "https://github.com/syl20bnr/spacemacs"
@@ -59,6 +66,7 @@
       - clamav # compliance
       - htop
       - net-tools
+      - libsecret-tools
     become: true
   - name: "install yq"
     get_url:
@@ -170,6 +178,12 @@
       dest: "{{ ansible_facts['user_dir'] }}/.local/bin"
       extra_opts:
       - "--strip=1"
+  - name: kubectl-tree
+    unarchive:
+      remote_src: true
+      src: https://github.com/ahmetb/kubectl-tree/releases/download/v{{ kubectl_tree_version }}/kubectl-tree_v{{ kubectl_tree_version }}_linux_amd64.tar.gz
+      creates: "{{ ansible_facts['user_dir'] }}/.local/bin/kubectl-tree"
+      dest: "{{ ansible_facts['user_dir'] }}/.local/bin"
   - name: "install aws-cli"
     block:
     - name: "download AWS CLI"
@@ -293,6 +307,7 @@
       value: '524288'
       state: present
       sysctl_set: true
+      sysctl_file: /etc/sysctl.d/inotify.conf
     become: true
   - name: "inotify limits"
     ansible.posix.sysctl:
@@ -300,6 +315,7 @@
       value: '1024'
       state: present
       sysctl_set: true
+      sysctl_file: /etc/sysctl.d/inotify.conf
     become: true
   - name: "goimports"
     shell:

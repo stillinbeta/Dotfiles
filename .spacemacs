@@ -117,40 +117,7 @@ before layer configuration.
 It should only modify the values of Spacemacs settings."
   ;; This setq-default sexp is an exhaustive list of all the supported
   ;; spacemacs settings.
-  (setq spacemacs-erlang-elixir-use-edts t)
-  (setq spacemacs-show-trailing-whitespace t)
   (setq-default
-   ;; If non-nil then enable support for the portable dumper. You'll need to
-   ;; compile Emacs 27 from source following the instructions in file
-   ;; EXPERIMENTAL.org at to root of the git repository.
-   ;;
-   ;; WARNING: pdumper does not work with Native Compilation, so it's disabled
-   ;; regardless of the following setting when native compilation is in effect.
-   ;;
-   ;; (default nil)
-   dotspacemacs-enable-emacs-pdumper nil
-
-   ;; Name of executable file pointing to emacs 27+. This executable must be
-   ;; in your PATH.
-   ;; (default "emacs")
-   dotspacemacs-emacs-pdumper-executable-file "emacs"
-
-   ;; Name of the Spacemacs dump file. This is the file will be created by the
-   ;; portable dumper in the cache directory under dumps sub-directory.
-   ;; To load it when starting Emacs add the parameter `--dump-file'
-   ;; when invoking Emacs 27.1 executable on the command line, for instance:
-   ;;   ./emacs --dump-file=$HOME/.emacs.d/.cache/dumps/spacemacs-27.1.pdmp
-   ;; (default (format "spacemacs-%s.pdmp" emacs-version))
-   dotspacemacs-emacs-dumper-dump-file (format "spacemacs-%s.pdmp" emacs-version)
-
-   ;; If non-nil ELPA repositories are contacted via HTTPS whenever it's
-   ;; possible. Set it to nil if you have no way to use HTTPS in your
-   ;; environment, otherwise it is strongly recommended to let it set to t.
-   ;; This variable has no effect if Emacs is launched with the parameter
-   ;; `--insecure' which forces the value of this variable to nil.
-   ;; (default t)
-   dotspacemacs-elpa-https t
-
    ;; Maximum allowed time in seconds to contact an ELPA repository.
    ;; (default 5)
    dotspacemacs-elpa-timeout 5
@@ -629,134 +596,122 @@ It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
   )
 
-
-(defun dotspacemacs/user-load ()
-  "Library to load while dumping.
-This function is called only while dumping Spacemacs configuration. You can
-`require' or `load' the libraries of your choice that will be included in the
-dump."
-  )
-
-
-
-(defun dotspacemacs/user-config  ()
-  "Configuration function for user code.
-This function is called at the very end of Spacemacs initialization after
-layers configuration.
-This is the place where most of your configurations should be done. Unless it is
-explicitly specified that a variable should be set before a package is loaded,
-you should place your code here."
+(defun dotspacemacs/user-config ()
+  "Configuration for user code:
+This function is called at the very end of Spacemacs startup, after layer
+configuration.
+Put your configuration code here, except for variables that should be set
+before packages are loaded."
   ;; (spacemacs/enable-transparency)
   (setq max-lisp-eval-depth 10000)
-
   (spacemacs/set-leader-keys
     "gB" 'magit-branch-spinoff
     )
   ;; (setq gofmt-command "goimports")
-  (exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
+  (exec-path-from-shell-copy-env "SSH_AUTH_SOCK"))
 
 
 
 
-  ;; Do not write anything past this comment. This is where Emacs will
-  ;; auto-generate custom variable definitions.
+;; Do not write anything past this comment. This is where Emacs will
+;; auto-generate custom variable definitions.
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(paradox-github-token t)
+ '(safe-local-variable-values
+   (quote
+    ((haskell-process-use-ghci . t)
+     (haskell-indent-spaces . 4)))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
+ '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
+(defun dotspacemacs/emacs-custom-settings ()
+  "Emacs custom settings.
+This is an auto-generated function, do not modify its content directly, use
+Emacs customize menu instead.
+This function is called at the very end of Spacemacs initialization."
   (custom-set-variables
    ;; custom-set-variables was added by Custom.
    ;; If you edit it by hand, you could mess it up, so be careful.
    ;; Your init file should contain only one such instance.
    ;; If there is more than one, they won't work right.
+   '(auth-source-save-behavior nil)
+   '(evil-want-Y-yank-to-eol nil)
+   '(org-agenda-files
+     '("~/src/worklog/ops.org" "/home/liz/src/worklog/me.org"
+       "/home/liz/src/worklog/team.org" "/home/liz/src/worklog/spaces.org"))
+   '(package-selected-packages
+     '(ac-ispell ace-jump-helm-line ace-link add-node-modules-path aggressive-indent
+                 aio all-the-icons ansible ansible-doc auctex-latexmk auto-compile
+                 auto-dictionary auto-highlight-symbol auto-yasnippet base16-theme
+                 blacken browse-at-remote bui cargo ccls centered-cursor-mode
+                 clean-aindent-mode code-cells column-enforce-mode
+                 company-anaconda company-ansible company-auctex company-c-headers
+                 company-go company-lua company-math company-nixos-options
+                 company-reftex company-rtags company-shell company-web
+                 company-ycmd counsel counsel-gtags cpp-auto-include cython-mode
+                 dap-mode define-word devdocs diminish direnv disaster docker
+                 dockerfile-mode dotenv-mode dumb-jump elisp-def elisp-slime-nav
+                 emmet-mode emr erlang esh-help eshell-prompt-extras eshell-z
+                 eval-sexp-fu evil-anzu evil-args evil-cleverparens
+                 evil-collection evil-escape evil-evilified-state evil-exchange
+                 evil-goggles evil-iedit-state evil-indent-plus evil-lion
+                 evil-lisp-state evil-matchit evil-nerd-commenter evil-numbers
+                 evil-org evil-surround evil-tex evil-textobj-line evil-tutor
+                 evil-unimpaired evil-visual-mark-mode evil-visualstar
+                 expand-region eyebrowse fancy-battery fish-mode flx-ido
+                 flycheck-bashate flycheck-elsa flycheck-package flycheck-pos-tip
+                 flycheck-rtags flycheck-rust flycheck-ycmd flyspell-correct-helm
+                 fuzzy gendoxy ggtags gh-md git-gutter-fringe git-link
+                 git-messenger git-modes git-timemachine gitignore-templates
+                 gnuplot go-eldoc go-fill-struct go-gen-test go-guru go-impl
+                 go-rename go-tag godoctor golden-ratio google-c-style
+                 google-translate graphviz-dot-mode grizzl helm-ag
+                 helm-c-yasnippet helm-company helm-css-scss helm-descbinds
+                 helm-git-grep helm-ls-git helm-lsp helm-make helm-mode-manager
+                 helm-nixos-options helm-org helm-org-rifle helm-projectile
+                 helm-purpose helm-pydoc helm-rtags helm-swoop helm-themes
+                 helm-xref help-fns+ hide-comnt highlight-indentation
+                 highlight-numbers highlight-parentheses hl-todo holy-mode
+                 hungry-delete hybrid-mode impatient-mode import-js importmagic
+                 indent-guide info+ insert-shebang inspector ivy jinja2-mode
+                 journalctl-mode js-doc js2-mode js2-refactor link-hint
+                 live-py-mode livid-mode lorem-ipsum lsp-docker lsp-latex
+                 lsp-origami lsp-pyright lsp-python-ms lsp-ui macrostep
+                 markdown-toc mmm-mode move-text multi-term multi-vterm
+                 multiple-cursors nameless nasm-mode nix-mode nixos-options
+                 nodejs-repl nose npm-mode open-junk-file org-cliplink org-contrib
+                 org-download org-mime org-pomodoro org-present org-projectile
+                 org-rich-yank org-superstar orgit-forge overseer paradox pcre2el
+                 pdf-view-restore pip-requirements pipenv pippel poetry popwin
+                 prettier-js pug-mode py-isort pydoc pyenv-mode pylookup pytest
+                 quickrun rainbow-delimiters realgud reformatter restart-emacs
+                 ron-mode rust-mode sass-mode scss-mode shell-pop shfmt
+                 skewer-mode slim-mode smeargle space-doc spaceline
+                 spacemacs-purpose-popwin sphinx-doc sql-indent sqlite3 swiper
+                 symbol-overlay symon systemd tagedit term-cursor terminal-here
+                 tern toc-org toml-mode treemacs-evil treemacs-icons-dired
+                 treemacs-magit treemacs-persp treemacs-projectile undo-tree
+                 uuidgen vi-tilde-fringe vim-powerline volatile-highlights
+                 web-beautify web-mode which-key winum writeroom-mode ws-butler
+                 x86-lookup xterm-color yaml-mode yapfify yasnippet-snippets
+                 zig-mode))
    '(paradox-github-token t)
    '(safe-local-variable-values
-     (quote
-      ((haskell-process-use-ghci . t)
-       (haskell-indent-spaces . 4)))))
+     '((haskell-process-use-ghci . t) (haskell-indent-spaces . 4))))
   (custom-set-faces
    ;; custom-set-faces was added by Custom.
    ;; If you edit it by hand, you could mess it up, so be careful.
    ;; Your init file should contain only one such instance.
    ;; If there is more than one, they won't work right.
    '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
-   '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
-  (defun dotspacemacs/emacs-custom-settings ()
-    "Emacs custom settings.
-This is an auto-generated function, do not modify its content directly, use
-Emacs customize menu instead.
-This function is called at the very end of Spacemacs initialization."
-    (custom-set-variables
-     ;; custom-set-variables was added by Custom.
-     ;; If you edit it by hand, you could mess it up, so be careful.
-     ;; Your init file should contain only one such instance.
-     ;; If there is more than one, they won't work right.
-     '(auth-source-save-behavior nil)
-     '(evil-want-Y-yank-to-eol nil)
-     '(org-agenda-files
-       '("~/src/worklog/ops.org" "/home/liz/src/worklog/me.org"
-         "/home/liz/src/worklog/team.org" "/home/liz/src/worklog/spaces.org"))
-     '(package-selected-packages
-       '(ac-ispell ace-jump-helm-line ace-link add-node-modules-path aggressive-indent
-                   aio all-the-icons ansible ansible-doc auctex-latexmk auto-compile
-                   auto-dictionary auto-highlight-symbol auto-yasnippet base16-theme
-                   blacken browse-at-remote bui cargo ccls centered-cursor-mode
-                   clean-aindent-mode code-cells column-enforce-mode
-                   company-anaconda company-ansible company-auctex company-c-headers
-                   company-go company-lua company-math company-nixos-options
-                   company-reftex company-rtags company-shell company-web
-                   company-ycmd counsel counsel-gtags cpp-auto-include cython-mode
-                   dap-mode define-word devdocs diminish direnv disaster docker
-                   dockerfile-mode dotenv-mode dumb-jump elisp-def elisp-slime-nav
-                   emmet-mode emr erlang esh-help eshell-prompt-extras eshell-z
-                   eval-sexp-fu evil-anzu evil-args evil-cleverparens
-                   evil-collection evil-escape evil-evilified-state evil-exchange
-                   evil-goggles evil-iedit-state evil-indent-plus evil-lion
-                   evil-lisp-state evil-matchit evil-nerd-commenter evil-numbers
-                   evil-org evil-surround evil-tex evil-textobj-line evil-tutor
-                   evil-unimpaired evil-visual-mark-mode evil-visualstar
-                   expand-region eyebrowse fancy-battery fish-mode flx-ido
-                   flycheck-bashate flycheck-elsa flycheck-package flycheck-pos-tip
-                   flycheck-rtags flycheck-rust flycheck-ycmd flyspell-correct-helm
-                   fuzzy gendoxy ggtags gh-md git-gutter-fringe git-link
-                   git-messenger git-modes git-timemachine gitignore-templates
-                   gnuplot go-eldoc go-fill-struct go-gen-test go-guru go-impl
-                   go-rename go-tag godoctor golden-ratio google-c-style
-                   google-translate graphviz-dot-mode grizzl helm-ag
-                   helm-c-yasnippet helm-company helm-css-scss helm-descbinds
-                   helm-git-grep helm-ls-git helm-lsp helm-make helm-mode-manager
-                   helm-nixos-options helm-org helm-org-rifle helm-projectile
-                   helm-purpose helm-pydoc helm-rtags helm-swoop helm-themes
-                   helm-xref help-fns+ hide-comnt highlight-indentation
-                   highlight-numbers highlight-parentheses hl-todo holy-mode
-                   hungry-delete hybrid-mode impatient-mode import-js importmagic
-                   indent-guide info+ insert-shebang inspector ivy jinja2-mode
-                   journalctl-mode js-doc js2-mode js2-refactor link-hint
-                   live-py-mode livid-mode lorem-ipsum lsp-docker lsp-latex
-                   lsp-origami lsp-pyright lsp-python-ms lsp-ui macrostep
-                   markdown-toc mmm-mode move-text multi-term multi-vterm
-                   multiple-cursors nameless nasm-mode nix-mode nixos-options
-                   nodejs-repl nose npm-mode open-junk-file org-cliplink org-contrib
-                   org-download org-mime org-pomodoro org-present org-projectile
-                   org-rich-yank org-superstar orgit-forge overseer paradox pcre2el
-                   pdf-view-restore pip-requirements pipenv pippel poetry popwin
-                   prettier-js pug-mode py-isort pydoc pyenv-mode pylookup pytest
-                   quickrun rainbow-delimiters realgud reformatter restart-emacs
-                   ron-mode rust-mode sass-mode scss-mode shell-pop shfmt
-                   skewer-mode slim-mode smeargle space-doc spaceline
-                   spacemacs-purpose-popwin sphinx-doc sql-indent sqlite3 swiper
-                   symbol-overlay symon systemd tagedit term-cursor terminal-here
-                   tern toc-org toml-mode treemacs-evil treemacs-icons-dired
-                   treemacs-magit treemacs-persp treemacs-projectile undo-tree
-                   uuidgen vi-tilde-fringe vim-powerline volatile-highlights
-                   web-beautify web-mode which-key winum writeroom-mode ws-butler
-                   x86-lookup xterm-color yaml-mode yapfify yasnippet-snippets
-                   zig-mode))
-     '(paradox-github-token t)
-     '(safe-local-variable-values
-       '((haskell-process-use-ghci . t) (haskell-indent-spaces . 4))))
-    (custom-set-faces
-     ;; custom-set-faces was added by Custom.
-     ;; If you edit it by hand, you could mess it up, so be careful.
-     ;; Your init file should contain only one such instance.
-     ;; If there is more than one, they won't work right.
-     '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
-     '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil))))
-     '(highlight-parentheses-highlight ((nil (:weight ultra-bold))) t))
-    )
+   '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil))))
+   '(highlight-parentheses-highlight ((nil (:weight ultra-bold))) t))
+  )
